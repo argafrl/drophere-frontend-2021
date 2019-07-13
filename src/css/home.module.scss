@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    @media only screen and (max-width: 640px) {
+        height: auto;
+    }
+
+    .content {
+        min-height: 500px;
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1;
+        align-items: center;
+        
+        .header, .auth {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .header {
+            padding-top: 80px;
+        }
+
+        .auth {
+            padding-top: 80px;
+        }
+    }
+}

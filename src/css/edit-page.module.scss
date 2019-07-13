@@ -1,0 +1,18 @@
+.container {
+    form > * {
+        margin-bottom: 8px;
+    }
+}
+.button-group {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+
+    > button {
+        margin-right: 8px;
+    }
+
+    > button:last-child {
+        margin-right: 0;
+    }
+}

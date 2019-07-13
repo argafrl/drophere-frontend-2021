@@ -1,0 +1,21 @@
+.container {
+    .content {
+        position: relative;
+        margin-left: 300px;
+        max-width: 600px;
+        width: 100%;
+        min-height: 445px;
+    }
+}
+
+.menu {
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 20px;
+    width: 250px;
+}
+
+.menu-fly {
+    position: fixed;
+    top: 50px;
+}

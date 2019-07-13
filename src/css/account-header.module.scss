@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    align-items: center;
+
+    a {
+        display: flex;
+        width: auto;
+        
+        img {
+            height: 70px;
+            margin: 20px;
+        }
+    
+        h1 {
+            font-weight: 300;
+            font-size: 30pt;
+            color: #848484;
+        }
+    }
+}

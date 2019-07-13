@@ -1,0 +1,21 @@
+.container {
+    .button-wrapper {
+        padding: 20px;
+    }
+
+    .list-container {
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 45px;
+            margin-right: 20px;
+        }
+
+        .right {
+            display: block;
+            width: 400px;
+            margin-right: 20px;
+        }
+    }
+}
