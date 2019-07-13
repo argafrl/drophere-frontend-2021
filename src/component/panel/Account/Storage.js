@@ -148,7 +148,7 @@ class Storage extends Component {
     if (resp.data.errors) {
       throw new Error(resp.data.errors[0].message);
     }
-    const { dropboxEmail, dropboxAuthorized } = resp.data.data.me;
+    const { dropboxEmail } = resp.data.data.me;
     this.setState({ dropboxEmail });
     return resp.data.data.me;
   }

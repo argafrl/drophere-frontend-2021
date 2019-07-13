@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import style from '../../../css/home.module.scss';
 import Header from './Header';
 import Login from './Login';
