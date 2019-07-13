@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-import { endpointURL } from '../../../config';
+import { endpointURL, dropboxStorageProvider } from '../../../config';
 
 import style from '../../../css/storage.module.scss';
 import Preloader from '../../common/Preloader';
@@ -84,7 +84,7 @@ class Storage extends Component {
     const { enqueueSnackbar } = this.props;
 
     let win = window.open(
-      'https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=0ljk1sqdvxnhd3i&redirect_uri=http://localhost:3000/account/storage/authorize?provider=dropbox',
+      `https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=${dropboxStorageProvider.clientId}&redirect_uri=${dropboxStorageProvider.redirectUri}`,
       // 'http://localhost:3000/account/storage/authorize?provider=dropbox#access_token=WKWKWK&token_type=bearer&uid=104613955&account_id=dbid%3AAABzjG2YLydqtZU9fEVJmM-oHmAcN6cLB_w',
       'Authorization',
       `height=400,width=800`

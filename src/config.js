@@ -1,5 +1,6 @@
 export const endpointURL =  'http://localhost:8080/query';
 export const uploadURL =  'http://localhost:8080/uploadfile';
+
 export const excludeSlug = [
   'account',
   'home',
@@ -7,9 +8,7 @@ export const excludeSlug = [
   'register'
 ];
 export const linkPrefix = 'https://drophere.link/';
-export const storageProviders = [
-  {
-    providerKey: 12345678,
-    name: 'Dropbox',
-  }
-];
+export const dropboxStorageProvider = {
+  redirectUri: 'http://localhost:3000/account/storage/authorize?provider=dropbox',
+  clientId: '0ljk1sqdvxnhd3i'
+};
