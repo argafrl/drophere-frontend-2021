@@ -216,11 +216,12 @@ function EditForm(props) {
         <FormControl fullWidth>
           <InputLabel shrink>
             Storage Provider
-            <NativeSelect input={<Input />}>
-              <option value="dropbox">Dropbox</option>
-              {/* <option value="google_drive">Google Drive</option> */}
-            </NativeSelect>
           </InputLabel>
+
+          <NativeSelect input={<Input />}>
+            <option value="dropbox">Dropbox</option>
+            {/* <option value="google_drive">Google Drive</option> */}
+          </NativeSelect>
         </FormControl>
 
         <div className={editPageStyle['button-group']}>

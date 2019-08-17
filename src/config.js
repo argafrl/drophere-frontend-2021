@@ -5,7 +5,8 @@ export const excludeSlug = [
   'account',
   'home',
   'login',
-  'register'
+  'register',
+  'recover-password',
 ];
 export const linkPrefix = 'https://drophere.link/';
 export const dropboxStorageProvider = {

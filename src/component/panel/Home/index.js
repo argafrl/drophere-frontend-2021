@@ -1,10 +1,14 @@
 import React from "react";
+import { Route, Switch } from 'react-router-dom';
+
 import style from '../../../css/home.module.scss';
+
 import Header from './Header';
 import Login from './Login';
+import RecoverPassword from "./RecoverPassword";
 import Register from './Register';
+
 import Footer from '../../common/Footer';
-import { Route, Switch } from 'react-router-dom';
 
 const Home = props => {
   return (
@@ -17,6 +21,7 @@ const Home = props => {
           <Switch>
             <Route path="/home" exact component={Login} />
             <Route path="/register" exact component={Register} />
+            <Route path="/recover-password" exact component={RecoverPassword} />
           </Switch>
         </div>
       </div>

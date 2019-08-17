@@ -96,6 +96,7 @@ class Login extends Component {
 
         <div className={style.footer}>
           <p>Belum punya akun? <Link to="/register">Daftar</Link></p>
+          <p>Lupa password? <Link to="/recover-password">Pulihkan</Link></p>
         </div>
       </div>
     );

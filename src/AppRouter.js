@@ -51,6 +51,12 @@ class AppRouter extends Component {
                   return <Home {...props} updateParticle={this.updateParticle} />;
                 return <Redirect to="/account" />
               }} />
+              <Route path="/recover-password" render={props => {
+                if (!localStorage.getItem('bccdrophere_token'))
+                  return <Home {...props} updateParticle={this.updateParticle} />;
+                return <Redirect to="/account" />
+              }} />
+              
             <Route path="/account/storage/authorize" component={Authorization} />
               <Route path="/account" render={props => {
                 if (localStorage.getItem('bccdrophere_token'))
