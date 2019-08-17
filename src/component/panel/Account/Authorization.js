@@ -36,7 +36,7 @@ const updateDropboxToken = async (token, successCallbackFn) => {
   const resp = await Axios.post(endpointURL, {
     query: `
       mutation connectStorageProvider($token:String!){
-        connectStorageProvider(providerKey: 12345678, providerToken:$token){
+        connectStorageProvider(providerId: 12345678, providerToken:$token){
           message
         }
       }`,

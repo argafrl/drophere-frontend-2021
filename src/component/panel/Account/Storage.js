@@ -142,6 +142,12 @@ class Storage extends Component {
             email
             dropboxAuthorized
             dropboxEmail
+            connectedStorageProviders {
+              id
+              providerId
+              email
+              photo
+            }
           }
         }`
     });
@@ -158,7 +164,7 @@ class Storage extends Component {
     const resp = await Axios.post(endpointURL, {
       query: `
           mutation disconnectStorageProvider(){
-            disconnectStorageProvider(providerKey: 12345678){
+            disconnectStorageProvider(providerId: 12345678){
               message
             }
           }`,
