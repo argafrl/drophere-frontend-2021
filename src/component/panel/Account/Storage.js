@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-import { endpointURL, dropboxStorageProvider } from '../../../config';
+import {
+  endpointURL,
+  storageProviders
+} from '../../../config';
 
 import style from '../../../css/storage.module.scss';
 import Preloader from '../../common/Preloader';
 
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -16,22 +20,26 @@ import { withSnackbar } from 'notistack';
 function StorageConnection(props) {
 
   const unauthorized = (
-    <div className={style['button-wrapper'] + ' opening-transition'}>
+    <div className={style['list-container'] + ' opening-transition'}>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {props.logo}
           </div>
         </Grid>
-        <Grid item>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={props.onAuthorize}
-            size="large">
-            Authorize
+        <Grid item xs={3}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Button
+              color="primary"
+              fullWidth
+              variant="contained"
+              onClick={props.onAuthorize}
+              size="large">
+              Authorize
           <Icon style={{ marginLeft: 8 }}>link</Icon>
-          </Button>
+            </Button>
+          </div>
+
         </Grid>
       </Grid>
 
@@ -41,25 +49,40 @@ function StorageConnection(props) {
   const authorized = (
     <React.Fragment>
       <div className={style['list-container']}>
-        <img src="/img/bcc-logo-vertical-fit.png" alt="Dropbox Avatar" />
-        <div className={style.right}>
-          <TextField
-            value={props.email}
-            label="Dropbox Email"
+        <Grid container spacing={2}>
+          <Grid item xs={1}>
+            {
+              typeof props.photo === 'string' && props.photo.length > 0 ? (
+                <Avatar
+                  src={props.photo}
+                  alt={`${props.storageProvider.name} Avatar`} />
+              ) : (
+                  <Avatar
+                    alt={`${props.storageProvider.name} Avatar`}>X</Avatar>
+                )
+            }
+          </Grid>
+          <Grid item xs={8}>
+            <TextField
+              value={props.email}
+              label={`${props.storageProvider.name} Email`}
+              fullWidth
+              disabled
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Button
             fullWidth
-            disabled
-          />
-        </div>
-        <div className={style.btn}>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={props.onUnauthorize}
-            size="large">
-            Unlink
+              color="secondary"
+              variant="contained"
+              onClick={props.onUnauthorize}
+              size="large">
+              Unlink
           <Icon style={{ marginLeft: 8 }}>link_off</Icon>
-          </Button>
-        </div>
+            </Button>
+          </Grid>
+        </Grid>
+
       </div>
     </React.Fragment>
   )
@@ -72,65 +95,80 @@ function StorageConnection(props) {
 class Storage extends Component {
 
   state = {
+    connectedStorageProviders: [],
     dropboxEmail: null,
     isDropboxLoading: false,
 
     isPageLoading: true,
   }
 
-  onAuthorizeDropbox() {
-    this.setState({ isDropboxLoading: true });
+  onAuthorizeStorageProvider(providerId) {
+    return () => {
+      this.setState({ isDropboxLoading: true });
 
-    const { enqueueSnackbar } = this.props;
-
-    let win = window.open(
-      `https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=${dropboxStorageProvider.clientId}&redirect_uri=${dropboxStorageProvider.redirectUri}`,
-      // 'http://localhost:3000/account/storage/authorize?provider=dropbox#access_token=WKWKWK&token_type=bearer&uid=104613955&account_id=dbid%3AAABzjG2YLydqtZU9fEVJmM-oHmAcN6cLB_w',
-      'Authorization',
-      `height=400,width=800`
-    );
-
-    const checkWinClose = async () => {
-      if (!win.closed) {
-        setTimeout(checkWinClose, 500);
+      const { enqueueSnackbar } = this.props;
+      const storageProvider = storageProviders.find(sp => sp.id === providerId);
+      if (storageProvider === null || storageProvider === undefined) {
+        enqueueSnackbar("Unknown Storage Provider", { variant: 'error', preventDuplicate: true });
         return;
       }
 
-      this.setState({ isDropboxLoading: false });
-      const dropboxToken = localStorage.getItem('dropbox_token');
-      localStorage.removeItem('dropbox_token');
+      let win = window.open(
+        storageProvider.authorizationUrl,
+        'Authorization',
+        `height=400,width=800`
+      );
 
-      if (typeof dropboxToken !== 'string' || dropboxToken !== 'OK') {
-        enqueueSnackbar('Error when attempting to connect to Dropbox account', { variant: 'error', preventDuplicate: true });
-        return;
+      const checkWinClose = async () => {
+        if (!win.closed) {
+          setTimeout(checkWinClose, 500);
+          return;
+        }
+
+        this.setState({ isDropboxLoading: false });
+        const storageProviderCredential = localStorage.getItem('storage_provider_status');
+        localStorage.removeItem('storage_provider_status');
+
+        if (typeof storageProviderCredential !== 'string' || storageProviderCredential !== 'OK') {
+          let errorMsg = `Error when attempting to connect to ${storageProvider.name} account`;
+          const errorMsgDetails = localStorage.getItem('storage_provider_error');
+          if (typeof errorMsgDetails === 'string' && errorMsgDetails.length > 0) {
+            errorMsg += `: ${errorMsgDetails}`;
+          }
+
+          enqueueSnackbar(errorMsg, { variant: 'error', preventDuplicate: true });
+          return;
+        }
+
+        enqueueSnackbar(`Linked to your ${storageProvider.name} account`, { variant: 'success', preventDuplicate: true });
+
+        // refresh me query
+        try {
+          this.setState({ isPageLoading: true });
+          await this.fetchUserStorageProvider();
+        } catch (error) {
+          this.props.enqueueSnackbar('Unable to fetch user info', { variant: 'error', preventDuplicate: true });
+        } finally {
+          this.setState({ isPageLoading: false });
+        }
       }
+      checkWinClose();
+    }
+  }
 
-      enqueueSnackbar('Linked to your Dropbox account', { variant: 'success', preventDuplicate: true });
-
-      // refresh me query and set dropboxEmail state from backend
+  onUnauthorizeStorageProvider(providerId) {
+    return async () => {
       try {
         this.setState({ isPageLoading: true });
+
+        const disconnectStorageProviderResp = await this.disconnectStorageProvider(providerId);
+        this.props.enqueueSnackbar(disconnectStorageProviderResp.message, { variant: 'success', preventDefault: true });
         await this.fetchUserStorageProvider();
       } catch (error) {
-        this.props.enqueueSnackbar('Unable to fetch user info', { variant: 'error', preventDuplicate: true });
+        this.props.enqueueSnackbar('Error when unlinking storage provider', { variant: 'error', preventDuplicate: true });
       } finally {
         this.setState({ isPageLoading: false });
       }
-    }
-    checkWinClose();
-  }
-
-  async onUnauthorizeDropbox() {
-
-    try {
-      this.setState({ isPageLoading: true });
-      const disconnectStorageProviderResp = await this.disconnectStorageProvider();
-      this.props.enqueueSnackbar(disconnectStorageProviderResp.message, { variant: 'success', preventDefault: true });
-      await this.fetchUserStorageProvider();
-    } catch (error) {
-      this.props.enqueueSnackbar('Error when unlinking storage provider', { variant: 'error', preventDuplicate: true });
-    } finally {
-      this.setState({ isPageLoading: false });
     }
   }
 
@@ -142,27 +180,35 @@ class Storage extends Component {
             email
             dropboxAuthorized
             dropboxEmail
+            connectedStorageProviders {
+              id
+              providerId
+              email
+              photo
+            }
           }
         }`
     });
     if (resp.data.errors) {
       throw new Error(resp.data.errors[0].message);
     }
-    const { dropboxEmail } = resp.data.data.me;
-    this.setState({ dropboxEmail });
+    const { dropboxEmail, connectedStorageProviders } = resp.data.data.me;
+    this.setState({ dropboxEmail, connectedStorageProviders });
     return resp.data.data.me;
   }
 
-  async disconnectStorageProvider() {
+  async disconnectStorageProvider(providerId) {
 
     const resp = await Axios.post(endpointURL, {
       query: `
-          mutation disconnectStorageProvider(){
-            disconnectStorageProvider(providerKey: 12345678){
+          mutation disconnectStorageProvider($providerId: Int!){
+            disconnectStorageProvider(providerId: $providerId){
               message
             }
           }`,
-      variables: {},
+      variables: {
+        providerId,
+      },
       operationName: "disconnectStorageProvider",
     })
 
@@ -198,12 +244,25 @@ class Storage extends Component {
                   <CircularProgress variant="indeterminate" color="primary" />
                 </div>
               ) : (
-                  <StorageConnection
-                    email={this.state.dropboxEmail}
-                    logo={<img src="/img/dropbox-logo-sm.png" alt="Dropbox" />}
-                    onAuthorize={this.onAuthorizeDropbox.bind(this)}
-                    onUnauthorize={this.onUnauthorizeDropbox.bind(this)}
-                  />
+                  storageProviders.map(storageProvider => {
+                    const connectedStorageProvider = this.state.connectedStorageProviders.find(csp => csp.providerId === storageProvider.id);
+                    let email = null;
+                    let photo = null;
+                    if (connectedStorageProvider !== null && connectedStorageProvider !== undefined) {
+                      email = connectedStorageProvider.email;
+                      photo = connectedStorageProvider.photo;
+                    }
+                    return (
+                      <StorageConnection
+                        email={email}
+                        photo={photo}
+                        storageProvider={storageProvider}
+                        logo={<img src={storageProvider.imageUrl} alt={storageProvider.name} />}
+                        onAuthorize={this.onAuthorizeStorageProvider(storageProvider.id)}
+                        onUnauthorize={this.onUnauthorizeStorageProvider(storageProvider.id)}
+                      />
+                    )
+                  })
                 )}
 
             </Grid>

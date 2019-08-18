@@ -3,9 +3,17 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 
+import { UserContext } from '../../../contexts/user';
+
 import style from '../../../css/pages.module.scss';
 import editPageStyle from '../../../css/edit-page.module.scss';
-import { endpointURL, excludeSlug, linkPrefix } from '../../../config';
+import {
+  defaultStorageProviderId,
+  endpointURL,
+  excludeSlug,
+  linkPrefix,
+  storageProviders,
+} from '../../../config';
 
 import Loading from '../../common/Loading';
 
@@ -43,6 +51,18 @@ const excludeSlugRegexp = new RegExp('^(' + excludeSlug.join('|') + ')$');
 
 function EditForm(props) {
   const { enqueueSnackbar } = useSnackbar();
+  let storageProviderId = 0;
+  let defaultStorageProviderId = 0;
+  if (typeof props.defaultStorageProviderId === 'number' && props.defaultStorageProviderId > 0) {
+    defaultStorageProviderId = parseInt(props.defaultStorageProviderId)
+    storageProviderId = defaultStorageProviderId
+  }
+  if (props.storageProvider !== null &&
+    props.storageProvider !== undefined &&
+    typeof props.storageProvider.providerId === 'number'
+  ) {
+    storageProviderId = props.storageProvider.providerId
+  }
   const [state, setState] = useState({
     slug: props.slug || '',
     title: props.title || '',
@@ -51,12 +71,14 @@ function EditForm(props) {
     description: props.description || '',
     useDeadline: props.deadline != null,
     deadlineDate: props.deadline != null ? moment(props.deadline) : moment(),
+    storageProviderId: storageProviderId,
 
     isSlugError: false
   })
 
   const disableDelete = typeof props.disableDelete === 'boolean' ? props.disableDelete : false;
   const resetOnSave = typeof props.resetOnSave === 'boolean' ? props.resetOnSave : false;
+  const supportedStorageProviders = Array.isArray(props.supportedStorageProviders) ? props.supportedStorageProviders : [];
 
   const onChangeHandler = name => {
     return event => {
@@ -88,6 +110,10 @@ function EditForm(props) {
       return;
     }
 
+    if (typeof props.onSave === 'function') {
+      props.onSave(state)
+    }
+
     if (resetOnSave) {
       setState({
         isSlugError: false,
@@ -97,12 +123,9 @@ function EditForm(props) {
         password: '',
         description: props.description || '',
         useDeadline: props.deadline != null,
-        deadlineDate: props.deadline != null ? moment(props.deadline) : moment()
+        deadlineDate: props.deadline != null ? moment(props.deadline) : moment(),
+        storageProviderId: defaultStorageProviderId,
       })
-    }
-
-    if (typeof props.onSave === 'function') {
-      props.onSave(state)
     }
   }
 
@@ -218,9 +241,18 @@ function EditForm(props) {
             Storage Provider
           </InputLabel>
 
-          <NativeSelect input={<Input />}>
-            <option value="dropbox">Dropbox</option>
-            {/* <option value="google_drive">Google Drive</option> */}
+          <NativeSelect
+          input={<Input />}
+          onChange={(event) => {
+            setState({ ...state, storageProviderId: Number(event.target.value) })
+          }}
+          value={state.storageProviderId}>
+            <option value="">none</option>
+            {
+              supportedStorageProviders.map(storageProvider => (
+                <option value={storageProvider.id}>{storageProvider.name}</option>
+              ))
+            }
           </NativeSelect>
         </FormControl>
 
@@ -243,8 +275,10 @@ function EditForm(props) {
 }
 
 class Pages extends Component {
+  static contextType = UserContext;
 
   state = {
+    connectedStorageProvidersCache: null,
     links: [],
     newLink: {
       title: '',
@@ -272,6 +306,10 @@ class Pages extends Component {
             slug
             description
             deadline
+            storageProvider {
+              id
+              providerId
+            }
           }
         }`
     })
@@ -287,18 +325,22 @@ class Pages extends Component {
 
   }
 
-  createLink = async ({ title, slug, description, deadline, password }) => {
+  createLink = async ({ title, slug, description, deadline, password, storageProviderId }) => {
 
     const resp = await axios.post(endpointURL, {
       query: `
-        mutation createLink($title:String!, $slug:String!, $description:String, $deadline:Time, $password:String){
-          createLink(title:$title, slug:$slug, description:$description, deadline:$deadline, password:$password){
+        mutation createLink($title:String!, $slug:String!, $description:String, $deadline:Time, $password:String, $storageProviderId:Int){
+          createLink(title:$title, slug:$slug, description:$description, deadline:$deadline, password:$password, providerId:$storageProviderId){
             id
             title
             isProtected
             slug
             description
             deadline
+            storageProvider {
+              id
+              providerId
+            }
           }
         }`,
       variables: {
@@ -307,6 +349,7 @@ class Pages extends Component {
         description,
         deadline,
         password,
+        storageProviderId,
       },
       operationName: 'createLink'
     })
@@ -320,13 +363,13 @@ class Pages extends Component {
     })
   }
 
-  updateLink = async ({ id: linkId, title, slug, description, deadline, password }) => {
+  updateLink = async ({ id: linkId, title, slug, description, deadline, password, storageProviderId }) => {
 
     const resp = await axios.post(endpointURL, {
       query: `
-        mutation updateLink($linkId:Int!, $title:String!, $slug:String!, $description:String, $deadline:Time, $password:String){
-          updateLink(linkId:$linkId, title:$title, slug:$slug, description:$description, deadline:$deadline, password:$password){
-            message
+        mutation updateLink($linkId:Int!, $title:String!, $slug:String!, $description:String, $deadline:Time, $password:String, $storageProviderId:Int){
+          updateLink(linkId:$linkId, title:$title, slug:$slug, description:$description, deadline:$deadline, password:$password, providerId:$storageProviderId){
+            id
           }
         }`,
       variables: {
@@ -336,6 +379,7 @@ class Pages extends Component {
         description,
         deadline,
         password,
+        storageProviderId,
       },
       operationName: 'updateLink'
     })
@@ -344,8 +388,8 @@ class Pages extends Component {
       throw new Error(resp.data.errors[0].message);
     }
 
-    const updateLinkResp = resp.data.data.updateLink;
-    console.log('message: ' + updateLinkResp.message);
+    // const updateLinkResp = resp.data.data.updateLink;
+    // console.log('message: ' + updateLinkResp.message);
   }
 
   deleteLink = async ({ linkId }) => {
@@ -400,6 +444,7 @@ class Pages extends Component {
         description: newData.description,
         password: null,
         deadline: null,
+        storageProviderId: newData.storageProviderId,
       }
 
       if (newData.usePassword) {
@@ -439,7 +484,10 @@ class Pages extends Component {
       description: newData.description,
       password: null,
       deadline: null,
+      storageProviderId: newData.storageProviderId,
     }
+    console.log('debug: link: ', link);
+    console.log('debug: new data: ', newData);
 
     if (newData.usePassword) {
       if (newData.password.length > 0) {
@@ -485,6 +533,30 @@ class Pages extends Component {
   }
 
   render() {
+
+    let connectedStorageProviders = [];
+    if (
+      this.state.connectedStorageProvidersCache === null &&
+      this.context.user !== null &&
+      this.context.user !== undefined &&
+      Array.isArray(this.context.user.connectedStorageProviders)
+    ) {
+      // cross filter with storageProviders
+      this.context.user.connectedStorageProviders.forEach(csp => {
+        storageProviders.forEach(sp => {
+          if (csp.providerId === sp.id) {
+            connectedStorageProviders.push(sp);
+          }
+        })
+      })
+
+      this.setState({
+        connectedStorageProvidersCache: connectedStorageProviders
+      })
+    } else {
+      connectedStorageProviders = this.state.connectedStorageProvidersCache;
+    }
+
     return (
       <div className={style.container}>
         {this.state.isLinksLoading ? <Loading /> : ''}
@@ -518,6 +590,8 @@ class Pages extends Component {
                 <EditForm
                   disableDelete
                   resetOnSave
+                  defaultStorageProviderId={defaultStorageProviderId}
+                  supportedStorageProviders={connectedStorageProviders}
                   {...this.state.newLink}
                   onSave={this.onCreateHandler}
                 />
@@ -533,7 +607,12 @@ class Pages extends Component {
                 {`${typeof linkPrefix === 'string' && linkPrefix.length > 0 ? linkPrefix : 'https://drophere.link/'}${link.slug}`}
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <EditForm {...link} onDelete={this.onDeleteHandler(linkIdx)} onSave={this.onSaveHandler(linkIdx)} />
+                <EditForm
+                supportedStorageProviders={connectedStorageProviders}
+                {...link}
+                onDelete={this.onDeleteHandler(linkIdx)}
+                onSave={this.onSaveHandler(linkIdx)}
+                />
               </ExpansionPanelDetails>
             </ExpansionPanel>
           );

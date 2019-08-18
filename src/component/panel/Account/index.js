@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { TokenContext } from '../../../contexts/token';
+import { UserContext } from '../../../contexts/user';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/account.module.scss';
@@ -13,6 +14,15 @@ import Content from './Content';
 export default class Account extends Component {
   static contextType = TokenContext;
 
+  state = {
+    user: null,
+    setUser: (newUser) => {
+      this.setState({
+        user: newUser,
+      })
+    }
+  }
+
   async componentDidMount() {
     try {
 
@@ -22,13 +32,20 @@ export default class Account extends Component {
           me {
             email
             name
+            connectedStorageProviders {
+              id
+              providerId
+            }
           }
         }`
       })
       if (resp.data.errors) {
         this.context.setToken('');
         this.props.history.push('/home');
+        return;
       }
+
+      this.setState({ user: resp.data.data.me })
     } catch (error) {
       this.context.setToken('');
       this.props.history.push('/home');
@@ -42,7 +59,9 @@ export default class Account extends Component {
         <Header />
 
         <div className={style['content-wrapper']}>
-          <Content  {...this.props} />
+          <UserContext.Provider value={this.state}>
+            <Content  {...this.props} />
+          </UserContext.Provider>
         </div>
 
         <Footer />

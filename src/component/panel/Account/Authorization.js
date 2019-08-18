@@ -1,12 +1,9 @@
 import React from 'react';
 import Axios from 'axios';
 
-import { endpointURL } from '../../../config';
+import { endpointURL, storageProviders } from '../../../config';
 
-const SUPPORTED_PROVIDERS = [
-  'dropbox',
-  // 'google_drive',
-];
+const SUPPORTED_PROVIDERS = storageProviders.map(storageProvider => storageProvider.id);
 
 function getParams(query) {
 
@@ -31,28 +28,30 @@ function getParams(query) {
   return result;
 }
 
-const updateDropboxToken = async (token, successCallbackFn) => {
-  // Send Dropbox Token to Backend
+const connectStorageProvider = async (providerId, token, successCallbackFn) => {
+  // Send Token to Backend
   const resp = await Axios.post(endpointURL, {
     query: `
-      mutation connectStorageProvider($token:String!){
-        connectStorageProvider(providerKey: 12345678, providerToken:$token){
+      mutation connectStorageProvider($providerId:Int!, $token:String!){
+        connectStorageProvider(providerId: $providerId, providerToken:$token){
           message
         }
       }`,
     variables: {
+      providerId,
       token,
     },
     operationName: "connectStorageProvider",
   })
 
   if (resp.data.errors) {
-    localStorage.removeItem('dropbox_token');
+    localStorage.setItem(`storage_provider_error`, resp.data.errors[0].message);
+    localStorage.setItem('storage_provider_status', 'ERROR');
     return;
   }
 
-  // const updateDropboxTokenResp = resp.data.data.connectStorageProvider;
-  localStorage.setItem('dropbox_token', 'OK');
+  // const connectStorageProviderResp = resp.data.data.connectStorageProvider;
+  localStorage.setItem('storage_provider_status', 'OK');
 
   if (typeof successCallbackFn === 'function') {
     successCallbackFn();
@@ -64,7 +63,10 @@ const Authorization = props => {
   const queries = new URLSearchParams(props.location.search);
   const hash = props.location.hash;
 
-  if (!queries.has('provider') || !SUPPORTED_PROVIDERS.includes(queries.get('provider'))) {
+  const providerId = parseInt(queries.get('providerId'));
+  if (!queries.has('providerId') ||
+    isNaN(queries.get('providerId')) ||
+    !SUPPORTED_PROVIDERS.includes(providerId)) {
     return <React.Fragment>INVALID PROVIDER</React.Fragment>;
   }
   if (typeof hash !== 'string' || hash.indexOf('#') < 0) {
@@ -72,7 +74,16 @@ const Authorization = props => {
   }
 
   const oauthParams = getParams(hash.split('#')[1]);
-  updateDropboxToken(oauthParams.access_token, window.close);
+  if (typeof oauthParams.error === 'string' && oauthParams.error.length > 0) {
+    let errorMsg = oauthParams.error;
+    if (typeof oauthParams.error_description === 'string' && oauthParams.error_description.length > 0) {
+      errorMsg = oauthParams.error_description;
+    }
+
+    return (<React.Fragment>{errorMsg}</React.Fragment>);
+  }
+
+  connectStorageProvider(providerId, oauthParams.access_token, window.close);
   // console.log(oauthParams);
   // window.close();
   return (<React.Fragment>OK</React.Fragment>);

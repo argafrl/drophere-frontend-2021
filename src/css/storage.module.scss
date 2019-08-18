@@ -6,16 +6,17 @@
     .list-container {
         display: flex;
         align-items: center;
+        margin-bottom: 16px;
 
-        img {
-            height: 45px;
-            margin-right: 20px;
+        img.avatar {
+            margin-right: 16px;
         }
 
         .right {
             display: block;
             width: 400px;
-            margin-right: 20px;
+            margin-left: 16px;
+            margin-right: 16px;
         }
     }
 }
