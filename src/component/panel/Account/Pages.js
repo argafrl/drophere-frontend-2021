@@ -3,8 +3,6 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 
-import { UserContext } from '../../../contexts/user';
-
 import style from '../../../css/pages.module.scss';
 import editPageStyle from '../../../css/edit-page.module.scss';
 import {
@@ -242,11 +240,11 @@ function EditForm(props) {
           </InputLabel>
 
           <NativeSelect
-          input={<Input />}
-          onChange={(event) => {
-            setState({ ...state, storageProviderId: Number(event.target.value) })
-          }}
-          value={state.storageProviderId}>
+            input={<Input />}
+            onChange={(event) => {
+              setState({ ...state, storageProviderId: Number(event.target.value) })
+            }}
+            value={state.storageProviderId}>
             <option value="">none</option>
             {
               supportedStorageProviders.map(storageProvider => (
@@ -275,10 +273,9 @@ function EditForm(props) {
 }
 
 class Pages extends Component {
-  static contextType = UserContext;
 
   state = {
-    connectedStorageProvidersCache: null,
+    connectedStorageProviders: null,
     links: [],
     newLink: {
       title: '',
@@ -294,6 +291,41 @@ class Pages extends Component {
     isLinksLoading: false,
     showAdd: false,
   };
+
+  fetchUserConnectedStorageProviders = async () => {
+    const resp = await axios.post(endpointURL, {
+      query: `
+      query {
+        me {
+          connectedStorageProviders {
+            id
+            providerId
+          }
+        }
+      }`
+    })
+    if (resp.data.errors) {
+      throw new Error(resp.data.errors[0].message);
+    }
+
+    const meResp = resp.data.data.me;
+    let connectedStorageProviders = [];
+    if (meResp) {
+      if (Array.isArray(meResp.connectedStorageProviders)) {
+        // cross filter with storageProviders
+        meResp.connectedStorageProviders.forEach(csp => {
+          storageProviders.forEach(sp => {
+            if (csp.providerId === sp.id) {
+              connectedStorageProviders.push(sp);
+            }
+          })
+        })
+      }
+    }
+    this.setState({
+      connectedStorageProviders: connectedStorageProviders
+    })
+  }
 
   reloadLinks = async () => {
     const resp = await axios.post(endpointURL, {
@@ -520,7 +552,10 @@ class Pages extends Component {
   async componentDidMount() {
     try {
       this.setState({ isLinksLoading: true })
-      await this.reloadLinks();
+      await Promise.all([
+        this.fetchUserConnectedStorageProviders(),
+        this.reloadLinks()
+      ])
       this.setState({ isLinksLoading: false })
     } catch (error) {
       this.props.enqueueSnackbar('Error when loading links', { variant: 'error' });
@@ -533,29 +568,6 @@ class Pages extends Component {
   }
 
   render() {
-
-    let connectedStorageProviders = [];
-    if (
-      this.state.connectedStorageProvidersCache === null &&
-      this.context.user !== null &&
-      this.context.user !== undefined &&
-      Array.isArray(this.context.user.connectedStorageProviders)
-    ) {
-      // cross filter with storageProviders
-      this.context.user.connectedStorageProviders.forEach(csp => {
-        storageProviders.forEach(sp => {
-          if (csp.providerId === sp.id) {
-            connectedStorageProviders.push(sp);
-          }
-        })
-      })
-
-      this.setState({
-        connectedStorageProvidersCache: connectedStorageProviders
-      })
-    } else {
-      connectedStorageProviders = this.state.connectedStorageProvidersCache;
-    }
 
     return (
       <div className={style.container}>
@@ -591,7 +603,7 @@ class Pages extends Component {
                   disableDelete
                   resetOnSave
                   defaultStorageProviderId={defaultStorageProviderId}
-                  supportedStorageProviders={connectedStorageProviders}
+                  supportedStorageProviders={this.state.connectedStorageProviders}
                   {...this.state.newLink}
                   onSave={this.onCreateHandler}
                 />
@@ -608,10 +620,10 @@ class Pages extends Component {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <EditForm
-                supportedStorageProviders={connectedStorageProviders}
-                {...link}
-                onDelete={this.onDeleteHandler(linkIdx)}
-                onSave={this.onSaveHandler(linkIdx)}
+                  supportedStorageProviders={this.state.connectedStorageProviders}
+                  {...link}
+                  onDelete={this.onDeleteHandler(linkIdx)}
+                  onSave={this.onSaveHandler(linkIdx)}
                 />
               </ExpansionPanelDetails>
             </ExpansionPanel>
