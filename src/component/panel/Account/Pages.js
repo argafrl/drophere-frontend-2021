@@ -3,9 +3,12 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSnackbar } from 'notistack';
 
+import { UserContext } from '../../../contexts/user';
+
 import style from '../../../css/pages.module.scss';
 import editPageStyle from '../../../css/edit-page.module.scss';
 import {
+  defaultStorageProviderId,
   endpointURL,
   excludeSlug,
   linkPrefix,
@@ -49,7 +52,15 @@ const excludeSlugRegexp = new RegExp('^(' + excludeSlug.join('|') + ')$');
 function EditForm(props) {
   const { enqueueSnackbar } = useSnackbar();
   let storageProviderId = 0;
-  if (props.storageProvider !== null && props.storageProvider !== undefined && typeof props.storageProvider.providerId === 'number') {
+  let defaultStorageProviderId = 0;
+  if (typeof props.defaultStorageProviderId === 'number' && props.defaultStorageProviderId > 0) {
+    defaultStorageProviderId = parseInt(props.defaultStorageProviderId)
+    storageProviderId = defaultStorageProviderId
+  }
+  if (props.storageProvider !== null &&
+    props.storageProvider !== undefined &&
+    typeof props.storageProvider.providerId === 'number'
+  ) {
     storageProviderId = props.storageProvider.providerId
   }
   const [state, setState] = useState({
@@ -67,6 +78,7 @@ function EditForm(props) {
 
   const disableDelete = typeof props.disableDelete === 'boolean' ? props.disableDelete : false;
   const resetOnSave = typeof props.resetOnSave === 'boolean' ? props.resetOnSave : false;
+  const supportedStorageProviders = Array.isArray(props.supportedStorageProviders) ? props.supportedStorageProviders : [];
 
   const onChangeHandler = name => {
     return event => {
@@ -112,7 +124,7 @@ function EditForm(props) {
         description: props.description || '',
         useDeadline: props.deadline != null,
         deadlineDate: props.deadline != null ? moment(props.deadline) : moment(),
-        storageProviderId: 0,
+        storageProviderId: defaultStorageProviderId,
       })
     }
   }
@@ -237,7 +249,7 @@ function EditForm(props) {
           value={state.storageProviderId}>
             <option value="">none</option>
             {
-              storageProviders.map(storageProvider => (
+              supportedStorageProviders.map(storageProvider => (
                 <option value={storageProvider.id}>{storageProvider.name}</option>
               ))
             }
@@ -263,8 +275,10 @@ function EditForm(props) {
 }
 
 class Pages extends Component {
+  static contextType = UserContext;
 
   state = {
+    connectedStorageProvidersCache: null,
     links: [],
     newLink: {
       title: '',
@@ -519,6 +533,30 @@ class Pages extends Component {
   }
 
   render() {
+
+    let connectedStorageProviders = [];
+    if (
+      this.state.connectedStorageProvidersCache === null &&
+      this.context.user !== null &&
+      this.context.user !== undefined &&
+      Array.isArray(this.context.user.connectedStorageProviders)
+    ) {
+      // cross filter with storageProviders
+      this.context.user.connectedStorageProviders.forEach(csp => {
+        storageProviders.forEach(sp => {
+          if (csp.providerId === sp.id) {
+            connectedStorageProviders.push(sp);
+          }
+        })
+      })
+
+      this.setState({
+        connectedStorageProvidersCache: connectedStorageProviders
+      })
+    } else {
+      connectedStorageProviders = this.state.connectedStorageProvidersCache;
+    }
+
     return (
       <div className={style.container}>
         {this.state.isLinksLoading ? <Loading /> : ''}
@@ -552,6 +590,8 @@ class Pages extends Component {
                 <EditForm
                   disableDelete
                   resetOnSave
+                  defaultStorageProviderId={defaultStorageProviderId}
+                  supportedStorageProviders={connectedStorageProviders}
                   {...this.state.newLink}
                   onSave={this.onCreateHandler}
                 />
@@ -567,7 +607,12 @@ class Pages extends Component {
                 {`${typeof linkPrefix === 'string' && linkPrefix.length > 0 ? linkPrefix : 'https://drophere.link/'}${link.slug}`}
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <EditForm {...link} onDelete={this.onDeleteHandler(linkIdx)} onSave={this.onSaveHandler(linkIdx)} />
+                <EditForm
+                supportedStorageProviders={connectedStorageProviders}
+                {...link}
+                onDelete={this.onDeleteHandler(linkIdx)}
+                onSave={this.onSaveHandler(linkIdx)}
+                />
               </ExpansionPanelDetails>
             </ExpansionPanel>
           );

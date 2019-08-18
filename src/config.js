@@ -13,6 +13,7 @@ export const dropboxStorageProvider = {
   redirectUri: 'http://localhost:3000/account/storage/authorize?provider=dropbox',
   clientId: '0ljk1sqdvxnhd3i'
 };
+export const defaultStorageProviderId = 12345678;
 export const storageProviders = [
   {
     id: 12345678,

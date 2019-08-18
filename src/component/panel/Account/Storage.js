@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-import { endpointURL, dropboxStorageProvider, storageProviders } from '../../../config';
+import {
+  endpointURL,
+  storageProviders
+} from '../../../config';
 
 import style from '../../../css/storage.module.scss';
 import Preloader from '../../common/Preloader';
@@ -106,7 +109,7 @@ class Storage extends Component {
       const { enqueueSnackbar } = this.props;
       const storageProvider = storageProviders.find(sp => sp.id === providerId);
       if (storageProvider === null || storageProvider === undefined) {
-        // TODO: Show error
+        enqueueSnackbar("Unknown Storage Provider", { variant: 'error', preventDuplicate: true });
         return;
       }
 
