@@ -71,6 +71,10 @@ class Drop extends Component {
             slug
             description
             deadline
+            storageProvider {
+              id
+              providerId
+            }
           }
         }`
     })
@@ -280,9 +284,11 @@ class Drop extends Component {
   renderExpiredLink() {
     return (
       <div className={dropFileStyle['drop-file-container']} style={{ color: 'red' }}>
-        <SvgIcon>
-          <path d="M8.5,2C6,2 4,4 4,6.5V7C2.89,7 2,7.89 2,9V18C2,19.11 2.89,20 4,20H8.72C10.18,21.29 12.06,22 14,22A8,8 0 0,0 22,14A8,8 0 0,0 14,6C13.66,6 13.32,6.03 13,6.08C12.76,3.77 10.82,2 8.5,2M8.5,4A2.5,2.5 0 0,1 11,6.5V7H6V6.5A2.5,2.5 0 0,1 8.5,4M14,8A6,6 0 0,1 20,14A6,6 0 0,1 14,20A6,6 0 0,1 8,14A6,6 0 0,1 14,8M13,10V15L16.64,17.19L17.42,15.9L14.5,14.15V10H13Z" />
-        </SvgIcon>
+        <div style={{ fontSize: 48 }}>
+          <SvgIcon fontSize="inherit">
+            <path d="M8.5,2C6,2 4,4 4,6.5V7C2.89,7 2,7.89 2,9V18C2,19.11 2.89,20 4,20H8.72C10.18,21.29 12.06,22 14,22A8,8 0 0,0 22,14A8,8 0 0,0 14,6C13.66,6 13.32,6.03 13,6.08C12.76,3.77 10.82,2 8.5,2M8.5,4A2.5,2.5 0 0,1 11,6.5V7H6V6.5A2.5,2.5 0 0,1 8.5,4M14,8A6,6 0 0,1 20,14A6,6 0 0,1 14,20A6,6 0 0,1 8,14A6,6 0 0,1 14,8M13,10V15L16.64,17.19L17.42,15.9L14.5,14.15V10H13Z" />
+          </SvgIcon>
+        </div>
         <h1 className={dropFileStyle.title}>
           Link is expired
         </h1>
@@ -290,16 +296,57 @@ class Drop extends Component {
     );
   }
 
-  render() {
-    let deadline = null;
-
-    if (this.state.link !== null && this.state.link.deadline !== null) {
-      deadline = Moment(this.state.link.deadline);
-      if (!deadline.isValid()) {
-        deadline = null;
-      }
+  renderContainer() {
+    if (this.state.isPageLoading) {
+      return <Loading circular />;
     }
 
+    if (this.state.link !== null) {
+      let deadline = null;
+
+      if (this.state.link !== null && this.state.link.deadline !== null) {
+        deadline = Moment(this.state.link.deadline);
+        if (!deadline.isValid()) {
+          deadline = null;
+        }
+      }
+
+      let container = null;
+      if (this.state.link.storageProvider === null || this.state.link.storageProvider === undefined) {
+        container = (
+          <div className={dropFileStyle['drop-file-container']} style={{ color: 'red' }}>
+            <div style={{ fontSize: 48 }}>
+              <Icon fontSize="inherit">cloud_off_outline</Icon>
+            </div>
+            <h1 className={dropFileStyle.title}>
+              Link is not connected to any Storage Provider
+        </h1>
+          </div>
+        );
+      } else if (deadline === null || deadline.isAfter(Moment.now())) {
+        if (this.state.isUnlocked) {
+          container = this.renderDropUploader()
+        } else {
+          container = this.renderPasswordBox();
+        }
+      } else {
+        container = this.renderExpiredLink();
+      }
+
+      return (
+        <LinkHeaderContainer
+          title={this.state.link.title}
+          subtitle={this.state.link.description}
+          deadline={this.state.link.deadline}>
+          {container}
+        </LinkHeaderContainer>
+      )
+    }
+
+    return <span style={{ textAlign: 'center', fontSize: '20pt', fontWeight: 100 }}>- 404 NOT FOUND -</span>;
+  }
+
+  render() {
     return (
       <div className={style.container} style={{ height: '100%' }}>
         <div className={style.header}>
@@ -309,18 +356,7 @@ class Drop extends Component {
         <div style={{ height: '67%' }}>
           <div className={dropContentStyle.container + ' wrapper'}>
             <div className={dropContentStyle.content}>
-              {this.state.isPageLoading ? <Loading circular /> : (this.state.link !== null ? (
-                <LinkHeaderContainer
-                  title={this.state.link.title}
-                  subtitle={this.state.link.description}
-                  deadline={this.state.link.deadline}>
-                  {deadline === null || deadline.isAfter(Moment.now()) ? (
-                    this.state.isUnlocked ? this.renderDropUploader() : this.renderPasswordBox()
-                  ) : (
-                      this.renderExpiredLink()
-                    )}
-                </LinkHeaderContainer>
-              ) : (<span style={{ textAlign: 'center', fontSize: '20pt', fontWeight: 100 }}>- 404 NOT FOUND -</span>))}
+              {this.renderContainer()}
             </div>
           </div>
         </div>
