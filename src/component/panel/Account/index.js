@@ -28,6 +28,7 @@ export default class Account extends Component {
       if (resp.data.errors) {
         this.context.setToken('');
         this.props.history.push('/home');
+        return;
       }
     } catch (error) {
       this.context.setToken('');

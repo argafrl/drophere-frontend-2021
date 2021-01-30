@@ -21,7 +21,7 @@ const Home = props => {
           <Switch>
             <Route path="/home" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/recover-password" exact component={RecoverPassword} />
+            <Route path="/recover-password" component={RecoverPassword} />
           </Switch>
         </div>
       </div>
