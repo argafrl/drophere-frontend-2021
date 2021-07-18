@@ -11,14 +11,14 @@
     .top {
         display: flex;
         width: 98%;
-        border-bottom: 1px solid #D8D8D8;
+        // border-bottom: 1px solid #D8D8D8;
 
         @media screen and (max-width: 400px) {
             justify-content: center;
         }
 
         img {
-            height: 210px;
+            height: 370px;
             margin: 30px;
             margin-top: 30px;
             margin-left: 20px;
@@ -46,9 +46,19 @@
     }
 
     .middle {
+        // p {
+        //     font-weight: 300;
+        //     padding-left: 20px;
+        // }
+        h1 {
+            font-size: 20pt;
+            font-weight: 600;
+            line-height: 10px;
+        }
+
         p {
-            font-weight: 300;
-            padding-left: 20px;
+            font-size: 13pt;
+            font-weight: 400;
         }
     }
 

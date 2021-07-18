@@ -5,50 +5,97 @@
     justify-content: center;
     align-items: center;
 
+    a {
+        // text-decoration: none;
+        text-decoration: underline;
+        // font-weight: 900;
+        color: #2196F3;
+        font-weight: 400;
+    }
+
+    a:hover {
+        color: #00bcd4;
+    }
+
     .header {
-        text-align: center;
+        // padding: 20px 20px 0px 20px;
+        text-align: left;
 
         h1 {
+            // font-family: 'inter';
             font-size: 20pt;
-            font-weight: 700;
+            font-weight: 600;
             line-height: 10px;
         }
 
         p {
-            font-weight: 100;
+            font-weight: 400;
+            font-size: 13pt;
+            margin: 12px 0 20px 0;
+            color: #ABABAB;
         }
+        
     }
 
     .form {
         max-width: 400px;
         width: 100%;
-        padding: 20px;
+        padding: 40px;
 
         .form-container {
-            border: 1px solid #9E9E9E;
-            background: #fafafa;
-            border-radius: 10px;
-            padding: 30px;
+            // border: 1px solid #9E9E9E;
+            // background: #fafafa;
+            // border-radius: 10px;
+            // padding: 30px;
 
             > * {
-                margin-top: 16px;
+                // margin-top: 16px;
+                width: 100%;
             }
-            > *:first-child {
-                margin-top: 0;
+            // > *:first-child {
+            //     margin-top: 0;
+            // }
+
+            .input-wrapper{
+
+                > * {
+                    width: 100%;
+                }
+
+                p{
+                    margin-bottom: 5px;
+                    font-size: 12pt;
+                    color: black;
+                }
+            }
+
+            .button-daftar{
+                margin-top: 30px;
+                font-size: 14pt;
+            }
+
+            .button-masuk{
+                margin-top: 10px;
+                font-size: 14pt;
+            }
+
+            .lupa-password{
+                margin: 20px 0 0 0;
+                text-align: right;
             }
         }
     }
 
-    .footer {
-        a {
-            text-decoration: none;
-            font-weight: 900;
-            color: #2196F3;
-        }
+    // .footer {
+    //     a {
+    //         text-decoration: none;
+    //         font-weight: 900;
+    //         color: #2196F3;
+    //     }
 
-        a:hover {
-            text-decoration: underline;
-            color: #00bcd4;
-        }
-    }
+    //     a:hover {
+    //         text-decoration: underline;
+    //         color: #00bcd4;
+    //     }
+    // }
 }

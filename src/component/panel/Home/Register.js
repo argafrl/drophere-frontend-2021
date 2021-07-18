@@ -6,13 +6,16 @@ import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/login.module.scss';
-import Input from '../../common/WrappedInput';
+// import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
+
+import { Card, Button, Input } from '@bccfilkom/designsystem/build';
 
 class Register extends Component {
   state = {
     name: '',
     password: '',
+    passwordBaru: '',
     email: '',
     error: null,
     isLoading: false,
@@ -58,7 +61,96 @@ class Register extends Component {
   render() {
     return (
       <div className={style.container}>
+
+        <Card className={style.form}>
+
         <div className={style.header}>
+          <h1>Daftar Sekarang</h1>
+          <p>Sudah punya akun? <Link to="/home">Masuk</Link></p>
+        </div>
+
+          <div >
+            <form onSubmit={this.onSubmitHandler}>
+              <div className={style['form-container']}>
+
+                {/* <div className={style['input-wrapper']}>
+                  <p>Nama</p>
+                  <Input
+                    className={style['input']}
+                    type='text'
+                    // label='Name'
+                    // fullWidth
+                    required
+                    // icon='account_circle'
+                    value={this.state.name}
+                    handleChange={this.handleChange('name')}
+                  />
+                </div> */}
+                
+                <div className={style['input-wrapper']}>
+                  <p>Email</p>
+                  <Input
+                    className={style['input']}
+                    type="email"
+                    placeholder='Email'
+                    // fullWidth
+                    required
+                    value={this.state.email}
+                    // onChange={this.handleChange('email')}
+                    handleChange={this.handleChange('email')}
+                  />
+                </div>
+
+                <div className={style['input-wrapper']}>
+                  <p>Password</p>
+                  <Input
+                    className={style['input']}
+                    type='password'
+                    placeholder='Password'
+                    // fullWidth
+                    required
+                    value={this.state.password}
+                    // onChange={this.handleChange('password')}
+                    handleChange={this.handleChange('password')}
+                  />
+                </div>
+
+                <div className={style['input-wrapper']}>
+                  <p>Ulangi Password</p>
+                  <Input
+                    className={style['input']}
+                    type='password'
+                    placeholder='Password'
+                    // fullWidth
+                    required
+                    value={this.state.passwordBaru}
+                    // onChange={this.handleChange('password')}
+                    handleChange={this.handleChange('passwordBaru')}
+                  />
+                </div>
+
+                {this.state.error ? <div className="error">{this.state.error.message}</div> : ''}
+                {/* <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p> */}
+                {/* <button className="custom-button">Masuk</button> */}
+                <Button className={style['button-daftar']}>Daftar</Button>
+                
+              </div>
+              {this.state.isLoading ? <Loading /> : ''}
+            </form>
+          </div>
+          {/* <Button
+            condensed
+            type="text"
+          >
+            Read More
+          </Button> */}
+        </Card>
+
+
+
+
+
+        {/* <div className={style.header}>
           <h1>Kumpulkan Filemu di Sini!</h1>
           <p>Dapatkan kemudahan dalam menerima filemu di sini</p>
         </div>
@@ -104,7 +196,7 @@ class Register extends Component {
 
         <div className={style.footer}>
           <p>Sudah memiliki akun? <Link to="/home">Masuk</Link></p>
-        </div>
+        </div> */}
       </div>
     );
   }

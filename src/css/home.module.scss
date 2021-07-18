@@ -8,6 +8,7 @@
     }
 
     .content {
+        padding: 0px 50px;
         min-height: 500px;
         display: flex;
         flex-wrap: wrap;
@@ -21,7 +22,7 @@
         }
         
         .header {
-            padding-top: 80px;
+            padding-top: 50px;
         }
 
         .auth {

@@ -8,7 +8,7 @@ import { isString } from 'util';
 
 class App extends Component {
   state = {
-    token: localStorage.getItem('bccdrophere_token'),
+    token: "drophereNew",
     setToken: (newToken) => {
       localStorage.setItem('bccdrophere_token', newToken);
       if (isString(newToken) && newToken.length > 0) {

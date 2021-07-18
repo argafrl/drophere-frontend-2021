@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 
@@ -6,10 +6,15 @@ import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/login.module.scss';
-import Input from '../../common/WrappedInput';
+// import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
 
+import { Card, Button, Input, Dialog } from '@bccfilkom/designsystem/build';
+
 class Login extends Component {
+
+  // const [visible, setVisible] = useState(0);
+
   state = {
     email: '',
     password: '',
@@ -62,12 +67,91 @@ class Login extends Component {
   render() {
     return (
       <div className={style.container}>
-        <div className={style.header}>
+        <Card className={style.form}>
+
+        {/* <div className={style.header}>
           <h1>Kumpulkan Filemu di Sini!</h1>
           <p>Dapatkan kemudahan dalam menerima filemu di sini</p>
+        </div> */}
+
+        <div className={style.header}>
+          <h1>Masuk</h1>
+          {/* <p>Belum punya akun? Daftar</p> */}
+          <p>Belum punya akun? <Link to="/register">Daftar</Link></p>
         </div>
 
-        <div className={style.form}>
+          <div >
+            <form onSubmit={this.onSubmitHandler}>
+              <div className={style['form-container']}>
+                
+                <div className={style['input-wrapper']}>
+                  <p>Email</p>
+                  <Input
+                    className="input"
+                    type="email"
+                    placeholder='Email'
+                    // fullWidth
+                    required
+                    value={this.state.email}
+                    // onChange={this.handleChange('email')}
+                    handleChange={this.handleChange('email')}
+                  />
+                </div>
+
+                <div className={style['input-wrapper']}>
+                  <p>Password</p>
+                  <Input
+                    className={style['input']}
+                    type='password'
+                    placeholder='Password'
+                    // fullWidth
+                    required
+                    value={this.state.password}
+                    // onChange={this.handleChange('password')}
+                    handleChange={this.handleChange('password')}
+                  />
+                </div>
+
+                {this.state.error ? <div className="error">{this.state.error.message}</div> : ''}
+                <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p>
+
+                {/* <Button onClick={function onClick(){return setVisible(!0)}}>
+                  Show Dialog
+                </Button>
+                <Dialog
+                  onCancel={function onCancel(){return setVisible(!1)}}
+                  primaryButton={{
+                    onClick: function onClick(){return setVisible(!1)},
+                    text: 'Lanjut'
+                  }}
+                  secondaryButton={{
+                    onClick: function onClick(){return console.log("Nope.")},
+                    text: 'Hapus'
+                  }}
+                  title="Title"
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse cursus fermentum risus, sit amet fringilla nunc pellentesque quis. Duis quis odio ultrices, cursus lacus ac, posuere felis.
+                </Dialog> */}
+                {/* <button className="custom-button">Masuk</button> */}
+                <Button className={style['button-masuk']}>Masuk</Button>
+                
+              </div>
+              {this.state.isLoading ? <Loading /> : ''}
+            </form>
+          </div>
+          {/* <Button
+            condensed
+            type="text"
+          >
+            Read More
+          </Button> */}
+      </Card>
+        {/* <div className={style.header}>
+          <h1>Kumpulkan Filemu di Sini!</h1>
+          <p>Dapatkan kemudahan dalam menerima filemu di sini</p>
+        </div> */}
+
+        {/* <div className={style.form}>
           <form onSubmit={this.onSubmitHandler}>
             <div className={style['form-container']}>
               <Input
@@ -92,12 +176,12 @@ class Login extends Component {
             </div>
             {this.state.isLoading ? <Loading /> : ''}
           </form>
-        </div>
+        </div> */}
 
-        <div className={style.footer}>
+        {/* <div className={style.footer}>
           <p>Belum punya akun? <Link to="/register">Daftar</Link></p>
           <p>Lupa password? <Link to="/recover-password">Pulihkan</Link></p>
-        </div>
+        </div> */}
       </div>
     );
   }
