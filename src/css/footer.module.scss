@@ -1,9 +1,21 @@
 .footer {
     width: 100%;
     margin: 10px 0;
-
+    display: flex;
+    justify-content: space-between;
     p {
-        text-align: center;
         font-weight: 300;
+    }
+
+    .logo{
+        margin-right: 110px;
+        align-self: center;
+        display: flex;
+
+        > * {
+            margin: 10px;
+        }
+
+        margin-left: -150px;
     }
 }

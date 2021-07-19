@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import style from '../../../css/home.module.scss';
 
 import Header from './Header';
+import BCCHeader from '../../common/Header';
 import Login from './Login';
 import RecoverPassword from "./RecoverPassword";
 import Register from './Register';
@@ -13,6 +14,7 @@ import Footer from '../../common/Footer';
 const Home = props => {
   return (
     <div className={style.container}>
+      <BCCHeader />
       <div className={style.content}>
         <div className={style.header + ' left-to-right-anim'}>
           <Header />

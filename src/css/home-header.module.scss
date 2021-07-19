@@ -18,10 +18,11 @@
         }
 
         img {
-            height: 370px;
-            margin: 30px;
-            margin-top: 30px;
-            margin-left: 20px;
+            height: 400px;
+            margin: 30px 0;
+            // margin: 30px;
+            // margin-top: 30px;
+            // margin-left: 20px;
             
             @media screen and (max-width: 400px) {
                 height: 135px;

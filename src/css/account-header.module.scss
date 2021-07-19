@@ -1,20 +1,28 @@
 .container {
     display: flex;
     align-items: center;
+    // margin-bottom: -100px;
+    z-index: 2;
+    height: 76px;
+    // height: 3em;
+    // margin-top: 10px;
+    padding-top: 30px;
+    margin-bottom: -90px;
 
     a {
         display: flex;
         width: auto;
         
         img {
-            height: 70px;
-            margin: 20px;
+            height: 110px;
+            margin: -10px -15px 0px 20px;
         }
     
         h1 {
-            font-weight: 300;
-            font-size: 30pt;
-            color: #848484;
+            margin-top: 23px;
+            font-weight: 700;
+            font-size: 21pt;
+            color: #242424;
         }
     }
 }
