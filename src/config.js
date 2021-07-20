@@ -1,4 +1,4 @@
-export const endpointURL =  'http://api.drophere.ngopi.men/query';
+export const endpointURL =  'https://api.drophere.ngopi.men/query';
 export const uploadURL =  'http://localhost:3000/uploadfile';
 
 export const excludeSlug = [

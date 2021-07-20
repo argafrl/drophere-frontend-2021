@@ -15,30 +15,30 @@
         color: #00bcd4;
     }
 
-    .header {
-        // padding: 20px 20px 0px 20px;
-        text-align: left;
-
-        h1 {
-            // font-family: 'inter';
-            font-size: 20pt;
-            font-weight: 600;
-            line-height: 10px;
-        }
-
-        p {
-            font-weight: 400;
-            font-size: 13pt;
-            margin: 12px 0 20px 0;
-            color: #ABABAB;
-        }
-        
-    }
-
     .form {
         max-width: 400px;
         width: 100%;
         padding: 40px;
+
+        .header {
+            // padding: 20px 20px 0px 20px;
+            text-align: left;
+    
+            h1 {
+                // font-family: 'inter';
+                font-size: 20pt;
+                font-weight: 600;
+                line-height: 10px;
+            }
+    
+            p {
+                font-weight: 400;
+                font-size: 13pt;
+                margin: 12px 0 20px 0;
+                color: #ABABAB;
+            }
+            
+        }
 
         .form-container {
             // border: 1px solid #9E9E9E;
@@ -47,7 +47,7 @@
             // padding: 30px;
 
             > * {
-                margin-top: 5px;
+                margin-top: 20px;
                 width: 100%;
             }
             // > *:first-child {
@@ -58,7 +58,12 @@
 
                 > * {
                     width: 100%;
+                    // margin-top: 15px;
                 }
+
+                // > *:first-child {
+                //     margin-top: 0;
+                // }
 
                 p{
                     margin-bottom: 5px;
@@ -69,6 +74,8 @@
                 .input{
                     border-radius: 6px;
                 }
+
+                margin-top: 0px;
             }
 
             .button-daftar{

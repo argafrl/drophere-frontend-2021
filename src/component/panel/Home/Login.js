@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 
@@ -21,6 +21,7 @@ class Login extends Component {
     error: null,
     isLoading: false,
     visible: 0,
+    inputRef: 0,
   };
 
   handleChange = name => event => {
@@ -79,10 +80,16 @@ class Login extends Component {
       }
       throw new Error(resp.data.errors[0].message);
     } catch (err) {
+      // if(err == "Error: User not found"){
+      //   err = "Email yang anda masukkan tidak valid";
+      // }
+      console.log(err);
       this.setState({
         error: err,
         isLoading: false,
       });
+      // console.log(err)
+      // document.getElementById("inputEmail").select();
     }
 
   }
@@ -110,6 +117,11 @@ class Login extends Component {
                   value={this.state.email}
                   handleChange={this.handleChange('email')}
                   style={{borderRadius: "6px"}}
+                  // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
+                  hintText={this.state.error == "Error: User not found" ? "Email yang anda masukkan tidak valid" : ''}
+                  action={this.state.error == "Error: User not found" ? "error" : ''}
+                  // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
+                  // ref={this.state.inputRef}
                 />
               </div>
 
@@ -123,10 +135,13 @@ class Login extends Component {
                   value={this.state.password}
                   handleChange={this.handleChange('password')}
                   style={{borderRadius: "6px"}}
+                  hintText={this.state.error == "Error: Invalid password" ? "Password yang anda masukkan salah" : ''}
+                  action={this.state.error == "Error: Invalid password" ? "error" : ''}
+                  // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
               </div>
 
-              {this.state.error ? <div className="error">{this.state.error.message}</div> : ''}
+              {/* {this.state.error ? <div className="error">{this.state.error.message}</div> : ''} */}
               <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p>
 
               {/* <Button onClick={function onClick(){return setVisible(!0)}}> */}
