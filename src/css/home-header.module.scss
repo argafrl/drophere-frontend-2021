@@ -4,7 +4,7 @@
     max-width: 400px;
     min-width: 300px;
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 640px) {
         padding: 20px;
     }
 
@@ -13,7 +13,7 @@
         width: 98%;
         // border-bottom: 1px solid #D8D8D8;
 
-        @media screen and (max-width: 400px) {
+        @media screen and (max-width: 640px) {
             justify-content: center;
         }
 
@@ -23,27 +23,31 @@
             // margin: 30px;
             // margin-top: 30px;
             // margin-left: 20px;
+
+            @media screen and (max-width: 640px) {
+                height: 300px;
+            }
             
             @media screen and (max-width: 400px) {
-                height: 135px;
+                height: 200px;
             }
         }
 
-        .title {  
-            display: flex;
-            flex-direction: column;
+        // .title {  
+        //     display: flex;
+        //     flex-direction: column;
 
-            h1 {
-                font-size: 70pt;
-                line-height: 0px;
-                color: #848484;
-                font-weight: 300;
+        //     h1 {
+        //         font-size: 70pt;
+        //         line-height: 0px;
+        //         color: #848484;
+        //         font-weight: 300;
 
-                @media screen and (max-width: 400px) {
-                    font-size: 55pt;
-                }
-            }
-        }
+        //         @media screen and (max-width: 400px) {
+        //             font-size: 55pt;
+        //         }
+        //     }
+        // }
     }
 
     .middle {
@@ -54,12 +58,22 @@
         h1 {
             font-size: 20pt;
             font-weight: 600;
-            line-height: 10px;
+            margin-top: -11px;
+            line-height: 35px;
+
+            @media screen and (max-width: 400px) {
+                font-size: 18pt;
+            }
         }
 
         p {
+            margin-top: 0;
             font-size: 13pt;
             font-weight: 400;
+        }
+
+        @media screen and (max-width: 640px) {
+            text-align: center;
         }
     }
 

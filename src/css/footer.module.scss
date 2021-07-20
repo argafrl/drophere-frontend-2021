@@ -1,17 +1,25 @@
 .footer {
     width: 100%;
     margin: 10px 0;
+    padding: 0px 20px;
     display: flex;
     justify-content: space-between;
+
+    @media only screen and (max-width: 640px) {
+        flex-direction: column;
+    }
+
+    
     p {
         font-weight: 300;
+        text-align: center;
     }
 
     .logo{
-        margin-right: 110px;
+        // margin-right: 110px;
         align-self: center;
         display: flex;
-        margin-left: -138px;
+        // margin-left: -138px;
 
         > * {
             margin: 7px;

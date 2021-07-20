@@ -3,12 +3,12 @@
     height: 100%;
     flex-direction: column;
 
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 800px) {
         height: auto;
     }
 
     .content {
-        padding: 0px 50px;
+        // padding: 0px 50px;
         min-height: 500px;
         display: flex;
         flex-wrap: wrap;
@@ -29,6 +29,10 @@
 
         .auth {
             padding-top: 80px;
+
+            @media only screen and (max-width: 640px) {
+                padding-top: 0px;
+            }
         }
     }
 }
