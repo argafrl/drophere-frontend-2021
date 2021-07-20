@@ -83,7 +83,7 @@ class Login extends Component {
       // if(err == "Error: User not found"){
       //   err = "Email yang anda masukkan tidak valid";
       // }
-      console.log(err);
+      // console.log(err);
       this.setState({
         error: err,
         isLoading: false,
