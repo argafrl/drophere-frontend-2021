@@ -3,7 +3,7 @@
     height: 100%;
     flex-direction: column;
 
-    @media only screen and (max-width: 800px) {
+    @media only screen and (max-width: 799px) {
         height: auto;
     }
 
@@ -29,6 +29,10 @@
 
         .auth {
             padding-top: 80px;
+
+            @media only screen and (max-width: 799px) {
+                padding-top: 30px;
+            }
 
             @media only screen and (max-width: 640px) {
                 padding-top: 0px;
