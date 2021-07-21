@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import style from '../../../css/home.module.scss';
 
 import Header from './Header';
+import LogoHeader from '../../common/Header';
 import Login from './Login';
 import RecoverPassword from "./RecoverPassword";
 import Register from './Register';
@@ -14,6 +15,7 @@ import ConnectAccount from "../Account/ConnectAccount";
 const Home = props => {
   return (
     <div className={style.container}>
+      <LogoHeader />
       <div className={style.content}>
         <div className={style.header + ' left-to-right-anim'}>
           <Header />

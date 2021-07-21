@@ -3,16 +3,19 @@
     height: 100%;
     flex-direction: column;
 
-    @media only screen and (max-width: 640px) {
+    @media only screen and (max-width: 799px) {
         height: auto;
     }
 
     .content {
+        // padding: 0px 50px;
         min-height: 500px;
         display: flex;
         flex-wrap: wrap;
         flex: 1;
         align-items: center;
+
+        margin-top: -105px;
         
         .header, .auth {
             display: flex;
@@ -21,11 +24,19 @@
         }
         
         .header {
-            padding-top: 80px;
+            padding-top: 50px;
         }
 
         .auth {
             padding-top: 80px;
+
+            @media only screen and (max-width: 799px) {
+                padding-top: 30px;
+            }
+
+            @media only screen and (max-width: 640px) {
+                padding-top: 0px;
+            }
         }
     }
 }

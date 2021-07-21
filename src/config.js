@@ -1,5 +1,5 @@
-export const endpointURL =  'http://localhost:8080/query';
-export const uploadURL =  'http://localhost:8080/uploadfile';
+export const endpointURL =  'https://api.drophere.ngopi.men/query';
+export const uploadURL =  'http://localhost:3000/uploadfile';
 
 export const excludeSlug = [
   'account',

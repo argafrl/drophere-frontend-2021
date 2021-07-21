@@ -6,13 +6,16 @@ import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/login.module.scss';
-import Input from '../../common/WrappedInput';
+// import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
+
+import { Card, Button, Input } from '@bccfilkom/designsystem/build';
 
 class Register extends Component {
   state = {
     name: '',
     password: '',
+    passwordBaru: '',
     email: '',
     error: null,
     isLoading: false,
@@ -51,60 +54,93 @@ class Register extends Component {
       }
       throw new Error(resp.data.errors[0].message);
     } catch (err) {
-      this.setState({ isLoading: false, error: err });
+      this.setState({ 
+        isLoading: false, 
+        error: err });
     }
   }
 
   render() {
     return (
       <div className={style.container}>
-        <div className={style.header}>
-          <h1>Kumpulkan Filemu di Sini!</h1>
-          <p>Dapatkan kemudahan dalam menerima filemu di sini</p>
-        </div>
+        <Card className={style.form}>
 
-        <div className={style.form}>
+          <div className={style.header}>
+            <h1>Daftar Sekarang</h1>
+            <p>Sudah punya akun? <Link to="/home">Masuk</Link></p>
+          </div>
+
           <form onSubmit={this.onSubmitHandler}>
             <div className={style['form-container']}>
 
-              <Input
-                type='text'
-                label='Name'
-                fullWidth
-                required
-                icon='account_circle'
-                value={this.state.name}
-                onChange={this.handleChange('name')}
-              />
-              <Input
-                type='email'
-                label='Email'
-                fullWidth
-                required
-                icon='email'
-                value={this.state.email}
-                onChange={this.handleChange('email')}
-              />
-              <Input
-                type='password'
-                label='Password'
-                fullWidth
-                required
-                icon='lock'
-                value={this.state.password}
-                onChange={this.handleChange('password')}
-              />
+              <div className={style['input-wrapper']}>
+                <p>Nama</p>
+                <Input
+                  className={style['input']}
+                  type='text'
+                  placeholder='Masukkan Nama'
+                  // label='Name'
+                  // fullWidth
+                  required
+                  // icon='account_circle'
+                  value={this.state.name}
+                  handleChange={this.handleChange('name')}
+                  style={{borderRadius: "6px"}}
+                />
+              </div>
+              
+              <div className={style['input-wrapper']}>
+                <p>Email</p>
+                <Input
+                  className={style['input']}
+                  type="email"
+                  placeholder='Masukkan Email'
+                  required
+                  value={this.state.email}
+                  handleChange={this.handleChange('email')}
+                  style={{borderRadius: "6px"}}
+                  // hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email ${this.state.email} sudah terdaftar` : '' }
+                  hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email tersebut sudah terdaftar` : '' }
+                  action={this.state.error == "Error: Duplicated email" ? "error" : ''}
+                />
+              </div>
 
-              {this.state.error ? <div className="error">{this.state.error.message}</div> : ''}
-              <button className="custom-button">Daftar</button>
+              <div className={style['input-wrapper']}>
+                <p>Password</p>
+                <Input
+                  className={style['input']}
+                  type='password'
+                  placeholder='Masukkan Password'    
+                  required
+                  value={this.state.password}
+                  handleChange={this.handleChange('password')}
+                  style={{borderRadius: "6px"}}
+                />
+              </div>
+
+              {/* <div className={style['input-wrapper']}>
+                <p>Ulangi Password</p>
+                <Input
+                  className={style['input']}
+                  type='password'
+                  placeholder='Masukkan Kembali Password'
+                  // fullWidth
+                  required
+                  value={this.state.passwordBaru}
+                  // onChange={this.handleChange('password')}
+                  handleChange={this.handleChange('passwordBaru')}
+                  style={{borderRadius: "6px"}}
+                />
+              </div> */}
+
+              {/* {this.state.error ? <div className="error">{this.state.error.message}</div> : ''} */}
+              <Button className={style['button-daftar']}>Daftar</Button>
+              
             </div>
             {this.state.isLoading ? <Loading /> : ''}
           </form>
-        </div>
 
-        <div className={style.footer}>
-          <p>Sudah memiliki akun? <Link to="/home">Masuk</Link></p>
-        </div>
+        </Card>
       </div>
     );
   }
