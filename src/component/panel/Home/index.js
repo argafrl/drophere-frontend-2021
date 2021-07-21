@@ -9,6 +9,7 @@ import RecoverPassword from "./RecoverPassword";
 import Register from './Register';
 
 import Footer from '../../common/Footer';
+import ConnectAccount from "../Account/ConnectAccount";
 
 const Home = props => {
   return (

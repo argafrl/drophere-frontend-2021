@@ -11,30 +11,30 @@ import Footer from '../../common/Footer'
 import Content from './Content';
 
 export default class Account extends Component {
-  static contextType = TokenContext;
+  // static contextType = TokenContext;
 
-  async componentDidMount() {
-    try {
+  // async componentDidMount() {
+  //   try {
 
-      const resp = await axios.post(endpointURL, {
-        query: `
-        query {
-          me {
-            email
-            name
-          }
-        }`
-      })
-      if (resp.data.errors) {
-        this.context.setToken('');
-        this.props.history.push('/home');
-        return;
-      }
-    } catch (error) {
-      this.context.setToken('');
-      this.props.history.push('/home');
-    }
-  }
+  //     const resp = await axios.post(endpointURL, {
+  //       query: `
+  //       query {
+  //         me {
+  //           email
+  //           name
+  //         }
+  //       }`
+  //     })
+  //     if (resp.data.errors) {
+  //       this.context.setToken('');
+  //       this.props.history.push('/home');
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     this.context.setToken('');
+  //     this.props.history.push('/home');
+  //   }
+  // }
 
   render() {
     return (

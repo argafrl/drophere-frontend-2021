@@ -1,20 +1,56 @@
 .container {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+
+  a {
+    display: flex;
+    width: auto;
+    flex: 0 0 250px;
+    margin-left: 20px;
+
+    img {
+      width: 120px;
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 18pt;
+      color: #000;
+    }
+  }
+
+  .search-wrapper {
+    flex: 1 1 auto;
+    padding: 0 30px;
+    div {
+      flex-grow: 1;
+      width: 100%;
+      max-width: 700px;
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .auth {
     display: flex;
     align-items: center;
-
-    a {
-        display: flex;
-        width: auto;
-        
-        img {
-            height: 70px;
-            margin: 20px;
-        }
-    
-        h1 {
-            font-weight: 300;
-            font-size: 30pt;
-            color: #848484;
-        }
+    .user {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      img {
+        width: 45px;
+        height: 45px;
+        margin-right: 8px;
+      }
     }
+    button {
+      img {
+        width: 20px !important;
+        margin-right: 8px;
+      }
+    }
+  }
 }

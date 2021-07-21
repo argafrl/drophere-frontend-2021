@@ -1132,6 +1132,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@bccfilkom/designsystem@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@bccfilkom/designsystem/-/designsystem-1.0.0.tgz#4e2df8d3d38b2517927332d04c76e132432ae8d4"
+  integrity sha512-TbFI/i4rMBkGsZz0v6CZJs4YFBhjMgxuT0S/8zzjGKIFD/aAp8QeUIWERBxrTxW1rKT1J/rgjiQJjWrNdrqmSg==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

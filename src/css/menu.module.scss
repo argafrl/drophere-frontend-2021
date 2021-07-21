@@ -1,45 +1,39 @@
 .container {
-    max-width: 250px;
-
-    a {
-        text-decoration: none !important;
-    }
+  max-width: 250px;
+  position: sticky;
+  top: 0;
+  a {
+    text-decoration: none !important;
+  }
 }
 
-.fly {
-    position: fixed;
-    top: 88px;
-    left: 0;
-    z-index: 1;
-    height: 100%;
-}
 
 .selected {
-    border-right: #2196F3 solid 3px;
+  border-right: #2196f3 solid 3px;
 
-    span {
-        color: #2196F3 !important;
-    }
+  span {
+    color: #2196f3 !important;
+  }
 }
 
 .normal {
-    border-right:  #E8E8E8 solid 3px;
+  border-right: #e8e8e8 solid 3px;
 }
 
 .subheader {
-    text-align: center;
-    margin: 10px 0px;
-    padding-left: 0px;
-    font-size: 12pt;
-    color: #575757;
-    font-weight: 600;
+  text-align: center;
+  margin: 10px 0px;
+  padding-left: 0px;
+  font-size: 12pt;
+  color: #575757;
+  font-weight: 600;
 }
 
 .logout {
-    border-top: rgba(158, 158, 158, 0.41) dotted 1px;
-    margin-top: 30px;
+  border-top: rgba(158, 158, 158, 0.41) dotted 1px;
+  margin-top: 30px;
 
-    span {
-        color: #e74c3c !important;
-    }
+  span {
+    color: #e74c3c !important;
+  }
 }

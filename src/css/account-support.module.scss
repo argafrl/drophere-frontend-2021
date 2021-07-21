@@ -1,5 +1,22 @@
-.container{
-    form > * {
-      margin-top: 16px;
+.container {
+  h1 {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  p {
+    margin: 0 0 20px 0px;
+  }
+  form {
+    div {
+      width: 100%;
+      margin-bottom: 20px;
+      textarea {
+        width: 100%;
+        resize: none;
+      }
     }
+    button {
+      margin-left: auto;
+    }
+  }
 }

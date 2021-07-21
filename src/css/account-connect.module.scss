@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .title-container {
+    margin-bottom: 20px;
+    text-align: center;
+
+    h1 {
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .card-container {
+    display: flex;
+    gap: 32px;
+
+    .card {
+      width: 200px;
+      border: 2px solid #e4e5e7;
+      padding: 16px 25px;
+      border-radius: 8px;
+
+      &-active {
+        border-color: #41a4d5;
+      }
+
+      &__img {
+        img {
+          height: 48px;
+          width: 48px;
+        }
+        margin-bottom: 12px;
+      }
+
+      &__body {
+        & > * {
+          margin-bottom: 12px;
+        }
+        &__title {
+          &-disabled {
+            color: #a0a0a0;
+          }
+        }
+
+        &__description {
+          font-weight: 400;
+          &-disabled {
+            color: #e4e5e7;
+          }
+        }
+
+        button {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
