@@ -10,6 +10,8 @@ import style from '../../../css/login.module.scss';
 import Loading from '../../common/Loading';
 
 import { Card, Button, Input, Dialog } from '@bccfilkom/designsystem/build';
+import WarningIcon from '@material-ui/icons/Warning';
+import { InputAdornment } from '@material-ui/core';
 
 class Login extends Component {
 
@@ -110,6 +112,9 @@ class Login extends Component {
               <div className={style['input-wrapper']}>
                 <p>Email</p>
                 <Input
+                  // icon='./img/bcc-logo-horizontal.png'
+                  // icon='../../../../public/img/background-diagonal.png'
+                  // icon={{WarningIcon}}
                   className={style.input}
                   type="email"
                   placeholder='Masukkan Email'
@@ -118,7 +123,8 @@ class Login extends Component {
                   handleChange={this.handleChange('email')}
                   style={{borderRadius: "6px"}}
                   // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
-                  hintText={this.state.error == "Error: User not found" ? "Email yang anda masukkan tidak valid" : ''}
+                  // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
+                  hintText={this.state.error == "Error: User not found" ? "Email yang anda masukkan tidak valid" : '' }
                   action={this.state.error == "Error: User not found" ? "error" : ''}
                   // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                   // ref={this.state.inputRef}
