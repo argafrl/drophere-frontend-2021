@@ -1,4 +1,13 @@
 .container {
+  h1 {
+    font-weight: 600;
+    font-size: 20pt;
+  }
+
+  p{
+      margin: 0;
+  }
+  
   > *:first-child {
     margin-top: 0px;
   }

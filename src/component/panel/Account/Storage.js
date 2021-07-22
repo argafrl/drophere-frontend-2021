@@ -235,7 +235,8 @@ class Storage extends Component {
 
     return (
       <div className={style.container}>
-        <h1>Koneksi</h1>
+        <h1>Tautkan Akun Anda</h1>
+        <p>Integrasikan akun anda dengan Cloud Storage</p>
         {this.state.isPageLoading ? <Preloader /> : (
           <Grid container spacing={3}>
             <Grid item xs={12}>

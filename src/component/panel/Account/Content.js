@@ -17,17 +17,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { TokenContext } from "../../../contexts/token";
 import ConnectAccount from "./ConnectAccount";
 
+import { Button } from '@bccfilkom/designsystem/build';
+
 function MenuItem(props) {
   return (
-    <ListItem button selected={props.selected} onClick={props.onClick}>
-      {props.icon != null ? (
-        <ListItemIcon>
-          <Icon>{props.icon}</Icon>
-        </ListItemIcon>
-      ) : (
-        ""
-      )}
-      <ListItemText primary={props.caption} />
+    <ListItem className={menuStyle['list-item']} button selected={props.selected} onClick={props.onClick} style={props.selected ? { backgroundColor: '#D9EDF7' } : {} } >
+      {props.icon != null ? <ListItemIcon className={menuStyle['list-item-icon']} ><Icon style={ props.selected ? { color: '#1A74A0' } : { color: '#C4C4C4' } }>{props.icon}</Icon></ListItemIcon> : ''}
+      <ListItemText className={menuStyle['list-item-text']} primary={props.caption} style={ props.selected ? { color: '#1A74A0' } : { color: '#C4C4C4' } } />
     </ListItem>
   );
 }
@@ -70,11 +66,17 @@ function Menu(props) {
 
 class Content extends Component {
   menus = [
-    { caption: "Profil", icon: "account_circle", url: "/profile" },
-    { caption: "Penyimpanan", icon: "cloud_upload", url: "/storage" },
-    { caption: "Halaman", icon: "library_books", url: "/pages" },
-    { caption: "Dukungan", icon: "face_agent", url: "/support" },
-    { caption: "Logout", icon: "logout", url: "/logout" },
+    // { caption: 'Profil', icon: 'account_circle', url: '/profile' },
+    // { caption: 'Penyimpanan', icon: 'cloud_upload', url: '/storage' },
+    // { caption: 'Halaman', icon: 'library_books', url: '/pages' },
+    // { caption: 'Dukungan', icon: 'face_agent', url: '/support' },
+    // { caption: 'Logout', icon: 'logout', url: '/logout'},
+
+    { caption: 'Halaman', icon: 'description', url: '/pages' },
+    { caption: 'Tautan Penyimpanan', icon: 'link', url: '/storage' },
+    { caption: 'Masukan', icon: 'comment', url: '/support' },
+    { caption: 'Profile', icon: 'person_outline', url: '/profile' },
+    { caption: 'Logout', icon: 'logout', url: '/logout'},
   ];
 
   static contextType = TokenContext;
@@ -138,27 +140,20 @@ class Content extends Component {
 
   render() {
     return (
-      <div ref={this.elementRef} className={style.container + " wrapper"}>
-        {this.props.location.pathname !== "/account/connect" && (
-          <div ref={this.menuRef} className={style.menu} id="mymenu">
-            <Menu
-              data={this.menus}
-              selectedIndex={this.getSelectedMenuIndex()}
-              onClick={this.onClickHandler}
-            />
-          </div>
-        )}
+      <div ref={this.elementRef} className={style.container + ' wrapper'}>
+        <div ref={this.menuRef} className={style.menu} id='mymenu'>
+          <Button className={style['buat-halaman']}><Icon className={style.icon}>add</Icon>Buat Halaman</Button>
+          <Menu
+            data={this.menus}
+            selectedIndex={this.getSelectedMenuIndex()}
+            onClick={this.onClickHandler}
+          />
+        </div>
 
-        <div
-          className={`${style.content}  ${
-            this.props.location.pathname === "/account/connect"
-              ? style["content-full"]
-              : ""
-          }
-           `}
-        >
-          <Switch>
-            <Redirect from="/account" exact to="/account/profile" />
+        <div className={style.content}>
+          <Switch >
+            {/* <Redirect from="/account" exact to="/account/profile" /> */}
+            <Redirect from="/account" exact to="/account/pages" />
             <Route path="/account/pages" component={Pages} />
             <Route path="/account/profile" component={Profile} />
             <Route path="/account/storage" component={Storage} />

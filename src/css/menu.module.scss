@@ -1,12 +1,38 @@
 .container {
-  max-width: 250px;
-  position: sticky;
-  top: 0;
-  a {
-    text-decoration: none !important;
-  }
+    max-width: 250px;
+
+    a {
+        text-decoration: none !important;
+    }
+
+    .list-item{
+        .list-item-icon{
+            margin-left: 5px;
+            margin-right: -10px;
+            span{
+                
+            }
+        }
+
+        .list-item-text{
+            span{
+                font-family: 'Inter';
+                // font-weight: 400;
+            }
+        }
+    }
+
 }
 
+
+
+.fly {
+    position: fixed;
+    top: 88px;
+    left: 0;
+    z-index: 1;
+    height: 100%;
+}
 
 .selected {
   border-right: #2196f3 solid 3px;

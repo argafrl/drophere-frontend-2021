@@ -7,6 +7,8 @@
 
     padding: 0 20px;
 
+    
+
     a {
         text-decoration: underline;
         color: #2196F3;
@@ -57,29 +59,7 @@
             //     margin-top: 0;
             // }
 
-            .input-wrapper{
-
-                > * {
-                    width: 100%;
-                    // margin-top: 15px;
-                }
-
-                // > *:first-child {
-                //     margin-top: 0;
-                // }
-
-                p{
-                    margin-bottom: 5px;
-                    font-size: 12pt;
-                    color: black;
-                }
-
-                .input{
-                    border-radius: 6px;
-                }
-
-                margin-top: 0px;
-            }
+            //input-wrapper dulu
 
             .button-daftar{
                 margin-top: 30px;
@@ -94,7 +74,50 @@
             .lupa-password{
                 margin: 20px 0 0 0;
                 text-align: right;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+
+            .dialog{
+                h1 {
+                    // font-family: 'inter';
+                    font-size: 20pt;
+                    font-weight: 600;
+                    line-height: 10px;
+                }
+        
+                p {
+                    font-weight: 400;
+                    font-size: 13pt;
+                    margin: 12px 0 20px 0;
+                    color: #ABABAB;
+                }
             }
         }
     }
+}
+
+.input-wrapper{
+
+    > * {
+        width: 100%;
+        // margin-top: 15px;
+    }
+
+    // > *:first-child {
+    //     margin-top: 0;
+    // }
+
+    p{
+        margin-bottom: 5px;
+        font-size: 12pt;
+        color: black;
+    }
+
+    .input{
+        border-radius: 6px;
+    }
+
+    margin-top: 0px !important;
 }

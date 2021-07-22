@@ -571,13 +571,14 @@ class Pages extends Component {
 
     return (
       <div className={style.container}>
-        {this.state.isLinksLoading ? <Loading /> : ''}
+        {/* {this.state.isLinksLoading ? <Loading /> : ''} */}
 
-        <Grid container spacing={4}>
-          <Grid item xs>
-            <h1>Halaman</h1>
-          </Grid>
-          <Grid item xs style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+        {/* <Grid container spacing={4}>
+          <Grid item xs style={{ padding: "0 16px 8px 16px" }}> */}
+            <h1>Buat Halaman</h1>
+            <p>Halaman ini digunakan sebagai tempat pengumpulan file yang anda butuhkan</p>
+          {/* </Grid> */}
+          {/* <Grid item style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', padding: "0 16px 8px 16px" }}>
             <Fab
               size="small"
               variant="extended"
@@ -586,8 +587,8 @@ class Pages extends Component {
               <Icon>add</Icon>
               Buat
             </Fab>
-          </Grid>
-        </Grid>
+          </Grid> */}
+        {/* </Grid> */}
 
         {/* {this.state.error !== null ? <div className="error">{this.state.error.message}</div> : ''} */}
 
