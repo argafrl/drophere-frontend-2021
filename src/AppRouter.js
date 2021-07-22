@@ -86,11 +86,11 @@ class AppRouter extends Component {
               <Route
                 path="/account"
                 render={(props) => {
-                  // if (localStorage.getItem('bccdrophere_token'))
+                  if (localStorage.getItem('bccdrophere_token'))
                   return (
                     <Account {...props} updateParticle={this.updateParticle} />
                   );
-                  // return <Redirect to="/home" />
+                  return <Redirect to="/home" />
                 }}
               />
               <Route path="/:slug" render={(props) => <Drop {...props} />} />
