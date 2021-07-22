@@ -208,90 +208,93 @@ class Profile extends Component {
 
     return (
       <div className={style.container}>
-        <h1>Profil</h1>
+        <h1>Profile</h1>
+        <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
         {!this.state.isPageLoading ?
           <div className="opening-transition">
-            <form onSubmit={this.onSave} >
+            <div className={style['form-wrapper']}>
+              <form onSubmit={this.onSave} >
 
-              <Input
-                type="text"
-                label="Name"
-                fullWidth
-                helperText={this.state.nameErr ? this.state.nameErr.message : ''}
-                error={this.state.nameErr != null}
-                value={this.state.name}
-                onChange={this.handleChange('name')}
-                disabled={this.state.isUpdateProfileLoading}
-              />
+                <Input
+                  type="text"
+                  label="Name"
+                  fullWidth
+                  helperText={this.state.nameErr ? this.state.nameErr.message : ''}
+                  error={this.state.nameErr != null}
+                  value={this.state.name}
+                  onChange={this.handleChange('name')}
+                  disabled={this.state.isUpdateProfileLoading}
+                />
 
-              <Input
-                type="text"
-                label="Email"
-                fullWidth
-                value={this.state.email}
-                onChange={this.handleChange('email')}
-                disabled
-              />
+                <Input
+                  type="text"
+                  label="Email"
+                  fullWidth
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                  disabled
+                />
 
-              {/* {this.state.isUpdateProfileError ? <div className="error">{this.state.isUpdateProfileError.message}</div> : ''} */}
+                {/* {this.state.isUpdateProfileError ? <div className="error">{this.state.isUpdateProfileError.message}</div> : ''} */}
 
-              <div className={style['button-wrapper']}>
-                <Button size="large" variant="outlined" color="primary" type="submit">
-                  Save
-                          <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon>
-                </Button>
-              </div>
-              {this.state.isUpdateProfileLoading ? <Loading /> : ''}
-            </form>
+                <div className={style['button-wrapper']}>
+                  <Button size="large" variant="outlined" color="primary" type="submit">
+                    Save
+                            <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon>
+                  </Button>
+                </div>
+                {this.state.isUpdateProfileLoading ? <Loading /> : ''}
+              </form>
 
-            <form onSubmit={this.onUpdatePassword}>
-              <h1 className={style['change-password-title']} style={{ marginTop: 40 }}>Change Password</h1>
-              <Input
-                type="password"
-                label="Current Password"
-                disabled={this.state.isUpdatePasswordLoading}
-                fullWidth
-                helperText={this.state.currentPasswordErr ? this.state.currentPasswordErr.message : ''}
-                error={this.state.currentPasswordErr != null}
-                name="current_password"
-                value={this.state.currentPassword}
-                onChange={this.handleChange('currentPassword')}
-              />
-              <Input
-                type="password"
-                label="New Password"
-                disabled={this.state.isUpdatePasswordLoading}
-                fullWidth
-                helperText={this.state.newPasswordErr ? this.state.newPasswordErr.message : ''}
-                error={this.state.newPasswordErr != null}
-                name="new_password"
-                value={this.state.newPassword}
-                onChange={this.handleChange('newPassword')}
-              />
+              <form onSubmit={this.onUpdatePassword}>
+                <h1 className={style['change-password-title']} style={{ marginTop: 40 }}>Change Password</h1>
+                <Input
+                  type="password"
+                  label="Current Password"
+                  disabled={this.state.isUpdatePasswordLoading}
+                  fullWidth
+                  helperText={this.state.currentPasswordErr ? this.state.currentPasswordErr.message : ''}
+                  error={this.state.currentPasswordErr != null}
+                  name="current_password"
+                  value={this.state.currentPassword}
+                  onChange={this.handleChange('currentPassword')}
+                />
+                <Input
+                  type="password"
+                  label="New Password"
+                  disabled={this.state.isUpdatePasswordLoading}
+                  fullWidth
+                  helperText={this.state.newPasswordErr ? this.state.newPasswordErr.message : ''}
+                  error={this.state.newPasswordErr != null}
+                  name="new_password"
+                  value={this.state.newPassword}
+                  onChange={this.handleChange('newPassword')}
+                />
 
-              <Input
-                type="password"
-                label="Retype Password"
-                disabled={this.state.isUpdatePasswordLoading}
-                fullWidth
-                name="retype_password"
-                helperText={this.state.retypePasswordErr ? this.state.retypePasswordErr.message : ''}
-                error={this.state.retypePasswordErr != null}
-                value={this.state.retypePassword}
-                onChange={this.handleChange('retypePassword')}
-              />
+                <Input
+                  type="password"
+                  label="Retype Password"
+                  disabled={this.state.isUpdatePasswordLoading}
+                  fullWidth
+                  name="retype_password"
+                  helperText={this.state.retypePasswordErr ? this.state.retypePasswordErr.message : ''}
+                  error={this.state.retypePasswordErr != null}
+                  value={this.state.retypePassword}
+                  onChange={this.handleChange('retypePassword')}
+                />
 
-              {/* {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''} */}
+                {/* {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''} */}
 
-              <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
-                <Button size="large" variant="outlined" color="primary" type="submit">
-                  Change Password
-                          <Icon style={{ fontSize: 20, marginLeft: 8 }}>lock</Icon>
-                </Button>
-              </div>
+                <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
+                  <Button size="large" variant="outlined" color="primary" type="submit">
+                    Change Password
+                            <Icon style={{ fontSize: 20, marginLeft: 8 }}>lock</Icon>
+                  </Button>
+                </div>
 
-              {this.state.isUpdatePasswordLoading ? <Loading /> : ''}
-            </form>
+                {this.state.isUpdatePasswordLoading ? <Loading /> : ''}
+              </form>
+            </div>
           </div>
           : <Preloader />
         }

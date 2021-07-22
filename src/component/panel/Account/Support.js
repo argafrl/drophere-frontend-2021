@@ -16,28 +16,31 @@ export default function Support() {
   }
 
   return (
-    <div className={style.container + ' opening-transition'}>
-      <h1>Support</h1>
-      <form onSubmit={onSubmitHandler}>
-        <TextField
-          type="textarea"
-          variant="outlined"
-          label="Message"
-          placeholder="Your message ..."
-          value={message}
-          onChange={(event) => { setMessage(event.target.value) }}
-          multiline
-          fullWidth
-          maxLength={500}
-          rows={5}
-        />
-        <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
-          <Button size="large" variant="outlined" color="primary" type="submit">
-            Send
-            <Icon style={{ fontSize: 20, marginLeft: 8 }}>send</Icon>
-          </Button>
-        </div>
-      </form>
+    <div className={style.container}>
+      <h1>Kirim Masukan</h1>
+      <p>Masukan anda dapat membantu layanan kami agar lebih maksimal</p>
+      <div className='opening-transition'>
+        <form onSubmit={onSubmitHandler}>
+          <TextField
+            type="textarea"
+            variant="outlined"
+            label="Message"
+            placeholder="Your message ..."
+            value={message}
+            onChange={(event) => { setMessage(event.target.value) }}
+            multiline
+            fullWidth
+            maxLength={500}
+            rows={5}
+          />
+          <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
+            <Button size="large" variant="outlined" color="primary" type="submit">
+              Send
+              <Icon style={{ fontSize: 20, marginLeft: 8 }}>send</Icon>
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

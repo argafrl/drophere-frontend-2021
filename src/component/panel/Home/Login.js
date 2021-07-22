@@ -8,10 +8,11 @@ import { endpointURL } from '../../../config';
 import style from '../../../css/login.module.scss';
 // import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
+import ForgotPassword from '../../common/ForgotPassword';
 
-import { Card, Button, Input, Dialog } from '@bccfilkom/designsystem/build';
+import { Card, Button, Input } from '@bccfilkom/designsystem/build';
 import WarningIcon from '@material-ui/icons/Warning';
-import { InputAdornment } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, InputAdornment } from '@material-ui/core';
 
 class Login extends Component {
 
@@ -22,8 +23,7 @@ class Login extends Component {
     password: '',
     error: null,
     isLoading: false,
-    visible: 0,
-    inputRef: 0,
+    open: false,
   };
 
   handleChange = name => event => {
@@ -34,23 +34,18 @@ class Login extends Component {
   //   this.setState({ visible: e.target.value });
   // }
 
-  onClick = () => {
-    this.setState( {
-      visible: 0
-    })
-  }
-  
-  onClicks = () => {
-    this.setState( {
-      visible: 1
+  handleClickOpen = () => {
+    this.setState({
+      open: true
     })
   }
 
-  onCancel = () => {
-    this.setState({
-      visible: 0
-    })
-  }
+  handleClose = () => {
+    this.setState({ 
+      open: false
+     });
+     
+  };
 
   static id = "loginLoading"
 
@@ -148,32 +143,63 @@ class Login extends Component {
               </div>
 
               {/* {this.state.error ? <div className="error">{this.state.error.message}</div> : ''} */}
-              <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p>
+              {/* <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p> */}
+              <a onClick={ this.handleClickOpen }><p className={style['lupa-password']}>Lupa Password?</p></a>
+              
+              {/* <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                maxWidth='xs'
+                className={style.dialog}
+              >
+                <DialogContent className={style.content}>
+                  <DialogContentText id="alert-dialog-description">
+                    <h1>Lupa Password?</h1>
+                    <p>Masukkan email anda dan kami akan mengirim link untuk mengatur ulang password anda.</p>
+                    <div className={style['input-wrapper']}>
+                      <p>Email</p>
+                      <Input
+                        className={style.input}
+                        type="email"
+                        placeholder='Masukkan Email'
+                        required
+                        value={this.state.email}
+                        handleChange={this.handleChange('email')}
+                        style={{borderRadius: "6px"}}
+                      />
+                    </div>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions className={style.actions}>
+                  <Button onClick={this.handleClose} type="text">
+                    Batalkan
+                  </Button>
+                  <Button onClick={this.handleClose} type="primary" autoFocus>
+                    Konfirmasi
+                  </Button>
+                </DialogActions>
+              </Dialog> */}
 
               {/* <Button onClick={function onClick(){return setVisible(!0)}}> */}
-              {/* <Button onClick={ this.onClicks }>
-                Show Dialog
-              </Button>
-              <Dialog
-                onCancel={ this.onCancel }
-                primaryButton={{
-                  onClick: this.onClick,
-                  text: 'Lanjut'
-                }}
-                secondaryButton={{
-                  onClick: this.onClick,
-                  text: 'Hapus'
-                }}
-                title="Title"
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse cursus fermentum risus, sit amet fringilla nunc pellentesque quis. Duis quis odio ultrices, cursus lacus ac, posuere felis.
-              </Dialog> */}
+              
               {/* <button className="custom-button">Masuk</button> */}
               <Button className={style['button-masuk']}>Masuk</Button>
               
             </div>
             {this.state.isLoading ? <Loading /> : ''}
           </form>
+
+          <ForgotPassword 
+            open={this.state.open}
+            onClose={this.handleClose}
+            value={this.state.email}
+            handleChange={this.handleChange('email')} />
+          {/* <Button onClick={ this.handleClickOpen }>
+            Show Dialog
+          </Button> */}
+          
         </Card>
       </div>
     );

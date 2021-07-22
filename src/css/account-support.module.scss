@@ -1,5 +1,14 @@
 .container{
-    form > * {
-      margin-top: 16px;
-    }
+  form > * {
+    margin-top: 16px;
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 20pt;
+  }
+
+  p{
+      margin: 0;
+  }
 }
