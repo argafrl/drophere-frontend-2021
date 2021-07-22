@@ -1,19 +1,11 @@
 .container {
-  display: flex;
-  flex-direction: row;
-  .content {
-    position: relative;
-    flex: 1 1 auto;
-    max-width: 600px;
-    width: 100%;
-    min-height: 445px;
-    margin-left: 32px;
-    &-full {
-      display: flex;
-      max-width: 100%;
-      justify-content: center;
+    .content {
+        position: relative;
+        margin-left: 300px;
+        max-width: 600px;
+        width: 100%;
+        min-height: 445px;
     }
-  }
 }
 
 .menu {
@@ -51,7 +43,7 @@
     font-size: 100px;
 }
 
-// .menu-fly {
-//   position: fixed;
-//   top: 50px;
-// }
+.menu-fly {
+    position: fixed;
+    top: 50px;
+}
