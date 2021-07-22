@@ -36,34 +36,34 @@ class Profile extends Component {
     isUpdateProfileLoading: false,
     isUpdatePasswordLoading: false,
 
-    isPageLoading: true,
+    // isPageLoading: true,
   };
 
-  async componentDidMount() {
-    try {
+  // async componentDidMount() {
+  //   try {
 
-      const resp = await axios.post(endpointURL, {
-        query: `
-        query {
-          me {
-            email
-            name
-          }
-        }`
-      })
-      if (resp.data.errors) {
-        throw new Error(resp.data.errors[0].message);
-      }
+  //     const resp = await axios.post(endpointURL, {
+  //       query: `
+  //       query {
+  //         me {
+  //           email
+  //           name
+  //         }
+  //       }`
+  //     })
+  //     if (resp.data.errors) {
+  //       throw new Error(resp.data.errors[0].message);
+  //     }
 
-      const { name, email } = resp.data.data.me;
-      this.setState({ name, email, isPageLoading: false });
-    } catch (error) {
-      this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
-      this.setState({ isPageLoading: false });
-      this.context.setToken('');
-      this.props.history.push('/home');
-    }
-  }
+  //     const { name, email } = resp.data.data.me;
+  //     this.setState({ name, email, isPageLoading: false });
+  //   } catch (error) {
+  //     this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
+  //     this.setState({ isPageLoading: false });
+  //     this.context.setToken('');
+  //     this.props.history.push('/home');
+  //   }
+  // }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
