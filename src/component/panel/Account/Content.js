@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import Profile from './Profile';
-import Pages from './Pages';
-import Support from './Support';
-import Storage from './Storage';
+import Profile from "./Profile";
+import Pages from "./Pages";
+import Support from "./Support";
+import Storage from "./Storage";
 
-import style from '../../../css/account-content.module.scss';
-import menuStyle from '../../../css/menu.module.scss';
+import style from "../../../css/account-content.module.scss";
+import menuStyle from "../../../css/menu.module.scss";
 
-import Icon from '@material-ui/core/Icon';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { TokenContext } from '../../../contexts/token';
+import Icon from "@material-ui/core/Icon";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { TokenContext } from "../../../contexts/token";
+import ConnectAccount from "./ConnectAccount";
 
 import { Button } from '@bccfilkom/designsystem/build';
 
@@ -28,12 +29,14 @@ function MenuItem(props) {
 }
 
 function Menu(props) {
-  const selectedIndex = typeof props.selectedIndex === 'number' ? props.selectedIndex : -1;
+  const selectedIndex =
+    typeof props.selectedIndex === "number" ? props.selectedIndex : -1;
 
   const data = Array.isArray(props.data) ? props.data : [];
 
-  const menuOnClickHandler = typeof props.onClick === 'function' ? props.onClick : () => { };
-  const onClickHandler = index => {
+  const menuOnClickHandler =
+    typeof props.onClick === "function" ? props.onClick : () => {};
+  const onClickHandler = (index) => {
     return (e) => {
       e.preventDefault();
 
@@ -41,31 +44,27 @@ function Menu(props) {
         index,
         url: data[index].url,
       });
-    }
-  }
+    };
+  };
 
   return (
-    <div className={menuStyle.container + ' wrapper'}>
+    <div className={menuStyle.container + " wrapper"}>
       <List component="nav">
-        {
-          data.map((item, index) => (
-            <MenuItem
-              key={"menu_item" + index}
-              onClick={onClickHandler(index)}
-              icon={item.icon}
-              caption={item.caption}
-              selected={selectedIndex === index}
-            />
-          ))
-        }
-
+        {data.map((item, index) => (
+          <MenuItem
+            key={"menu_item" + index}
+            onClick={onClickHandler(index)}
+            icon={item.icon}
+            caption={item.caption}
+            selected={selectedIndex === index}
+          />
+        ))}
       </List>
     </div>
   );
 }
 
 class Content extends Component {
-
   menus = [
     // { caption: 'Profil', icon: 'account_circle', url: '/profile' },
     // { caption: 'Penyimpanan', icon: 'cloud_upload', url: '/storage' },
@@ -90,59 +89,56 @@ class Content extends Component {
 
   componentDidMount() {
     // if (!this.props.alwaysActive)
-    document.addEventListener('scroll', this.handleScroll);
+    document.addEventListener("scroll", this.handleScroll);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('scroll', this.handleScroll);
+    document.removeEventListener("scroll", this.handleScroll);
   }
 
-  handleScroll = e => {
+  handleScroll = (e) => {
     let scrollY = window.scrollY;
     let firstPosition = this.elementRef.current.offsetTop - 50 || 360;
-    if (!this.menuRef || !this.menuRef.current)
-      return;
+    if (!this.menuRef || !this.menuRef.current) return;
 
     // if (this.props.firstPosition)
     //   firstPosition = this.props.firstPosition;
-    
-    if (scrollY > firstPosition) {
-      this.menuRef.current.classList.add(style['menu-fly']);
-    } else {
-      this.menuRef.current.classList.remove(style['menu-fly']);
-    }
 
-  }
+    if (scrollY > firstPosition) {
+      this.menuRef.current.classList.add(style["menu-fly"]);
+    } else {
+      this.menuRef.current.classList.remove(style["menu-fly"]);
+    }
+  };
 
   getSelectedMenuIndex = () => {
     const { match, location } = this.props;
 
-    return this.menus.findIndex(v => {
+    return this.menus.findIndex((v) => {
       return location.pathname.search(`${match.path}${v.url}`) >= 0;
     });
-  }
+  };
 
   onClickHandler = ({ index, url }) => {
     const { match, history } = this.props;
 
     if (index === 4) {
       // logout
-      this.context.setToken('');
+      this.context.setToken("");
       return;
     }
 
-    let loc = '';
+    let loc = "";
     if (match) {
-      loc = match.path + url
+      loc = match.path + url;
 
       if (history) {
         history.push(loc);
       }
     }
-  }
+  };
 
   render() {
-
     return (
       <div ref={this.elementRef} className={style.container + ' wrapper'}>
         <div ref={this.menuRef} className={style.menu} id='mymenu'>
@@ -162,12 +158,12 @@ class Content extends Component {
             <Route path="/account/profile" component={Profile} />
             <Route path="/account/storage" component={Storage} />
             <Route path="/account/support" component={Support} />
+            <Route path="/account/connect" component={ConnectAccount} />
           </Switch>
         </div>
       </div>
     );
   }
 }
-
 
 export default Content;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import style from '../../../css/account-support.module.scss';
 
@@ -6,13 +6,13 @@ import Button from '@material-ui/core/Button';
 import { Icon, TextField } from '@material-ui/core';
 
 export default function Support() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
-  const onSubmitHandler = e => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    
-    setMessage('');
-  }
+
+    setMessage("");
+  };
 
   return (
     <div className={style.container}>

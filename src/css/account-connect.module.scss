@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .title-container {
+    margin-bottom: 20px;
+    text-align: center;
+
+    h1 {
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .card-container {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+
+    .card {
+      width: 250px;
+      border: 2px solid #e4e5e7;
+      padding: 30px 25px;
+      border-radius: 8px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+
+      &-active {
+        border-color: #41a4d5;
+      }
+
+      &__img {
+        img {
+          height: 48px;
+          width: 48px;
+        }
+        margin-bottom: 12px;
+      }
+
+      &__body {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        &__title {
+          &-disabled {
+            color: #a0a0a0;
+          }
+          margin-bottom: 8px;
+        }
+
+        &__badge {
+          margin-bottom: 16px;
+          span {
+            color: #f4b12f;
+            border: 1px solid #f4b12f;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+          }
+        }
+
+        &__description {
+          font-weight: 400;
+
+          &-disabled {
+            color: #e4e5e7;
+          }
+        }
+
+        button {
+          border: 0.5px solid transparent;
+          &.button-cancel {
+            border: 0.5px solid #e84c3d;
+            background-color: white;
+            color: #e84c3d;
+            &:hover {
+              background-color: #e84c3d;
+              color: white;
+              transition: all 0.5s ease;
+            }
+          }
+          margin-top: auto;
+          margin-right: auto;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .button-container {
+    width: 100%;
+    button {
+      width: 100%;
+    }
+  }
+}
