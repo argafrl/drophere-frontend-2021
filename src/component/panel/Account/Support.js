@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import style from '../../../css/account-support.module.scss';
 
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import TextField from '@material-ui/core/TextField';
+import { Icon, TextField } from '@material-ui/core';
 
 export default function Support() {
   const [message, setMessage] = useState('');
