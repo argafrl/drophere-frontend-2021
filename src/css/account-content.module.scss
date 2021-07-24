@@ -1,49 +1,28 @@
 .container {
-    .content {
-        position: relative;
-        margin-left: 300px;
-        max-width: 600px;
-        width: 100%;
-        min-height: 445px;
+  display: flex;
+  flex-direction: row;
+  .content {
+    position: relative;
+    flex: 1 1 auto;
+    max-width: 600px;
+    width: 100%;
+    min-height: 445px;
+    margin-left: 32px;
+    &-full {
+      display: flex;
+      max-width: 100%;
+      justify-content: center;
     }
+  }
+  .buat-halaman {
+    margin-bottom: 12px;
+  }
 }
 
 .menu {
-    position: absolute;
-    // margin-top: -5px;
-    margin-top: 8px;
-    margin-left: 20px;
-    width: 250px;
-
-    // background-color: black;
-
-    .buat-halaman{
-        width: 100%;
-        margin-bottom: 18px;
-        margin-top: 2px;
-        // text-align: left;
-        text-align: left;
-        display: flex;
-        padding-left: 21px;
-        justify-content: left;
-        .icon{
-            margin-right: 22px;
-            // float: left;
-            // text-align: left;
-        }
-    }
-    // .MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover{
-    //     background-color: black;
-    // }
-}
-
-.material-icons .MuiIcon-root {
-    // font-size: 100px;
-    font-family: 'Inter';
-    font-size: 100px;
-}
-
-.menu-fly {
-    position: fixed;
-    top: 50px;
+  position: sticky;
+  margin-top: -5px;
+  margin-left: 20px;
+  top: 50px;
+  flex: 0 0 250px;
 }

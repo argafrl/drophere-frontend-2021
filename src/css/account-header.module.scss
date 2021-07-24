@@ -1,6 +1,7 @@
 .container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20px 0;
 
   a {
@@ -44,6 +45,9 @@
         width: 45px;
         height: 45px;
         margin-right: 8px;
+      }
+      p{
+        font-size: 16px;
       }
     }
     button {

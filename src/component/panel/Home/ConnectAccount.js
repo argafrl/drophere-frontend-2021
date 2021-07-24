@@ -38,13 +38,13 @@ const ConnectAccount = () => {
             <img src="/img/icons/drive-active.svg" alt="drive" />
           </div>
           <div className={style["card__body"]}>
-            <div className={style["card__body__badge"]}>
-              <span>Coming Soon</span>
-            </div>
             <h3 className={style["card__body__title"]}>Google Drive</h3>
             <p className={style["card__body__description"]}>
               Nantikan fitur baru untuk dapat terhubung ke Google Drive
             </p>
+            <div className={style["card__body__badge"]}>
+              Coming Soon
+            </div>
           </div>
         </div>
       </div>

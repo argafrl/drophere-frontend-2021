@@ -55,14 +55,15 @@
         }
 
         &__badge {
-          margin-bottom: 16px;
-          span {
-            color: #f4b12f;
-            border: 1px solid #f4b12f;
-            padding: 6px 12px;
-            border-radius: 5px;
-            font-size: 12px;
-          }
+          margin-top: auto;
+          margin-top: auto;
+          margin-right: auto;
+          color: #f4b12f;
+          border: 1px solid #f4b12f;
+          padding: 10px 24px;
+          border-radius: 5px;
+          font-size: 12px;
+          cursor: pointer;
         }
 
         &__description {

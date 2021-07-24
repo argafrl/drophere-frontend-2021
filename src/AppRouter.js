@@ -8,7 +8,7 @@ import Account from "./component/panel/Account";
 import Drop from "./component/panel/Drop";
 import Authorization from "./component/panel/Account/Authorization";
 import ResetPassword from "./component/panel/Home/ResetPassword";
-import ConnectAccount from "./component/panel/Account/ConnectAccount";
+import ConnectAccount from "./component/panel/Home/ConnectAccount";
 
 class AppRouter extends Component {
   state = { particle: false };
@@ -77,8 +77,13 @@ class AppRouter extends Component {
                   return <Redirect to="/account" />;
                 }}
               />
-              <Route path="/reset-password" component={ResetPassword} />
-
+              <Route path="/reset-password" component={ResetPassword} />{" "}
+              <Route
+                path="/connect-account"
+                render={(props) => (
+                  <Home {...props} updateParticle={this.updateParticle} />
+                )}
+              />
               <Route
                 path="/account/storage/authorize"
                 component={Authorization}
@@ -86,11 +91,14 @@ class AppRouter extends Component {
               <Route
                 path="/account"
                 render={(props) => {
-                  if (localStorage.getItem('bccdrophere_token'))
-                  return (
-                    <Account {...props} updateParticle={this.updateParticle} />
-                  );
-                  return <Redirect to="/home" />
+                  if (localStorage.getItem("bccdrophere_token"))
+                    return (
+                      <Account
+                        {...props}
+                        updateParticle={this.updateParticle}
+                      />
+                    );
+                  return <Redirect to="/home" />;
                 }}
               />
               <Route path="/:slug" render={(props) => <Drop {...props} />} />

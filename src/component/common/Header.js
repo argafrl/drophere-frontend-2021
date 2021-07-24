@@ -10,13 +10,10 @@ export default function Header() {
         <img src="/img/bcc-logo-horizontal.png" alt="BCC LOGO" />
         <h1>Drophere</h1>
       </Link>
-      <div className={style["search-wrapper"]}>
-        <Search placeholder="Telusuri" />
-      </div>
       <div className={style["auth"]}>
         <div className={style["user"]}>
           <img src="/img/user.png" alt="user-profile" />
-          <h3>Hi, Rivo</h3>
+          <p>Hi, <strong>Rivo</strong> </p>
         </div>
         <Button type="secondary" icon="/img/icons/logout.svg">
           Logout

@@ -15,15 +15,35 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { TokenContext } from "../../../contexts/token";
-import ConnectAccount from "./ConnectAccount";
+import ConnectAccount from "../Home/ConnectAccount";
 
-import { Button } from '@bccfilkom/designsystem/build';
+import { Button } from "@bccfilkom/designsystem/build";
 
 function MenuItem(props) {
   return (
-    <ListItem className={menuStyle['list-item']} button selected={props.selected} onClick={props.onClick} style={props.selected ? { backgroundColor: '#D9EDF7' } : {} } >
-      {props.icon != null ? <ListItemIcon className={menuStyle['list-item-icon']} ><Icon style={ props.selected ? { color: '#1A74A0' } : { color: '#C4C4C4' } }>{props.icon}</Icon></ListItemIcon> : ''}
-      <ListItemText className={menuStyle['list-item-text']} primary={props.caption} style={ props.selected ? { color: '#1A74A0' } : { color: '#C4C4C4' } } />
+    <ListItem
+      className={menuStyle["list-item"]}
+      button
+      selected={props.selected}
+      onClick={props.onClick}
+      style={props.selected ? { backgroundColor: "#D9EDF7" } : {}}
+    >
+      {props.icon != null ? (
+        <ListItemIcon className={menuStyle["list-item-icon"]}>
+          <Icon
+            style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
+          >
+            {props.icon}
+          </Icon>
+        </ListItemIcon>
+      ) : (
+        ""
+      )}
+      <ListItemText
+        className={menuStyle["list-item-text"]}
+        primary={props.caption}
+        style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
+      />
     </ListItem>
   );
 }
@@ -49,6 +69,9 @@ function Menu(props) {
 
   return (
     <div className={menuStyle.container + " wrapper"}>
+      <Button className={style["buat-halaman"]}>
+        <Icon className={style.icon}>add</Icon>Buat Halaman
+      </Button>
       <List component="nav">
         {data.map((item, index) => (
           <MenuItem
@@ -72,44 +95,19 @@ class Content extends Component {
     // { caption: 'Dukungan', icon: 'face_agent', url: '/support' },
     // { caption: 'Logout', icon: 'logout', url: '/logout'},
 
-    { caption: 'Halaman', icon: 'description', url: '/pages' },
-    { caption: 'Tautan Penyimpanan', icon: 'link', url: '/storage' },
-    { caption: 'Masukan', icon: 'comment', url: '/support' },
-    { caption: 'Profile', icon: 'person_outline', url: '/profile' },
-    { caption: 'Logout', icon: 'logout', url: '/logout'},
+    { caption: "Halaman", icon: "description", url: "/pages" },
+    { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
+    { caption: "Masukan", icon: "comment", url: "/support" },
+    { caption: "Profile", icon: "person_outline", url: "/profile" },
+    { caption: "Logout", icon: "logout", url: "/logout" },
   ];
 
   static contextType = TokenContext;
+
   constructor(props) {
     super(props);
-
     this.elementRef = React.createRef();
-    this.menuRef = React.createRef();
   }
-
-  componentDidMount() {
-    // if (!this.props.alwaysActive)
-    document.addEventListener("scroll", this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("scroll", this.handleScroll);
-  }
-
-  handleScroll = (e) => {
-    let scrollY = window.scrollY;
-    let firstPosition = this.elementRef.current.offsetTop - 50 || 360;
-    if (!this.menuRef || !this.menuRef.current) return;
-
-    // if (this.props.firstPosition)
-    //   firstPosition = this.props.firstPosition;
-
-    if (scrollY > firstPosition) {
-      this.menuRef.current.classList.add(style["menu-fly"]);
-    } else {
-      this.menuRef.current.classList.remove(style["menu-fly"]);
-    }
-  };
 
   getSelectedMenuIndex = () => {
     const { match, location } = this.props;
@@ -140,9 +138,8 @@ class Content extends Component {
 
   render() {
     return (
-      <div ref={this.elementRef} className={style.container + ' wrapper'}>
-        <div ref={this.menuRef} className={style.menu} id='mymenu'>
-          <Button className={style['buat-halaman']}><Icon className={style.icon}>add</Icon>Buat Halaman</Button>
+      <div ref={this.elementRef} className={style.container + " wrapper"}>
+        <div className={style.menu} id="mymenu">
           <Menu
             data={this.menus}
             selectedIndex={this.getSelectedMenuIndex()}
@@ -151,7 +148,7 @@ class Content extends Component {
         </div>
 
         <div className={style.content}>
-          <Switch >
+          <Switch>
             {/* <Redirect from="/account" exact to="/account/profile" /> */}
             <Redirect from="/account" exact to="/account/pages" />
             <Route path="/account/pages" component={Pages} />
