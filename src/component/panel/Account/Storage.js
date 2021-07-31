@@ -1,66 +1,64 @@
-import React, { Component } from 'react';
-import Axios from 'axios';
+import React, { Component } from "react";
+import Axios from "axios";
 
-import {
-  endpointURL,
-  storageProviders
-} from '../../../config';
+import { endpointURL, storageProviders } from "../../../config";
 
-import style from '../../../css/storage.module.scss';
-import Preloader from '../../common/Preloader';
+import style from "../../../css/storage.module.scss";
+import Preloader from "../../common/Preloader";
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import Icon from '@material-ui/core/Icon';
-import TextField from '@material-ui/core/TextField';
-import { withSnackbar } from 'notistack';
+import Avatar from "@material-ui/core/Avatar";
+import { Button } from "@bccfilkom/designsystem/build";
+import Grid from "@material-ui/core/Grid";
+import Icon from "@material-ui/core/Icon";
+import TextField from "@material-ui/core/TextField";
+import { withSnackbar } from "notistack";
 
 function StorageConnection(props) {
-
   const unauthorized = (
-    <div className={style['list-container'] + ' opening-transition'}>
+    <div className={style["list-container"] + " opening-transition"}>
       <Grid container spacing={2}>
         <Grid item xs={9}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             {props.logo}
           </div>
         </Grid>
         <Grid item xs={3}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
             <Button
               color="primary"
               fullWidth
               variant="contained"
               onClick={props.onAuthorize}
-              size="large">
+              size="large"
+            >
               Authorize
-          <Icon style={{ marginLeft: 8 }}>link</Icon>
+              <Icon style={{ marginLeft: 8 }}>link</Icon>
             </Button>
           </div>
-
         </Grid>
       </Grid>
-
     </div>
   );
 
   const authorized = (
     <React.Fragment>
-      <div className={style['list-container']}>
+      <div className={style["list-container"]}>
         <Grid container spacing={2}>
           <Grid item xs={1}>
-            {
-              typeof props.photo === 'string' && props.photo.length > 0 ? (
-                <Avatar
-                  src={props.photo}
-                  alt={`${props.storageProvider.name} Avatar`} />
-              ) : (
-                  <Avatar
-                    alt={`${props.storageProvider.name} Avatar`}>X</Avatar>
-                )
-            }
+            {typeof props.photo === "string" && props.photo.length > 0 ? (
+              <Avatar
+                src={props.photo}
+                alt={`${props.storageProvider.name} Avatar`}
+              />
+            ) : (
+              <Avatar alt={`${props.storageProvider.name} Avatar`}>X</Avatar>
+            )}
           </Grid>
           <Grid item xs={8}>
             <TextField
@@ -72,50 +70,53 @@ function StorageConnection(props) {
           </Grid>
           <Grid item xs={3}>
             <Button
-            fullWidth
+              fullWidth
               color="secondary"
               variant="contained"
               onClick={props.onUnauthorize}
-              size="large">
+              size="large"
+            >
               Unlink
-          <Icon style={{ marginLeft: 8 }}>link_off</Icon>
+              <Icon style={{ marginLeft: 8 }}>link_off</Icon>
             </Button>
           </Grid>
         </Grid>
-
       </div>
     </React.Fragment>
-  )
-
-  return (
-    props.email != null ? authorized : unauthorized
   );
+
+  return props.email != null ? authorized : unauthorized;
 }
 
 class Storage extends Component {
-
   state = {
     connectedStorageProviders: [],
     dropboxEmail: null,
     isDropboxLoading: false,
 
     isPageLoading: true,
-  }
+    useDrive: false,
+  };
 
   onAuthorizeStorageProvider(providerId) {
     return () => {
       this.setState({ isDropboxLoading: true });
 
       const { enqueueSnackbar } = this.props;
-      const storageProvider = storageProviders.find(sp => sp.id === providerId);
+      const storageProvider = storageProviders.find(
+        (sp) => sp.id === providerId
+      );
       if (storageProvider === null || storageProvider === undefined) {
-        enqueueSnackbar("Unknown Storage Provider", { variant: 'error', preventDuplicate: true });
+        enqueueSnackbar("Unknown Storage Provider", {
+          variant: "error",
+          preventDuplicate: true,
+        });
         return;
       }
 
       let win = window.open(
         storageProvider.authorizationUrl,
-        'Authorization',
+        "Authorization",
         `height=400,width=800`
       );
 
@@ -126,34 +127,53 @@ class Storage extends Component {
         }
 
         this.setState({ isDropboxLoading: false });
-        const storageProviderCredential = localStorage.getItem('storage_provider_status');
-        localStorage.removeItem('storage_provider_status');
+        const storageProviderCredential = localStorage.getItem(
+          "storage_provider_status"
+        );
+        localStorage.removeItem("storage_provider_status");
 
-        if (typeof storageProviderCredential !== 'string' || storageProviderCredential !== 'OK') {
+        if (
+          typeof storageProviderCredential !== "string" ||
+          storageProviderCredential !== "OK"
+        ) {
           let errorMsg = `Error when attempting to connect to ${storageProvider.name} account`;
-          const errorMsgDetails = localStorage.getItem('storage_provider_error');
-          if (typeof errorMsgDetails === 'string' && errorMsgDetails.length > 0) {
+          const errorMsgDetails = localStorage.getItem(
+            "storage_provider_error"
+          );
+          if (
+            typeof errorMsgDetails === "string" &&
+            errorMsgDetails.length > 0
+          ) {
             errorMsg += `: ${errorMsgDetails}`;
           }
 
-          enqueueSnackbar(errorMsg, { variant: 'error', preventDuplicate: true });
+          enqueueSnackbar(errorMsg, {
+            variant: "error",
+            preventDuplicate: true,
+          });
           return;
         }
 
-        enqueueSnackbar(`Linked to your ${storageProvider.name} account`, { variant: 'success', preventDuplicate: true });
+        enqueueSnackbar(`Linked to your ${storageProvider.name} account`, {
+          variant: "success",
+          preventDuplicate: true,
+        });
 
         // refresh me query
         try {
           this.setState({ isPageLoading: true });
           await this.fetchUserStorageProvider();
         } catch (error) {
-          this.props.enqueueSnackbar('Unable to fetch user info', { variant: 'error', preventDuplicate: true });
+          this.props.enqueueSnackbar("Unable to fetch user info", {
+            variant: "error",
+            preventDuplicate: true,
+          });
         } finally {
           this.setState({ isPageLoading: false });
         }
-      }
+      };
       checkWinClose();
-    }
+    };
   }
 
   onUnauthorizeStorageProvider(providerId) {
@@ -161,15 +181,22 @@ class Storage extends Component {
       try {
         this.setState({ isPageLoading: true });
 
-        const disconnectStorageProviderResp = await this.disconnectStorageProvider(providerId);
-        this.props.enqueueSnackbar(disconnectStorageProviderResp.message, { variant: 'success', preventDefault: true });
+        const disconnectStorageProviderResp =
+          await this.disconnectStorageProvider(providerId);
+        this.props.enqueueSnackbar(disconnectStorageProviderResp.message, {
+          variant: "success",
+          preventDefault: true,
+        });
         await this.fetchUserStorageProvider();
       } catch (error) {
-        this.props.enqueueSnackbar('Error when unlinking storage provider', { variant: 'error', preventDuplicate: true });
+        this.props.enqueueSnackbar("Error when unlinking storage provider", {
+          variant: "error",
+          preventDuplicate: true,
+        });
       } finally {
         this.setState({ isPageLoading: false });
       }
-    }
+    };
   }
 
   async fetchUserStorageProvider() {
@@ -187,7 +214,7 @@ class Storage extends Component {
               photo
             }
           }
-        }`
+        }`,
     });
     if (resp.data.errors) {
       throw new Error(resp.data.errors[0].message);
@@ -198,7 +225,6 @@ class Storage extends Component {
   }
 
   async disconnectStorageProvider(providerId) {
-
     const resp = await Axios.post(endpointURL, {
       query: `
           mutation disconnectStorageProvider($providerId: Int!){
@@ -210,13 +236,14 @@ class Storage extends Component {
         providerId,
       },
       operationName: "disconnectStorageProvider",
-    })
+    });
 
     if (resp.data.errors) {
       throw new Error(resp.data.errors[0].message);
     }
 
-    const disconnectStorageProviderResp = resp.data.data.disconnectStorageProvider;
+    const disconnectStorageProviderResp =
+      resp.data.data.disconnectStorageProvider;
     return disconnectStorageProviderResp;
   }
 
@@ -225,51 +252,66 @@ class Storage extends Component {
       this.setState({ isPageLoading: true });
       await this.fetchUserStorageProvider();
     } catch (error) {
-      this.props.enqueueSnackbar('Unable to fetch user info', { variant: 'error', preventDuplicate: true });
+      this.props.enqueueSnackbar("Unable to fetch user info", {
+        variant: "error",
+        preventDuplicate: true,
+      });
     } finally {
       this.setState({ isPageLoading: false });
     }
   }
 
-  render() {
+  handleDrive(useDrive) {
+    this.setState({ useDrive });
+  }
 
+  render() {
     return (
       <div className={style.container}>
         <h1>Tautkan Akun Anda</h1>
         <p>Integrasikan akun anda dengan Cloud Storage</p>
-        {this.state.isPageLoading ? <Preloader /> : (
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {this.state.isDropboxLoading ? (
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                  <CircularProgress variant="indeterminate" color="primary" />
-                </div>
-              ) : (
-                  storageProviders.map(storageProvider => {
-                    const connectedStorageProvider = this.state.connectedStorageProviders.find(csp => csp.providerId === storageProvider.id);
-                    let email = null;
-                    let photo = null;
-                    if (connectedStorageProvider !== null && connectedStorageProvider !== undefined) {
-                      email = connectedStorageProvider.email;
-                      photo = connectedStorageProvider.photo;
-                    }
-                    return (
-                      <StorageConnection
-                        email={email}
-                        photo={photo}
-                        storageProvider={storageProvider}
-                        logo={<img src={storageProvider.imageUrl} alt={storageProvider.name} />}
-                        onAuthorize={this.onAuthorizeStorageProvider(storageProvider.id)}
-                        onUnauthorize={this.onUnauthorizeStorageProvider(storageProvider.id)}
-                      />
-                    )
-                  })
+        {this.state.isPageLoading ? (
+          <Preloader />
+        ) : (
+          <div className={style["card-container"]}>
+            <div className={style["card"]}>
+              <div className={style["card__body"]}>
+                <h3 className={style["card__body__title"]}>Dropbox</h3>
+                <p className={style["card__body__description"]}>
+                  Tautkan akun ke Dropbox untuk menyimpan file
+                </p>
+                {this.state.useDrive ? (
+                  <Button
+                    className={style["button-cancel"]}
+                    onClick={() => this.handleDrive(false)}
+                  >
+                    Batalkan{" "}
+                  </Button>
+                ) : (
+                  <Button onClick={() => this.handleDrive(true)}>
+                    Tautkan Akun
+                  </Button>
                 )}
-
-            </Grid>
-          </Grid>
+              </div>
+              <div className={style["card__img"]}>
+                <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+              </div>
+            </div>
+            <div className={style["card"]}>
+              <div className={style["card__body"]}>
+                <h3 className={style["card__body__title"]}>Google Drive</h3>
+                <p className={style["card__body__description"]}>
+                  Nantikan fitur baru untuk dapat terhubung ke Google Drive
+                </p>
+                <div className={style["card__body__badge"]}>Coming Soon</div>
+              </div>
+              <div className={style["card__img"]}>
+                <img src="/img/icons/drive-active.svg" alt="drive" />
+              </div>
+            </div>
+          </div>
         )}
-      </div >
+      </div>
     );
   }
 }
