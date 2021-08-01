@@ -28,4 +28,99 @@
     padding: 40px;
     border: 1px solid #DADCE0;
     border-radius: 8px;
+
+    .form-container{
+        // display: flex;
+        align-items: center;
+        padding: 10px 0 10px 0;
+        border-top: 1px solid #DADCE0;
+        // background-color: #F1F3F4;
+
+        .form-edit{
+            display: flex;
+            flex-direction: row;
+            background-color: #F1F3F4;
+            border-radius: 8px;
+            padding: 10px;
+            // justify-content: space-between;
+            .form-text{
+                width: 150px;
+                margin-top: 12px;
+            }
+            .input-wrapper{
+                margin-top: 0;
+                .input{
+                    border-radius: 8px;
+                }
+                > :first-child{
+                    width: 400px;
+                    border-radius: 8px;
+                }
+                .button-wrapper{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                    margin-top: 15px;
+                    .btn-batal{
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        .form-unedit{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-items: space-between;
+            justify-content: space-between;
+            padding: 10px;
+
+            .form-text{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                > :first-child{
+                    width: 150px;
+                }
+                > :last-child{
+                    font-weight: 600;
+                }
+            }
+        }
+        
+        // form{
+        //     flex: 8;
+        //     > :first-child{
+        //         width: 100%;
+        //     }
+        //     .button-wrapper{
+        //         display: flex;
+        //         justify-content: flex-end;
+        //         .btn-batal{
+        //             margin-right: 10px;
+        //         }
+        //     }
+        // }
+
+        // .form-description{
+        //     flex: 2;
+        //     // align-self: start;
+        // }
+        // .form-edit{
+        //     flex:8;
+        //     display: flex;
+        //     align-items: center;
+        // }
+        
+        // .form-input{
+        //     flex: 6;
+        //     p{
+        //         font-weight: 600;
+        //     }
+        // }
+        // .form-action{
+        //     flex: 1;
+        // }
+    }
 }

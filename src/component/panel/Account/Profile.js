@@ -5,19 +5,30 @@ import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/account-profile.module.scss';
-import Input from '../../common/WrappedInput';
+// import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
 import Preloader from '../../common/Preloader';
 
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
+
+import { Input, Button } from '@bccfilkom/designsystem/build'
+
 import Icon from '@material-ui/core/Icon';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
+
 import { withSnackbar } from 'notistack';
+import { Divider } from '@material-ui/core';
 
 class Profile extends Component {
 
   static contextType = TokenContext;
 
   state = {
+    openNama: false,
+
     name: '',
     email: '',
 
@@ -39,31 +50,37 @@ class Profile extends Component {
     // isPageLoading: true,
   };
 
-  // async componentDidMount() {
-  //   try {
+  handleClickOpenNama = () => {
+    this.setState({
+      openNama: !this.state.openNama
+    })
+  }
 
-  //     const resp = await axios.post(endpointURL, {
-  //       query: `
-  //       query {
-  //         me {
-  //           email
-  //           name
-  //         }
-  //       }`
-  //     })
-  //     if (resp.data.errors) {
-  //       throw new Error(resp.data.errors[0].message);
-  //     }
+  async componentDidMount() {
+    try {
 
-  //     const { name, email } = resp.data.data.me;
-  //     this.setState({ name, email, isPageLoading: false });
-  //   } catch (error) {
-  //     this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
-  //     this.setState({ isPageLoading: false });
-  //     this.context.setToken('');
-  //     this.props.history.push('/home');
-  //   }
-  // }
+      const resp = await axios.post(endpointURL, {
+        query: `
+        query {
+          me {
+            email
+            name
+          }
+        }`
+      })
+      if (resp.data.errors) {
+        throw new Error(resp.data.errors[0].message);
+      }
+
+      const { name, email } = resp.data.data.me;
+      this.setState({ name, email, isPageLoading: false });
+    } catch (error) {
+      this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
+      this.setState({ isPageLoading: false });
+      this.context.setToken('');
+      this.props.history.push('/home');
+    }
+  }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -205,6 +222,23 @@ class Profile extends Component {
 
 
   render() {
+    
+    const SmallAvatar = withStyles((theme) => ({
+      root: {
+        width: 22,
+        height: 22,
+        border: `2px solid ${theme.palette.background.paper}`,
+      },
+    }))(Avatar);
+    
+    const useStyles = makeStyles((theme) => ({
+      root: {
+        display: 'flex',
+        '& > *': {
+          margin: theme.spacing(1),
+        },
+      },
+    }));
 
     return (
       <div className={style.container}>
@@ -213,9 +247,124 @@ class Profile extends Component {
         {!this.state.isPageLoading ?
           <div className="opening-transition">
             <div className={style['form-wrapper']}>
-              <form onSubmit={this.onSave} >
+              
 
-                <Input
+                <div className={style['form-container']} style={{borderTop: "none"}}>
+                  <div className={style['form-unedit']}>
+                    <div className={style['form-text']}>
+                      <p>Foto</p>
+                      <div className={style['form-input']}>
+                        <Badge
+                          overlap="circular"
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                          }}
+                          badgeContent={<Avatar style={{color: "white", backgroundColor: "#41A4D5", width:"35px", height:"35px"}}><CameraAltOutlinedIcon /></Avatar>}
+                        >
+                          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{width:"75px", height:"75px"}} />
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <div className={style['form-action']}>
+                      <Button type="text">
+                        <Icon>delete</Icon>Hapus
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className={style['form-container']}>
+                  {this.state.openNama ? 
+                  <form onSubmit={this.onSave} className={style['form-edit']}>
+                    <div className={style['form-text']}>
+                      <p>Nama</p>
+                    </div>
+                    <div className={style['input-wrapper']}>
+                      <Input
+                        handleChange={this.handleChange('name')}
+                        value={this.state.name}
+                        className={style['input']}
+                        // style={{borderRadius: "8px"}}
+                      /> 
+                      <div className={style['button-wrapper']}>
+                        <Button type="secondary" onClick={this.handleClickOpenNama} className={style['btn-batal']}>
+                          Batalkan
+                        </Button>
+                        <Button size="large" variant="outlined" color="primary" type="submit">
+                          Simpan
+                          {/* <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon> */}
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {this.state.isUpdateProfileLoading ? <Loading /> : ''}
+                  </form>
+                  : 
+                  <div className={style['form-unedit']}>
+                    <div className={style['form-text']}>
+                      <p>Nama</p>
+                      <p>{this.state.name}</p>
+                    </div>
+
+                    <div className={style['form-action']}>
+                      <Button type="text" onClick={this.handleClickOpenNama}>
+                        <Icon>edit</Icon>Edit
+                      </Button>
+                    </div>
+                  </div>
+                  // <div className={style['form-edit']}>
+                  //   <div className={style['form-input']}>
+                  //     <p>{this.state.name}</p>
+                  //   </div>
+
+                  //   <div className={style['form-action']}>
+                  //     <Button type="text" onClick={this.handleClickOpenNama}>
+                  //       <Icon>edit</Icon>Edit
+                  //     </Button>
+                  //   </div>
+                  // </div>
+                  }              
+                </div>
+                
+
+                <div className={style['form-container']}>
+                  <div className={style['form-unedit']}>
+                    <div className={style['form-text']}>
+                      <p>Email</p>
+                      <div className={style['form-input']}>
+                        <p style={{color: "#05A1D1"}}>{this.state.email}</p>
+                      </div>
+                    </div>                 
+
+                    <div className={style['form-action']}>
+                      {/* <Button type="text">
+                        <Icon>edit</Icon>Edit
+                      </Button> */}
+                    </div>
+                  </div>
+                </div>
+
+                
+                <div className={style['form-container']}>
+                  <div className={style['form-unedit']}>
+                    <div className={style['form-text']}>
+                      <p>Password</p>
+                      <div className={style['form-input']}>
+                        {/* <p>{this.state.currentPassword}</p> */}
+                      </div>
+                    </div>                    
+
+                    <div className={style['form-action']}>
+                      <Button type="text">
+                        <Icon>edit</Icon>Edit
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* <Input
                   type="text"
                   label="Name"
                   fullWidth
@@ -224,27 +373,20 @@ class Profile extends Component {
                   value={this.state.name}
                   onChange={this.handleChange('name')}
                   disabled={this.state.isUpdateProfileLoading}
-                />
+                /> */}
 
-                <Input
+                {/* <Input
                   type="text"
                   label="Email"
                   fullWidth
                   value={this.state.email}
                   onChange={this.handleChange('email')}
                   disabled
-                />
+                /> */}
 
                 {/* {this.state.isUpdateProfileError ? <div className="error">{this.state.isUpdateProfileError.message}</div> : ''} */}
 
-                <div className={style['button-wrapper']}>
-                  <Button size="large" variant="outlined" color="primary" type="submit">
-                    Save
-                            <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon>
-                  </Button>
-                </div>
-                {this.state.isUpdateProfileLoading ? <Loading /> : ''}
-              </form>
+                
 
               <form onSubmit={this.onUpdatePassword}>
                 <h1 className={style['change-password-title']} style={{ marginTop: 40 }}>Change Password</h1>
