@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import Profile from "./Profile";
 import Pages from "./Pages";
@@ -18,6 +18,8 @@ import { TokenContext } from "../../../contexts/token";
 import ConnectAccount from "../Home/ConnectAccount";
 
 import { Button } from "@bccfilkom/designsystem/build";
+import AddNewPage from "./AddNewPage";
+import EditPage from "./EditPage";
 
 function MenuItem(props) {
   return (
@@ -49,6 +51,8 @@ function MenuItem(props) {
 }
 
 function Menu(props) {
+  const history = useHistory();
+
   const selectedIndex =
     typeof props.selectedIndex === "number" ? props.selectedIndex : -1;
 
@@ -69,7 +73,10 @@ function Menu(props) {
 
   return (
     <div className={menuStyle.container + " wrapper"}>
-      <Button className={style["buat-halaman"]}>
+      <Button
+        className={style["buat-halaman"]}
+        onClick={() => history.push("/account/pages/add")}
+      >
         <Icon className={style.icon}>add</Icon>Buat Halaman
       </Button>
       <List component="nav">
@@ -151,7 +158,9 @@ class Content extends Component {
           <Switch>
             {/* <Redirect from="/account" exact to="/account/profile" /> */}
             <Redirect from="/account" exact to="/account/pages" />
-            <Route path="/account/pages" component={Pages} />
+            <Route path="/account/pages" exact component={Pages} />
+            <Route path="/account/pages/add" component={AddNewPage} />
+            <Route path="/account/pages/:id/edit" component={EditPage} />
             <Route path="/account/profile" component={Profile} />
             <Route path="/account/storage" component={Storage} />
             <Route path="/account/support" component={Support} />
