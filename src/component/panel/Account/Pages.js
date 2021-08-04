@@ -5,6 +5,7 @@ import { useSnackbar } from "notistack";
 
 import style from "../../../css/pages.module.scss";
 import editPageStyle from "../../../css/edit-page.module.scss";
+
 import {
   defaultStorageProviderId,
   endpointURL,
@@ -15,9 +16,14 @@ import {
 
 import Loading from "../../common/Loading";
 
+import { Button, Menu } from '@bccfilkom/designsystem/build';
+
 import {
-  Button,
   Collapse,
+  Dialog,
+  DialogActions, 
+  DialogContent, 
+  DialogContentText,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -40,6 +46,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import MomentUtils from "@date-io/moment";
 import { withSnackbar } from "notistack";
+import PageItem from "../../common/PageItem";
 
 const excludeSlugRegexp = new RegExp("^(" + excludeSlug.join("|") + ")$");
 
@@ -289,6 +296,12 @@ function EditForm(props) {
 
 class Pages extends Component {
   state = {
+    openKebab: false,
+    openAlert: false,
+    setVisible: 0,
+    isClosed: '',
+    isClosedBinary: true,
+
     connectedStorageProviders: null,
     links: [],
     newLink: {
@@ -305,6 +318,40 @@ class Pages extends Component {
     isLinksLoading: false,
     showAdd: false,
   };
+
+  handleClickOpenKebab = () => {
+    this.setState({
+      openKebab: !this.state.openKebab
+    })
+  }
+
+  handleClickOpenAlert = () => {
+    this.setState({
+      openAlert: true
+    })
+  }
+
+  handleCloseAlert = () => {
+    this.setState({ 
+      openAlert: false
+     });
+  };
+  
+  setOpenMenu = (closing, binary) => {
+    this.setState({
+      isClosed: closing,
+      isClosedBinary: binary
+    });
+    console.log(this.state.isClosed);
+    console.log(this.state.isClosedBinary);
+  };
+
+  setCloseMenu = () => {
+    this.setState({
+      isClosed: false,
+      isClosedBinary: true
+    })
+  }
 
   fetchUserConnectedStorageProviders = async () => {
     const resp = await axios.post(endpointURL, {
@@ -604,7 +651,37 @@ class Pages extends Component {
   render() {
     return (
       <div className={style.container}>
-        <h1>Halaman Anda</h1>
+        <div className={style['verify-alert']}>
+          <h1>Verifikasi Email Anda</h1>
+          <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={this.handleClickOpenAlert}>Kirim ulang</span></p>
+          <Dialog
+            open={this.state.openAlert}
+            onClose={this.handleCloseAlert}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth='xs'
+            className={style.dialog}
+            >
+              <DialogContent className={style.content}>
+                  <DialogContentText id="alert-dialog-description">
+                          <div className={style['content-container']}>
+                              <h1>Email Terverifikasi!</h1>
+                              <p>Selamat! email anda telah berhasil diverifikasi. Silahkan kembali ke beranda.</p>
+                          </div>            
+                  </DialogContentText>
+              </DialogContent>
+              <DialogActions className={style.actions}>
+                      <div className={style['actions-wrapper']}>
+                          <Button onClick={this.handleCloseAlert} type="primary" autoFocus>
+                              Kembali
+                          </Button>
+                      </div>
+              </DialogActions>
+            {this.state.isLoading ? <Loading /> : ''}
+          </Dialog>
+        </div>
+
+        <h1 className={style.heading}>Halaman Anda</h1>
         <Collapse in={this.state.showAdd}>
           <Paper square style={{ padding: 24 }}>
             <Grid container spacing={4}>
@@ -627,7 +704,64 @@ class Pages extends Component {
           </Paper>
         </Collapse>
 
+        <div className={style["grid-container"]}>
+
         {this.state.links.length <= 0
+          ? ""
+          : this.state.links.map((link, linkIdx) => {
+              return (
+                <div className={style["item"]} key={"link" + linkIdx}>
+                  <div className={style.body}>
+                    <div className={style.top}>
+                      <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
+                      <button onClick={() => this.setOpenMenu(linkIdx, false)}></button>    
+                    </div>
+                    { this.state.isClosed == linkIdx &&
+                      <Menu opened={this.state.isClosedBinary == true}>
+                        <Menu.Item name="Edit" onClick={() => this.setCloseMenu(true)} />
+                        <Menu.Item name="Hapus" hasDivider onClick={() => this.setCloseMenu(true)} />
+                      </Menu>
+                    }
+                    <div className={style.bottom}>
+                      <div className={style.title}>
+                        <p>{`${link.title}`}</p>
+                      </div>
+                      <div className={style.files}>
+                        <img src="/img/icons/folder.svg" alt="folder" />
+                        <p>25 files</p>
+                      </div>
+                    </div>
+                    { this.state.openKebab ? 
+                    <div className={style['kebab-menu']}>
+                      <ul class="dropdown">
+                        <li><a href="http://www.g.com">1</a></li>
+                        <li><a href="http://www.g.com">2</a></li>
+                        <li><a href="http://www.g.com">3</a></li>
+                        <li><a href="http://www.g.com">4</a></li>
+                      </ul>
+                    </div>:
+                    <div>
+                      
+                    </div>
+                    }
+                  </div>
+                  <div className={style.footer}>
+                    <div className={style.calendar}>
+                      <img src="/img/icons/calendar.svg" alt="calendar" />
+                      <p>21 Jul 2021</p>
+                    </div>
+                    <div className={style.views}>
+                      <img src="/img/icons/views.svg" alt="views" />
+                      <p>40 Views</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+        </div>
+
+        {/* {this.state.links.length <= 0
           ? ""
           : this.state.links.map((link, linkIdx) => {
               return (
@@ -651,7 +785,7 @@ class Pages extends Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               );
-            })}
+            })} */}
       </div>
     );
   }

@@ -1,0 +1,111 @@
+.item{
+    border: 1px solid #DADCE0;
+    border-radius: 8px;
+
+    .body{
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #DADCE0;
+      height: 80%;
+      padding: 10px;
+      .top{
+        // height: 10%;
+        display: flex;
+        justify-content: space-between;
+        img{
+          width: 20px;
+        }
+        button{
+          width: 20px;
+          height: 20px;
+          background: url("/img/icons/kebab-menu.svg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          // background: transparent;
+          border: none;
+          cursor: pointer;
+
+        }
+      }
+      .bottom{
+        flex: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // height: 90%;
+        .title{
+          text-align: center;
+          font-weight: 600;
+        }
+        .files{
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          color: #787879;
+          margin-top: 5px;
+          img{
+            margin-right: 5px;
+          }
+        }
+      }
+      .kebab-menu{
+        background-color: blue;
+        height: 300;
+        position: absolute;
+        left: 170px;
+        top: 120px;
+        z-index: 10;
+        // right: 0;
+        
+
+        
+
+        .dropdown{
+          transition: all 0.25s ease-out;
+          transform: scale(0);
+          transform-origin: 100% 0;
+          &:hover {
+            ul {
+              transform: scale(1);
+            }
+          }
+        }
+
+        .dropdown.active {
+          transform: scale(1);
+          transition: all 0.25s cubic-bezier(.5,1.8,.9,.8);
+        }
+      }
+    }
+
+    .footer{
+      height: 20%;
+      font-size: 12px;
+      color: #787879;
+      display: flex;
+      // justify-content: space-between;
+      align-items: center;
+      padding: 0 10px 0 10px;
+      // background-color: blue;
+      
+      .calendar{
+        flex: 6;
+        display: flex;
+        align-items: center;
+        img{
+          width: 15%;
+          margin-right: 5px;
+        }
+      }
+      .views{
+        flex: 5;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        img{
+          margin-right: 5px;
+        }
+      }
+    }
+  }

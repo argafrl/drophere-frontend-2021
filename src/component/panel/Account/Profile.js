@@ -9,6 +9,8 @@ import style from '../../../css/account-profile.module.scss';
 import Loading from '../../common/Loading';
 import Preloader from '../../common/Preloader';
 
+import {useDropzone} from 'react-dropzone';
+
 // import Button from '@material-ui/core/Button';
 
 import { Input, Button } from '@bccfilkom/designsystem/build'
@@ -22,12 +24,56 @@ import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 import { withSnackbar } from 'notistack';
 import { Divider } from '@material-ui/core';
 
+function Dropzone(props) {
+  const {getRootProps, getInputProps, open, acceptedFiles, fileRejections} = useDropzone({
+    // Disable click and keydown behavior
+    noClick: true,
+    noKeyboard: true,
+    maxFiles:1
+  });
+
+  const acceptedFileItems  = acceptedFiles.map(file => (
+    <li key={file.path}>
+      {file.path}
+    </li>
+  ));
+
+  const fileRejectionItems = fileRejections.map(({ file, errors  }) => { 
+    return (
+      <li key={file.path}>
+           {file.path}
+           <ul>
+             {errors.map(e => <li key={e.code}>{e.message}</li>)}
+          </ul>
+          {/* {errors.message} */}
+      </li>
+    ) 
+   });
+
+  return (
+    <div className="container">
+      <div {...getRootProps({className: 'dropzone'})}>
+        <input {...getInputProps()} />
+        <Button type="prmary" onClick={open}>
+          <CameraAltOutlinedIcon />Ubah
+        </Button>
+      </div>
+      <aside>
+        {/* <h4>Files</h4> */}
+        <ul>{acceptedFileItems }</ul>
+        <ul>{fileRejectionItems}</ul>
+      </aside>
+    </div>
+  );
+}
+
 class Profile extends Component {
 
   static contextType = TokenContext;
 
   state = {
     openNama: false,
+    openPassword: false,
 
     name: '',
     email: '',
@@ -53,6 +99,12 @@ class Profile extends Component {
   handleClickOpenNama = () => {
     this.setState({
       openNama: !this.state.openNama
+    })
+  }
+
+  handleClickOpenPassword = () => {
+    this.setState({
+      openPassword: !this.state.openPassword
     })
   }
 
@@ -240,6 +292,8 @@ class Profile extends Component {
       },
     }));
 
+    
+
     return (
       <div className={style.container}>
         <h1>Profile</h1>
@@ -254,7 +308,15 @@ class Profile extends Component {
                     <div className={style['form-text']}>
                       <p>Foto</p>
                       <div className={style['form-input']}>
-                        <Badge
+                        <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{width:"100px", height:"100px"}} />
+                        <div className={style['btn-ubah']}>
+                          {/* <Button type="primary">
+                            <Icon>photo_camera</Icon>Ubah
+                            <CameraAltOutlinedIcon />Ubah
+                          </Button> */}
+                          <Dropzone />
+                        </div>
+                        {/* <Badge
                           overlap="circular"
                           anchorOrigin={{
                             vertical: 'bottom',
@@ -263,7 +325,7 @@ class Profile extends Component {
                           badgeContent={<Avatar style={{color: "white", backgroundColor: "#41A4D5", width:"35px", height:"35px"}}><CameraAltOutlinedIcon /></Avatar>}
                         >
                           <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{width:"75px", height:"75px"}} />
-                        </Badge>
+                        </Badge> */}
                       </div>
                     </div>
                     
@@ -286,6 +348,7 @@ class Profile extends Component {
                         handleChange={this.handleChange('name')}
                         value={this.state.name}
                         className={style['input']}
+                        placeholder="Nama Lengkap"
                         // style={{borderRadius: "8px"}}
                       /> 
                       <div className={style['button-wrapper']}>
@@ -348,6 +411,69 @@ class Profile extends Component {
 
                 
                 <div className={style['form-container']}>
+                  {this.state.openPassword ? 
+
+                  <form onSubmit={this.onUpdatePassword} className={style['form-edit']}>
+                    <div className={style['form-text']}>
+                      <p>Password</p>
+                    </div>
+                    <div className={style['input-wrapper']}>
+                    {/* <h1 className={style['change-password-title']} style={{ marginTop: 40 }}>Change Password</h1> */}
+                      <Input
+                        type="password"
+                        placeholder="Password lama"
+                        disabled={this.state.isUpdatePasswordLoading}
+                        // fullWidth
+                        hintText={this.state.currentPasswordErr ? this.state.currentPasswordErr.message : ''}
+                        error={this.state.currentPasswordErr != null}
+                        name="current_password"
+                        value={this.state.currentPassword}
+                        onChange={this.handleChange('currentPassword')}
+                      />
+                      <Input
+                        type="password"
+                        placeholder="Password Baru"
+                        disabled={this.state.isUpdatePasswordLoading}
+                        // fullWidth
+                        hintText={this.state.newPasswordErr ? this.state.newPasswordErr.message : ''}
+                        error={this.state.newPasswordErr != null}
+                        name="new_password"
+                        value={this.state.newPassword}
+                        onChange={this.handleChange('newPassword')}
+                      />
+
+                      <Input
+                        type="password"
+                        placeholder="Ulangi Password"
+                        disabled={this.state.isUpdatePasswordLoading}
+                        // fullWidth
+                        name="retype_password"
+                        hintText={this.state.retypePasswordErr ? this.state.retypePasswordErr.message : ''}
+                        error={this.state.retypePasswordErr != null}
+                        value={this.state.retypePassword}
+                        onChange={this.handleChange('retypePassword')}
+                      />
+
+                    {/* {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''} */}
+
+                    <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
+                      <Button type="secondary" onClick={this.handleClickOpenPassword} className={style['btn-batal']}>
+                        Batalkan
+                      </Button>
+                      <Button size="large" variant="outlined" color="primary" type="submit">
+                        Simpan
+                        {/* <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon> */}
+                      </Button>
+                      {/* <Button size="large" variant="outlined" color="primary" type="submit">
+                        Change Password
+                        <Icon style={{ fontSize: 20, marginLeft: 8 }}>lock</Icon>
+                      </Button> */}
+                    </div>
+                    </div>
+
+                    {this.state.isUpdatePasswordLoading ? <Loading /> : ''}
+                  </form> 
+                  :
                   <div className={style['form-unedit']}>
                     <div className={style['form-text']}>
                       <p>Password</p>
@@ -357,11 +483,12 @@ class Profile extends Component {
                     </div>                    
 
                     <div className={style['form-action']}>
-                      <Button type="text">
+                      <Button type="text" onClick={this.handleClickOpenPassword}>
                         <Icon>edit</Icon>Edit
                       </Button>
                     </div>
                   </div>
+                  }
                 </div>
 
                 {/* <Input
@@ -388,7 +515,7 @@ class Profile extends Component {
 
                 
 
-              <form onSubmit={this.onUpdatePassword}>
+              {/* <form onSubmit={this.onUpdatePassword}>
                 <h1 className={style['change-password-title']} style={{ marginTop: 40 }}>Change Password</h1>
                 <Input
                   type="password"
@@ -425,7 +552,7 @@ class Profile extends Component {
                   onChange={this.handleChange('retypePassword')}
                 />
 
-                {/* {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''} */}
+                {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''}
 
                 <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
                   <Button size="large" variant="outlined" color="primary" type="submit">
@@ -435,7 +562,7 @@ class Profile extends Component {
                 </div>
 
                 {this.state.isUpdatePasswordLoading ? <Loading /> : ''}
-              </form>
+              </form> */}
             </div>
           </div>
           : <Preloader />

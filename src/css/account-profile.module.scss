@@ -23,9 +23,11 @@
     }
 }
 
+
+
 .form-wrapper{
     margin-top: 20px;
-    padding: 40px;
+    padding: 0px 40px;
     border: 1px solid #DADCE0;
     border-radius: 8px;
 
@@ -49,9 +51,13 @@
             }
             .input-wrapper{
                 margin-top: 0;
-                .input{
+                display: flex;
+                flex-direction: column;
+                input{
                     border-radius: 8px;
+                    margin-bottom: 10px;
                 }
+                    
                 > :first-child{
                     width: 400px;
                     border-radius: 8px;
@@ -60,7 +66,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-end;
-                    margin-top: 15px;
+                    // margin-top: 15px;
                     .btn-batal{
                         margin-right: 10px;
                     }
@@ -85,6 +91,29 @@
                 }
                 > :last-child{
                     font-weight: 600;
+                }
+                .form-input{
+                    display: flex;
+                    align-items: center;
+                    list-style-type: none;
+                    .btn-ubah{
+                        margin-left: 15px;
+                        button{
+                            padding: 0;
+                            height: 40px;
+                            width: 90px;
+                            min-width: 90px;
+                            svg{
+                                margin-right: 5px;
+                            }
+                        }
+                        aside{
+                            font-weight: normal;
+                            ul{
+                                list-style-type: none;
+                            }                        
+                        }
+                    }
                 }
             }
         }
