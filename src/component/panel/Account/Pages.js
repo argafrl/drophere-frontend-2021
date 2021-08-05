@@ -319,6 +319,12 @@ class Pages extends Component {
     showAdd: false,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.wrapperRef  = React.createRef();
+  }
+
   handleClickOpenKebab = () => {
     this.setState({
       openKebab: !this.state.openKebab
@@ -342,8 +348,8 @@ class Pages extends Component {
       isClosed: closing,
       isClosedBinary: binary
     });
-    console.log(this.state.isClosed);
-    console.log(this.state.isClosedBinary);
+    // console.log(this.state.isClosed);
+    // console.log(this.state.isClosedBinary);
   };
 
   setCloseMenu = () => {
@@ -629,6 +635,7 @@ class Pages extends Component {
   };
 
   async componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
     try {
       this.setState({ isLinksLoading: true });
       await Promise.all([
@@ -648,11 +655,27 @@ class Pages extends Component {
     }
   }
 
+  componentWillUnmount(){
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside = (event) => {
+    if (
+      this.wrapperRef.current &&
+      !this.wrapperRef.current.contains(event.target)
+    ) {
+      this.setState({
+        isClosed: false,
+        isClosedBinary: true
+      });
+    }
+  }
+
   render() {
     return (
       <div className={style.container}>
         <div className={style['verify-alert']}>
-          <h1>Verifikasi Email Anda</h1>
+          <h6>Verifikasi Email Anda</h6>
           <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={this.handleClickOpenAlert}>Kirim ulang</span></p>
           <Dialog
             open={this.state.openAlert}
@@ -714,14 +737,17 @@ class Pages extends Component {
                   <div className={style.body}>
                     <div className={style.top}>
                       <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
-                      <button onClick={() => this.setOpenMenu(linkIdx, false)}></button>    
+                      <div ref={this.wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
+                        <button onClick={() => this.setOpenMenu(linkIdx, false)}></button>    
+                        { this.state.isClosed == linkIdx &&
+                          <Menu opened={this.state.isClosedBinary == true}>
+                            <Menu.Item name="Edit" onClick={() => this.setCloseMenu(true)} />
+                            <Menu.Item name="Hapus" hasDivider onClick={() => this.setCloseMenu(true)} />
+                          </Menu>
+                        }
+                      </div>
                     </div>
-                    { this.state.isClosed == linkIdx &&
-                      <Menu opened={this.state.isClosedBinary == true}>
-                        <Menu.Item name="Edit" onClick={() => this.setCloseMenu(true)} />
-                        <Menu.Item name="Hapus" hasDivider onClick={() => this.setCloseMenu(true)} />
-                      </Menu>
-                    }
+                    
                     <div className={style.bottom}>
                       <div className={style.title}>
                         <p>{`${link.title}`}</p>

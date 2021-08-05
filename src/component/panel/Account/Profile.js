@@ -456,7 +456,7 @@ class Profile extends Component {
 
                     {/* {this.state.isUpdatePasswordError ? <div className="error">{this.state.isUpdatePasswordError.message}</div> : ''} */}
 
-                    <div className={style['button-wrapper']} style={{ marginBottom: 40 }}>
+                    <div className={style['button-wrapper']}>
                       <Button type="secondary" onClick={this.handleClickOpenPassword} className={style['btn-batal']}>
                         Batalkan
                       </Button>
