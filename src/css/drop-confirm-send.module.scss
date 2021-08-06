@@ -1,0 +1,16 @@
+.dialog {
+  &__content {
+    padding: 2rem!important;
+    width: 400px;
+    min-height: 150px;
+    &__title {
+      color: #000;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__actions {
+    padding: 0 2rem 2rem!important;
+  }
+}

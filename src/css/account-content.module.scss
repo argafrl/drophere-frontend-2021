@@ -15,7 +15,10 @@
     }
   }
   .buat-halaman {
+    width: 80%;
     margin-bottom: 12px;
+    justify-content: flex-start;
+    column-gap: 1rem;
   }
 }
 

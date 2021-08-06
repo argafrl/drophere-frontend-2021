@@ -1,20 +1,81 @@
-.container {
-    height: 100%;
-    .content {
-        position: relative;
-        height: 100%;
-        text-align: center;
+.wrapper {
+  flex-grow: 1;
+
+  .page {
+    text-align: center;
+
+    h1 {
+      font-weight: 600;
+      font-size: 20pt;
+      margin-bottom: 0.5rem;
     }
-}
 
-.menu {
-    position: absolute;
-    margin-top: 50px;
-    margin-left: 20px;
-    width: 250px;
-}
+    &__description {
+      margin-bottom: 1.2rem;
+    }
 
-.menu-fly {
-    position: fixed;
-    top: 0;
+    &__deadline {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+
+    .container-inner {
+      box-shadow: 0px 1px 12px rgba(120, 120, 121, 0.2);
+      border-radius: 0.5rem;
+      padding: 1.5rem 2rem;
+
+      button {
+        border-width: 2px;
+      }
+
+      button[disabled="disabled"],
+      button:disabled {
+        background: #e4e5e7;
+        border: none;
+      }
+
+      .btn-send {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
+
+        button {
+          flex: 0 1 250px;
+          color: white;
+          display: flex;
+        }
+      }
+
+      .drop-container {
+        justify-content: center;
+
+        .cloud-icon {
+          margin-bottom: 1rem;
+        }
+
+        h2 {
+          color: #41a4d5;
+          font-weight: 600;
+          font-size: 20px;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          font-size: 12px;
+        }
+
+        .file-container {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 1.5rem 1rem;
+        }
+      }
+    }
+  }
 }
