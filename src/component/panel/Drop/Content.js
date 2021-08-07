@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@bccfilkom/designsystem/build";
 import { useDropzone } from "react-dropzone";
 import style from "../../../css/drop-content.module.scss";
@@ -20,7 +20,6 @@ const Content = () => {
     getRootProps,
     getInputProps,
     open,
-    isDragActive,
     isDragAccept,
     isDragReject,
   } = useDropzone({
@@ -29,7 +28,6 @@ const Content = () => {
     onDrop,
     multiple: false,
     onDropRejected: () => console.log("rejected"),
-    accept: ".pdf",
   });
 
   const handleRemove = (deletedFile) => {
@@ -67,7 +65,7 @@ const Content = () => {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept, files]
+    [isDragReject, isDragAccept, acceptStyle, baseStyle, rejectStyle]
   );
 
   if (slug !== "found-link") {

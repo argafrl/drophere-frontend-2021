@@ -6,87 +6,87 @@ import { endpointURL, storageProviders } from "../../../config";
 import style from "../../../css/storage.module.scss";
 import Preloader from "../../common/Preloader";
 
-import Avatar from "@material-ui/core/Avatar";
+// import Avatar from "@material-ui/core/Avatar";
 import { Button } from "@bccfilkom/designsystem/build";
-import Grid from "@material-ui/core/Grid";
-import Icon from "@material-ui/core/Icon";
-import TextField from "@material-ui/core/TextField";
+// import Grid from "@material-ui/core/Grid";
+// import Icon from "@material-ui/core/Icon";
+// import TextField from "@material-ui/core/TextField";
 import { withSnackbar } from "notistack";
 
-function StorageConnection(props) {
-  const unauthorized = (
-    <div className={style["list-container"] + " opening-transition"}>
-      <Grid container spacing={2}>
-        <Grid item xs={9}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {props.logo}
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button
-              color="primary"
-              fullWidth
-              variant="contained"
-              onClick={props.onAuthorize}
-              size="large"
-            >
-              Authorize
-              <Icon style={{ marginLeft: 8 }}>link</Icon>
-            </Button>
-          </div>
-        </Grid>
-      </Grid>
-    </div>
-  );
+// function StorageConnection(props) {
+//   const unauthorized = (
+//     <div className={style["list-container"] + " opening-transition"}>
+//       <Grid container spacing={2}>
+//         <Grid item xs={9}>
+//           <div style={{ display: "flex", alignItems: "center" }}>
+//             {props.logo}
+//           </div>
+//         </Grid>
+//         <Grid item xs={3}>
+//           <div
+//             style={{
+//               display: "flex",
+//               flexDirection: "row",
+//               justifyContent: "flex-end",
+//             }}
+//           >
+//             <Button
+//               color="primary"
+//               fullWidth
+//               variant="contained"
+//               onClick={props.onAuthorize}
+//               size="large"
+//             >
+//               Authorize
+//               <Icon style={{ marginLeft: 8 }}>link</Icon>
+//             </Button>
+//           </div>
+//         </Grid>
+//       </Grid>
+//     </div>
+//   );
 
-  const authorized = (
-    <React.Fragment>
-      <div className={style["list-container"]}>
-        <Grid container spacing={2}>
-          <Grid item xs={1}>
-            {typeof props.photo === "string" && props.photo.length > 0 ? (
-              <Avatar
-                src={props.photo}
-                alt={`${props.storageProvider.name} Avatar`}
-              />
-            ) : (
-              <Avatar alt={`${props.storageProvider.name} Avatar`}>X</Avatar>
-            )}
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              value={props.email}
-              label={`${props.storageProvider.name} Email`}
-              fullWidth
-              disabled
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <Button
-              fullWidth
-              color="secondary"
-              variant="contained"
-              onClick={props.onUnauthorize}
-              size="large"
-            >
-              Unlink
-              <Icon style={{ marginLeft: 8 }}>link_off</Icon>
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
-    </React.Fragment>
-  );
+//   const authorized = (
+//     <React.Fragment>
+//       <div className={style["list-container"]}>
+//         <Grid container spacing={2}>
+//           <Grid item xs={1}>
+//             {typeof props.photo === "string" && props.photo.length > 0 ? (
+//               <Avatar
+//                 src={props.photo}
+//                 alt={`${props.storageProvider.name} Avatar`}
+//               />
+//             ) : (
+//               <Avatar alt={`${props.storageProvider.name} Avatar`}>X</Avatar>
+//             )}
+//           </Grid>
+//           <Grid item xs={8}>
+//             <TextField
+//               value={props.email}
+//               label={`${props.storageProvider.name} Email`}
+//               fullWidth
+//               disabled
+//             />
+//           </Grid>
+//           <Grid item xs={3}>
+//             <Button
+//               fullWidth
+//               color="secondary"
+//               variant="contained"
+//               onClick={props.onUnauthorize}
+//               size="large"
+//             >
+//               Unlink
+//               <Icon style={{ marginLeft: 8 }}>link_off</Icon>
+//             </Button>
+//           </Grid>
+//         </Grid>
+//       </div>
+//     </React.Fragment>
+//   );
 
-  return props.email != null ? authorized : unauthorized;
-}
+//   return props.email != null ? authorized : unauthorized;
+// }
 
 class Storage extends Component {
   state = {

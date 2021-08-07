@@ -24,9 +24,6 @@ import {
   DialogActions, 
   DialogContent, 
   DialogContentText,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -42,11 +39,9 @@ import {
 } from "@material-ui/core";
 
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import MomentUtils from "@date-io/moment";
 import { withSnackbar } from "notistack";
-import PageItem from "../../common/PageItem";
 
 const excludeSlugRegexp = new RegExp("^(" + excludeSlug.join("|") + ")$");
 
@@ -739,8 +734,8 @@ class Pages extends Component {
                       <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
                       <div ref={this.wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
                         <button onClick={() => this.setOpenMenu(linkIdx, false)}></button>    
-                        { this.state.isClosed == linkIdx &&
-                          <Menu opened={this.state.isClosedBinary == true}>
+                        { this.state.isClosed === linkIdx &&
+                          <Menu opened={this.state.isClosedBinary}>
                             <Menu.Item name="Edit" onClick={() => this.setCloseMenu(true)} />
                             <Menu.Item name="Hapus" hasDivider onClick={() => this.setCloseMenu(true)} />
                           </Menu>

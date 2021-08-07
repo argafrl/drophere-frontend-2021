@@ -16,15 +16,12 @@ import {useDropzone} from 'react-dropzone';
 import { Input, Button } from '@bccfilkom/designsystem/build'
 
 import Icon from '@material-ui/core/Icon';
-import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 
 import { withSnackbar } from 'notistack';
-import { Divider } from '@material-ui/core';
 
-function Dropzone(props) {
+function Dropzone() {
   const {getRootProps, getInputProps, open, acceptedFiles, fileRejections} = useDropzone({
     // Disable click and keydown behavior
     noClick: true,
@@ -274,26 +271,6 @@ class Profile extends Component {
 
 
   render() {
-    
-    const SmallAvatar = withStyles((theme) => ({
-      root: {
-        width: 22,
-        height: 22,
-        border: `2px solid ${theme.palette.background.paper}`,
-      },
-    }))(Avatar);
-    
-    const useStyles = makeStyles((theme) => ({
-      root: {
-        display: 'flex',
-        '& > *': {
-          margin: theme.spacing(1),
-        },
-      },
-    }));
-
-    
-
     return (
       <div className={style.container}>
         <h1>Profile</h1>

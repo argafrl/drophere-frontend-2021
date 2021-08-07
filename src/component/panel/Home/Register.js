@@ -100,8 +100,8 @@ class Register extends Component {
                   handleChange={this.handleChange('email')}
                   style={{borderRadius: "6px"}}
                   // hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email ${this.state.email} sudah terdaftar` : '' }
-                  hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email tersebut sudah terdaftar` : '' }
-                  action={this.state.error == "Error: Duplicated email" ? "error" : ''}
+                  hintText={this.state.error === "Error: Duplicated email" ? `Akun dengan email tersebut sudah terdaftar` : '' }
+                  action={this.state.error === "Error: Duplicated email" ? "error" : ''}
                 />
               </div>
 

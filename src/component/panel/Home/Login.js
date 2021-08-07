@@ -1,34 +1,31 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios'
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-import { TokenContext } from '../../../contexts/token';
-import { endpointURL } from '../../../config';
+import { TokenContext } from "../../../contexts/token";
+import { endpointURL } from "../../../config";
 
-import style from '../../../css/login.module.scss';
+import style from "../../../css/login.module.scss";
 // import Input from '../../common/WrappedInput';
-import Loading from '../../common/Loading';
-import ForgotPassword from '../../common/ForgotPassword';
+import Loading from "../../common/Loading";
+import ForgotPassword from "../../common/ForgotPassword";
 
-import { Card, Button, Input } from '@bccfilkom/designsystem/build';
-import WarningIcon from '@material-ui/icons/Warning';
-import { Dialog, DialogActions, DialogContent, DialogContentText, InputAdornment } from '@material-ui/core';
+import { Card, Button, Input } from "@bccfilkom/designsystem/build";
 
 class Login extends Component {
-
   // const [visible, setVisible] = useState(0);
 
   state = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     error: null,
     isLoading: false,
     open: false,
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
-  }
+  };
 
   // onClick = (e) => {
   //   this.setState({ visible: e.target.value });
@@ -36,18 +33,17 @@ class Login extends Component {
 
   handleClickOpen = () => {
     this.setState({
-      open: true
-    })
-  }
-
-  handleClose = () => {
-    this.setState({ 
-      open: false
-     });
-     
+      open: true,
+    });
   };
 
-  static id = "loginLoading"
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  static id = "loginLoading";
 
   onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -67,8 +63,8 @@ class Login extends Component {
           email,
           password,
         },
-        operationName: 'login',
-      })
+        operationName: "login",
+      });
       const loginResp = resp.data.data.login;
       if (loginResp) {
         this.context.setToken(loginResp.loginToken);
@@ -88,23 +84,22 @@ class Login extends Component {
       // console.log(err)
       // document.getElementById("inputEmail").select();
     }
-
-  }
+  };
 
   render() {
     return (
       <div className={style.container}>
         <Card className={style.form}>
-
           <div className={style.header}>
             <h1>Masuk</h1>
-            <p>Belum punya akun? <Link to="/register">Daftar</Link></p>
+            <p>
+              Belum punya akun? <Link to="/register">Daftar</Link>
+            </p>
           </div>
 
           <form onSubmit={this.onSubmitHandler}>
-            <div className={style['form-container']}>
-              
-              <div className={style['input-wrapper']}>
+            <div className={style["form-container"]}>
+              <div className={style["input-wrapper"]}>
                 <p>Email</p>
                 <Input
                   // icon='./img/bcc-logo-horizontal.png'
@@ -112,94 +107,72 @@ class Login extends Component {
                   // icon={{WarningIcon}}
                   className={style.input}
                   type="email"
-                  placeholder='Masukkan Email'
+                  placeholder="Masukkan Email"
                   required
                   value={this.state.email}
-                  handleChange={this.handleChange('email')}
-                  style={{borderRadius: "6px"}}
+                  handleChange={this.handleChange("email")}
+                  style={{ borderRadius: "6px" }}
                   // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
                   // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
-                  hintText={this.state.error == "Error: User not found" ? "Email yang anda masukkan tidak valid" : '' }
-                  action={this.state.error == "Error: User not found" ? "error" : ''}
+                  hintText={
+                    this.state.error === "Error: User not found"
+                      ? "Email yang anda masukkan tidak valid"
+                      : ""
+                  }
+                  action={
+                    this.state.error === "Error: User not found" ? "error" : ""
+                  }
                   // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                   // ref={this.state.inputRef}
                 />
               </div>
 
-              <div className={style['input-wrapper']}>
+              <div className={style["input-wrapper"]}>
                 <p>Password</p>
                 <Input
-                  className={style['input']}
-                  type='password'
-                  placeholder='Masukkan Password'
+                  className={style["input"]}
+                  type="password"
+                  placeholder="Masukkan Password"
                   required
                   value={this.state.password}
-                  handleChange={this.handleChange('password')}
-                  style={{borderRadius: "6px"}}
-                  hintText={this.state.error == "Error: Invalid password" ? "Password yang anda masukkan salah" : ''}
-                  action={this.state.error == "Error: Invalid password" ? "error" : ''}
+                  handleChange={this.handleChange("password")}
+                  style={{ borderRadius: "6px" }}
+                  hintText={
+                    this.state.error === "Error: Invalid password"
+                      ? "Password yang anda masukkan salah"
+                      : ""
+                  }
+                  action={
+                    this.state.error === "Error: Invalid password"
+                      ? "error"
+                      : ""
+                  }
                   // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
               </div>
 
-              {/* {this.state.error ? <div className="error">{this.state.error.message}</div> : ''} */}
-              {/* <p className={style['lupa-password']}><Link to="/recover-password">Lupa password?</Link></p> */}
-              <a onClick={ this.handleClickOpen }><p className={style['lupa-password']}>Lupa Password?</p></a>
-              
-              {/* <Dialog
-                open={this.state.open}
-                onClose={this.handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                maxWidth='xs'
-                className={style.dialog}
+              <button
+                type="button"
+                onClick={this.handleClickOpen}
+                className={style["lupa-password"]}
               >
-                <DialogContent className={style.content}>
-                  <DialogContentText id="alert-dialog-description">
-                    <h1>Lupa Password?</h1>
-                    <p>Masukkan email anda dan kami akan mengirim link untuk mengatur ulang password anda.</p>
-                    <div className={style['input-wrapper']}>
-                      <p>Email</p>
-                      <Input
-                        className={style.input}
-                        type="email"
-                        placeholder='Masukkan Email'
-                        required
-                        value={this.state.email}
-                        handleChange={this.handleChange('email')}
-                        style={{borderRadius: "6px"}}
-                      />
-                    </div>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions className={style.actions}>
-                  <Button onClick={this.handleClose} type="text">
-                    Batalkan
-                  </Button>
-                  <Button onClick={this.handleClose} type="primary" autoFocus>
-                    Konfirmasi
-                  </Button>
-                </DialogActions>
-              </Dialog> */}
+                Lupa Password?
+              </button>
 
-              {/* <Button onClick={function onClick(){return setVisible(!0)}}> */}
-              
-              {/* <button className="custom-button">Masuk</button> */}
-              <Button className={style['button-masuk']}>Masuk</Button>
-              
+              <Button className={style["button-masuk"]}>Masuk</Button>
             </div>
-            {this.state.isLoading ? <Loading /> : ''}
+            {this.state.isLoading ? <Loading /> : ""}
           </form>
 
-          <ForgotPassword 
+          <ForgotPassword
             open={this.state.open}
             onClose={this.handleClose}
             value={this.state.email}
-            handleChange={this.handleChange('email')} />
+            handleChange={this.handleChange("email")}
+          />
           {/* <Button onClick={ this.handleClickOpen }>
             Show Dialog
           </Button> */}
-          
         </Card>
       </div>
     );

@@ -8,8 +8,6 @@ import Account from "./component/panel/Account";
 import Drop from "./component/panel/Drop";
 import Authorization from "./component/panel/Account/Authorization";
 import ResetPassword from "./component/panel/Home/ResetPassword";
-import ConnectAccount from "./component/panel/Home/ConnectAccount";
-
 class AppRouter extends Component {
   state = { particle: false };
 

@@ -5,7 +5,7 @@ import { FILE_TYPES } from "../../../utils";
 const FileItem = ({ name, size, onRemove }) => {
   const extPosition = Math.max(0, name.lastIndexOf(".")) || Infinity;
   const fileName = name.slice(0, extPosition);
-  const fileExt = name.slice(extPosition + 1);
+  const fileExt = name.slice(extPosition + 1).toLowerCase();
 
   return (
     <div className={style["file"]}>
@@ -19,7 +19,7 @@ const FileItem = ({ name, size, onRemove }) => {
         className={style["file__icon"]}
       >
         <button onClick={onRemove}>
-          <img src="/img/icons/cross.svg" />
+          <img src="/img/icons/cross.svg" alt='remove' />
         </button>
         <h3>{fileExt}</h3>
       </div>

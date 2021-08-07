@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import style from "../../../css/drop-file-card.module.scss";
 import { FILE_TYPES } from "../../../utils";
 
@@ -7,7 +7,7 @@ const ProgressBar = ({ size, uploaded }) => {
 
   return (
     <div className={style["progress"]}>
-      <div style={{ width: 240 }}>
+      <div className={style["progress-wrapper"]}>
         <div
           className={style["progress__bar"]}
           style={{ width: `${percentage}%` }}
@@ -19,14 +19,10 @@ const ProgressBar = ({ size, uploaded }) => {
   );
 };
 
-const FileCard = ({ name, size, uploaded, submitted }) => {
+const FileCard = ({ name, size, uploaded, submitted, success, error }) => {
   const extPosition = Math.max(0, name.lastIndexOf(".")) || Infinity;
   const fileName = name.slice(0, extPosition);
-  const fileExt = name.slice(extPosition + 1);
-
-  useEffect(() => {
-    console.log(size);
-  });
+  const fileExt = name.slice(extPosition + 1).toLowerCase();
 
   return (
     <div className={style["file-card"]}>
@@ -45,8 +41,14 @@ const FileCard = ({ name, size, uploaded, submitted }) => {
         <h4 className={style["file-card__detail__name"]}>{fileName}</h4>
         {submitted ? (
           <ProgressBar size={size} uploaded={uploaded} />
+        ) : !success ? (
+          !error ? (
+            <h5>{size} kb</h5>
+          ) : (
+            <h5>Gagal, ingin kirim ulang?</h5>
+          )
         ) : (
-          <h5>{size} kb</h5>
+          <h5>Selesai</h5>
         )}
       </div>
     </div>

@@ -12,10 +12,10 @@ export default ({ right }) => {
         className="footer-link"
       >Basic Computing Community</a>. All rights reserved</p>
       <div className={style.logo}>
-        <a target="_blank" href="https://www.instagram.com/bccfilkom">
+        <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/bccfilkom">
           <img src="/img/instagram.png" alt="BCC Instagram"/>
         </a>
-        <a target="_blank" href="https://id.linkedin.com/company/bccfilkomub">
+        <a target="_blank" rel="noopener noreferrer" href="https://id.linkedin.com/company/bccfilkomub">
           <img src="/img/linkedin.png" alt="BCC LinkedIn" />
         </a>
       </div>   
