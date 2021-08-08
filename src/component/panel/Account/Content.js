@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import Profile from "./Profile";
@@ -17,6 +17,8 @@ import { Button } from "@bccfilkom/designsystem/build";
 import AddNewPage from "./AddNewPage";
 import EditPage from "./EditPage";
 import Authorization from "./Authorization";
+import { SidebarContext } from "../../../contexts/SidebarContext";
+import { UserContext } from "../../../contexts/UserContext";
 
 function MenuItem(props) {
   return (
@@ -47,8 +49,10 @@ function MenuItem(props) {
   );
 }
 
-function Menu(props) {
+const Menu = (props) => {
   const history = useHistory();
+  const { closeSidebar } = useContext(SidebarContext);
+  const { isFetchingUserInfo, userInfo } = useContext(UserContext);
 
   const selectedIndex =
     typeof props.selectedIndex === "number" ? props.selectedIndex : -1;
@@ -57,22 +61,31 @@ function Menu(props) {
 
   const menuOnClickHandler =
     typeof props.onClick === "function" ? props.onClick : () => {};
-  const onClickHandler = (index) => {
-    return (e) => {
-      e.preventDefault();
 
-      menuOnClickHandler({
-        index,
-        url: data[index].url,
-      });
-    };
+  const onClickHandler = (index) => {
+    menuOnClickHandler({
+      index,
+      url: data[index].url,
+    });
   };
 
   return (
     <div className={menuStyle.container + " wrapper"}>
+      <div className={menuStyle["user"]}>
+        <img src="/img/user.png" alt="user-profile" />
+        <p>
+          Hi,{" "}
+          <strong>
+            {isFetchingUserInfo || !userInfo ? "Loading..." : userInfo.name}
+          </strong>
+        </p>
+      </div>
       <Button
         className={style["buat-halaman"]}
-        onClick={() => history.push("/account/pages/add")}
+        onClick={() => {
+          history.push("/account/pages/add");
+          closeSidebar();
+        }}
       >
         <Icon className={style.icon}>add</Icon>Buat Halaman
       </Button>
@@ -80,7 +93,10 @@ function Menu(props) {
         {data.map((item, index) => (
           <MenuItem
             key={"menu_item" + index}
-            onClick={onClickHandler(index)}
+            onClick={() => {
+              onClickHandler(index);
+              closeSidebar();
+            }}
             icon={item.icon}
             caption={item.caption}
             selected={selectedIndex === index}
@@ -89,9 +105,11 @@ function Menu(props) {
       </List>
     </div>
   );
-}
+};
 
 class Content extends Component {
+  static contextType = SidebarContext;
+
   menus = [
     { caption: "Halaman", icon: "description", url: "/pages" },
     { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
@@ -123,12 +141,22 @@ class Content extends Component {
         history.push(loc);
       }
     }
+
+    this.context.closeSidebar();
   };
+
+  componentDidMount() {
+    console.log(this.context);
+  }
 
   render() {
     return (
       <div ref={this.elementRef} className={style.container + " wrapper"}>
-        <div className={style.menu} id="mymenu">
+        <div
+          className={style.menu}
+          id="mymenu"
+          style={{ left: this.context.isSidebarOpen ? "0%" : "-100%" }}
+        >
           <Menu
             data={this.menus}
             selectedIndex={this.getSelectedMenuIndex()}

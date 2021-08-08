@@ -4,7 +4,6 @@
   .content {
     position: relative;
     flex: 1 1 auto;
-    // max-width: 600px;
     width: 100%;
     min-height: 445px;
     margin-left: 32px;
@@ -28,4 +27,26 @@
   margin-left: 20px;
   top: 50px;
   flex: 0 0 250px;
+}
+
+@media screen and (max-width: 768px) {
+  .menu {
+    position: fixed;
+    padding-top: 32px;
+    background: white;
+    z-index: 10;
+    top: 0;
+    height: 100%;
+    margin-left: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    left: -100%;
+    transition: 0.5s ease;
+  }
+
+  .container {
+    .content {
+      margin-left: 0px;
+    }
+  }
 }

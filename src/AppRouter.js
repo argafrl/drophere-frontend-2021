@@ -10,6 +10,7 @@ import AuthRoute from "./routes/AuthRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
+import SidebarStore from "./contexts/SidebarContext";
 
 class AppRouter extends Component {
   state = { particle: false };
@@ -24,17 +25,19 @@ class AppRouter extends Component {
           }}
           maxSnack={3}
         >
-          <UserStore>
-            <Header />
-            <main>
-              <Switch>
-                <Route path="/link/:slug" exact component={Drop} />
-                <PrivateRoute path="/account" component={Account} />
-                <AuthRoute path="/" component={Home} />
-              </Switch>
-            </main>
-            <Footer />
-          </UserStore>
+          <SidebarStore>
+            <UserStore>
+              <Header />
+              <main>
+                <Switch>
+                  <Route path="/link/:slug" exact component={Drop} />
+                  <PrivateRoute path="/account" component={Account} />
+                  <AuthRoute path="/" component={Home} />
+                </Switch>
+              </main>
+              <Footer />
+            </UserStore>
+          </SidebarStore>
         </SnackbarProvider>
       </BrowserRouter>
     );

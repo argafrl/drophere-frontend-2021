@@ -4,11 +4,35 @@
   justify-content: space-between;
   padding: 20px 0;
 
+  .burger {
+    background: transparent;
+    border: none;
+    display: none;
+
+    span {
+      width: 36px;
+      height: 5.5px;
+      background: #000;
+      display: block;
+      margin: 6px 0;
+      border-radius: 8px;
+
+      &::before,
+      &::after {
+        width: 36px;
+        height: 5.5px;
+        background: #000;
+        display: block;
+        border-radius: 8px;
+      }
+    }
+  }
+
   a {
     display: flex;
     width: auto;
     flex: 0 0 250px;
-    margin-left: 20px;
+    // margin-left: 20px;
 
     img {
       width: 200px;
@@ -46,7 +70,7 @@
         height: 45px;
         margin-right: 8px;
       }
-      p{
+      p {
         font-size: 16px;
       }
     }
@@ -85,6 +109,16 @@
           color: #242424;
         }
       }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .container {
+    .auth {
+      display: none;
+    }
+    .burger {
+      display: block;
     }
   }
 }

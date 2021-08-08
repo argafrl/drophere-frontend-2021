@@ -58,11 +58,13 @@
         p {
           margin-top: 1rem;
           font-size: 14px;
+          flex: 0 1 auto;
         }
         div {
           flex-grow: 1;
           input {
             width: 100%;
+            min-width: 0;
           }
         }
       }
@@ -70,6 +72,7 @@
       &__switcher {
         div {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
           margin-bottom: 0.5rem;
           column-gap: 0.5rem;

@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@bccfilkom/designsystem/build";
 import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
+import { SidebarContext } from "../../contexts/SidebarContext";
 
-export default function Header() {
+const Header = () => {
   const {
     userInfo,
     fetchUserInfo,
@@ -12,6 +13,8 @@ export default function Header() {
     isAuthenticated,
     logout,
   } = useContext(UserContext);
+
+  const { toogleSidebar } = useContext(SidebarContext);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,8 +25,17 @@ export default function Header() {
   return (
     <div className={style.container + " wrapper"}>
       <Link to="/">
-        <img src="/img/primary-logo.svg" alt="Drophere Logo" />
+        <img
+          src="/img/primary-logo.svg"
+          alt="Drophere Logo"
+          className={style["logo"]}
+        />
       </Link>
+      <button className={style["burger"]} onClick={toogleSidebar}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       {isAuthenticated && (
         <div className={style["auth"]}>
           <div className={style["user"]}>
@@ -46,4 +58,6 @@ export default function Header() {
       )}
     </div>
   );
-}
+};
+
+export default Header;

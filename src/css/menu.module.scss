@@ -5,8 +5,21 @@
   a {
     text-decoration: none !important;
   }
+  .user {
+    display: none;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    img {
+      width: 45px;
+      height: 45px;
+      margin-right: 16px;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
 }
-
 
 .selected {
   border-right: #2196f3 solid 3px;
@@ -35,5 +48,14 @@
 
   span {
     color: #e74c3c !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    position: relative;
+    .user{
+      display: flex;
+    }
   }
 }
