@@ -5,21 +5,18 @@ import Profile from "./Profile";
 import Pages from "./Pages";
 import Support from "./Support";
 import Storage from "./Storage";
-
 import style from "../../../css/account-content.module.scss";
 import menuStyle from "../../../css/menu.module.scss";
-
 import Icon from "@material-ui/core/Icon";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { TokenContext } from "../../../contexts/token";
 import ConnectAccount from "../Home/ConnectAccount";
-
 import { Button } from "@bccfilkom/designsystem/build";
 import AddNewPage from "./AddNewPage";
 import EditPage from "./EditPage";
+import Authorization from "./Authorization";
 
 function MenuItem(props) {
   return (
@@ -96,20 +93,11 @@ function Menu(props) {
 
 class Content extends Component {
   menus = [
-    // { caption: 'Profil', icon: 'account_circle', url: '/profile' },
-    // { caption: 'Penyimpanan', icon: 'cloud_upload', url: '/storage' },
-    // { caption: 'Halaman', icon: 'library_books', url: '/pages' },
-    // { caption: 'Dukungan', icon: 'face_agent', url: '/support' },
-    // { caption: 'Logout', icon: 'logout', url: '/logout'},
-
     { caption: "Halaman", icon: "description", url: "/pages" },
     { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
     { caption: "Masukan", icon: "comment", url: "/support" },
     { caption: "Profile", icon: "person_outline", url: "/profile" },
-    { caption: "Logout", icon: "logout", url: "/logout" },
   ];
-
-  static contextType = TokenContext;
 
   constructor(props) {
     super(props);
@@ -126,12 +114,6 @@ class Content extends Component {
 
   onClickHandler = ({ index, url }) => {
     const { match, history } = this.props;
-
-    if (index === 4) {
-      // logout
-      this.context.setToken("");
-      return;
-    }
 
     let loc = "";
     if (match) {
@@ -156,12 +138,15 @@ class Content extends Component {
 
         <div className={style.content}>
           <Switch>
-            {/* <Redirect from="/account" exact to="/account/profile" /> */}
             <Redirect from="/account" exact to="/account/pages" />
             <Route path="/account/pages" exact component={Pages} />
             <Route path="/account/pages/add" component={AddNewPage} />
             <Route path="/account/pages/:id/edit" component={EditPage} />
             <Route path="/account/profile" component={Profile} />
+            <Route
+              path="/account/storage/authorize"
+              component={Authorization}
+            />
             <Route path="/account/storage" component={Storage} />
             <Route path="/account/support" component={Support} />
             <Route path="/account/connect" component={ConnectAccount} />

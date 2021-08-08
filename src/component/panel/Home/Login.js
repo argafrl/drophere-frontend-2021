@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-
-import { TokenContext } from "../../../contexts/token";
-import { endpointURL } from "../../../config";
-
 import style from "../../../css/login.module.scss";
-// import Input from '../../common/WrappedInput';
 import Loading from "../../common/Loading";
 import ForgotPassword from "../../common/ForgotPassword";
-
 import { Card, Button, Input } from "@bccfilkom/designsystem/build";
+import { UserContext } from "../../../contexts/UserContext";
 
 class Login extends Component {
-  // const [visible, setVisible] = useState(0);
+  static contextType = UserContext;
 
   state = {
     email: "",
@@ -26,10 +20,6 @@ class Login extends Component {
   handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
-
-  // onClick = (e) => {
-  //   this.setState({ visible: e.target.value });
-  // }
 
   handleClickOpen = () => {
     this.setState({
@@ -48,42 +38,7 @@ class Login extends Component {
   onSubmitHandler = async (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-
-    try {
-      this.setState({ isLoading: true });
-      const resp = await axios.post(endpointURL, {
-        query: `
-      mutation login($email:String!,$password:String!){
-        login(email:$email, password:$password){
-          loginToken
-        }
-      }
-      `,
-        variables: {
-          email,
-          password,
-        },
-        operationName: "login",
-      });
-      const loginResp = resp.data.data.login;
-      if (loginResp) {
-        this.context.setToken(loginResp.loginToken);
-        this.setState({ isLoading: false });
-        return;
-      }
-      throw new Error(resp.data.errors[0].message);
-    } catch (err) {
-      // if(err == "Error: User not found"){
-      //   err = "Email yang anda masukkan tidak valid";
-      // }
-      // console.log(err);
-      this.setState({
-        error: err,
-        isLoading: false,
-      });
-      // console.log(err)
-      // document.getElementById("inputEmail").select();
-    }
+    this.context.login(email, password);
   };
 
   render() {
@@ -161,7 +116,7 @@ class Login extends Component {
 
               <Button className={style["button-masuk"]}>Masuk</Button>
             </div>
-            {this.state.isLoading ? <Loading /> : ""}
+            {this.context.isLogin ? <Loading /> : ""}
           </form>
 
           <ForgotPassword
@@ -178,6 +133,4 @@ class Login extends Component {
     );
   }
 }
-Login.contextType = TokenContext;
-
 export default Login;

@@ -51,31 +51,42 @@
   margin: 0;
 }
 
-html, body, textarea {
-	font-family: "Inter", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-	font-size: 12pt;
-	line-height: 1.5;
-	height: 100%;
-    font-weight: normal;
-    /* color: #5a5a5a; */
-    color: #141414;
+html,
+body,
+textarea {
+  font-family: "Inter", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  font-size: 12pt;
+  line-height: 1.5;
+  height: 100%;
+  font-weight: normal;
+  /* color: #5a5a5a; */
+  color: #141414;
 }
 
 body {
-	font-size: 100%;
-	margin: 0;
-	padding: 0;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    /* background-image: url('/img/background-diagonal.png'); */
-    background-color: #ffffff;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  /* background-image: url('/img/background-diagonal.png'); */
+  background-color: #ffffff;
 }
 
-html,
-body,
-#app,
-#app > div {
-  height: 100%;
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+main > div{
+  width: 100%;
 }
 
 .wrapper {

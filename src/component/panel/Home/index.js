@@ -1,21 +1,18 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import style from "../../../css/home.module.scss";
 
 import Header from "./Header";
-import LogoHeader from "../../common/Header";
 import Login from "./Login";
-import RecoverPassword from "./RecoverPassword";
-import Register from "./Register";
 
-import Footer from "../../common/Footer";
+import Register from "./Register";
 import ConnectAccount from "./ConnectAccount";
+import ResetPassword from "./ResetPassword";
 
 const Home = ({ location }) => {
   return (
     <div className={style.container}>
-      <LogoHeader />
       <div className={style.content}>
         {location.pathname !== "/connect-account" && (
           <div className={style.header + " left-to-right-anim"}>
@@ -24,14 +21,15 @@ const Home = ({ location }) => {
         )}
         <div className={style.auth + " right-to-left-anim"}>
           <Switch>
+            <Redirect from="/" to="/home" exact />
+            <Redirect from="/login" to="/home" />
             <Route path="/home" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/recover-password" component={RecoverPassword} />
-            <Route path="/connect-account" component={ConnectAccount} />
+            <Route path="/reset-password" exact component={ResetPassword} />
+            <Route path="/connect-account" exact component={ConnectAccount} />
           </Switch>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
