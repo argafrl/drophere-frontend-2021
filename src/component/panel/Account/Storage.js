@@ -274,12 +274,13 @@ class Storage extends Component {
           <Preloader />
         ) : (
           <div className={style["card-container"]}>
+            {" "}
             <div className={style["card"]}>
               <div className={style["card__body"]}>
-                <h3 className={style["card__body__title"]}>Dropbox</h3>
+                <h3 className={style["card__body__title"]}>Google Drive</h3>
                 <p className={style["card__body__description"]}>
-                  Tautkan akun ke Dropbox untuk menyimpan file
-                </p>
+                  Nantikan fitur baru untuk dapat terhubung ke Google Drive
+                </p>{" "}
                 {this.state.useDrive ? (
                   <Button
                     className={style["button-cancel"]}
@@ -294,19 +295,19 @@ class Storage extends Component {
                 )}
               </div>
               <div className={style["card__img"]}>
-                <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+                <img src="/img/icons/drive-active.svg" alt="drive" />
               </div>
             </div>
             <div className={style["card"]}>
               <div className={style["card__body"]}>
-                <h3 className={style["card__body__title"]}>Google Drive</h3>
+                <h3 className={style["card__body__title"]}>Dropbox</h3>
                 <p className={style["card__body__description"]}>
-                  Nantikan fitur baru untuk dapat terhubung ke Google Drive
+                  Tautkan akun ke Dropbox untuk menyimpan file
                 </p>
                 <div className={style["card__body__badge"]}>Coming Soon</div>
               </div>
               <div className={style["card__img"]}>
-                <img src="/img/icons/drive-active.svg" alt="drive" />
+                <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
               </div>
             </div>
           </div>

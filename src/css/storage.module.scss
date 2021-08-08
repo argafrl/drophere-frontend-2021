@@ -83,3 +83,25 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .container {
+    .card-container {
+      .card {
+        justify-content: flex-end;
+        flex-direction: column-reverse;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    .card-container {
+      flex-direction: column;
+      .card {
+        flex-direction: row;
+      }
+    }
+  }
+}
