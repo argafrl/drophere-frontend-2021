@@ -16,11 +16,11 @@ import {
 
 import Loading from "../../common/Loading";
 
-import { Button, Menu } from '@bccfilkom/designsystem/build';
+import { Button, Dropdown, DropdownItem, Menu, Search, Dialog } from '@bccfilkom/designsystem/build';
 
 import {
   Collapse,
-  Dialog,
+  // Dialog,
   DialogActions, 
   DialogContent, 
   DialogContentText,
@@ -297,6 +297,9 @@ class Pages extends Component {
     isClosed: '',
     isClosedBinary: true,
 
+    search: '',
+    sort: 'Nama',
+
     connectedStorageProviders: null,
     links: [],
     newLink: {
@@ -326,9 +329,9 @@ class Pages extends Component {
     })
   }
 
-  handleClickOpenAlert = () => {
+  handleClickOpenAlert = (e) => {
     this.setState({
-      openAlert: true
+      openAlert: e
     })
   }
 
@@ -352,7 +355,19 @@ class Pages extends Component {
       isClosed: false,
       isClosedBinary: true
     })
-  }
+  };
+
+  setSearch = (e) => {
+    this.setState({
+      search: e,
+    });
+  };
+
+  setSort = (e) => {
+    this.setState({
+      sort: e,
+    });
+  };
 
   fetchUserConnectedStorageProviders = async () => {
     const resp = await axios.post(endpointURL, {
@@ -631,6 +646,7 @@ class Pages extends Component {
 
   async componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    // document.getElementById("dropdown").innerHTML = 'a'
     try {
       this.setState({ isLinksLoading: true });
       await Promise.all([
@@ -671,8 +687,25 @@ class Pages extends Component {
       <div className={style.container}>
         <div className={style['verify-alert']}>
           <h6>Verifikasi Email Anda</h6>
-          <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={this.handleClickOpenAlert}>Kirim ulang</span></p>
+          <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={() => this.handleClickOpenAlert(true)}>Kirim ulang</span></p>
           <Dialog
+            title="Title"
+            visible={this.state.openAlert}
+            onCancel={() => this.handleClickOpenAlert(false)}
+            primaryButton={{
+              text: "Lanjut",
+              onClick: () => this.handleClickOpenAlert(false),
+            }}
+            secondaryButton={{
+              text: "Hapus",
+              onClick: () => this.handleClickOpenAlert(false),
+            }}
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            cursus fermentum risus, sit amet fringilla nunc pellentesque quis.
+            Duis quis odio ultrices, cursus lacus ac, posuere felis.
+          </Dialog>
+          {/* <Dialog
             open={this.state.openAlert}
             onClose={this.handleCloseAlert}
             aria-labelledby="alert-dialog-title"
@@ -696,11 +729,41 @@ class Pages extends Component {
                       </div>
               </DialogActions>
             {this.state.isLoading ? <Loading /> : ''}
-          </Dialog>
+          </Dialog> */}
         </div>
 
-        <h1 className={style.heading}>Halaman Anda</h1>
-        <Collapse in={this.state.showAdd}>
+        <div className={style['heading-wrapper']}>
+          <div>
+
+          <h1 className={style.heading}>Halaman Anda</h1>
+          </div>
+          <div className={style.actions}>
+            <Search
+              className={style['input-search']}
+              value={this.state.search}
+              placeholder="Cari halaman..."
+              handleChange={(e) => this.setSearch(e.target.value)}
+            />
+            <div className={style.dropdown}>
+            <Dropdown value={`Urut: ${this.state.sort}`} className={style.dropdown} id='dropdown' placeholder={`Urut: ${this.state.sort}`}>
+                <DropdownItem
+                  key='Nama'
+                  onClick={() => this.setSort('Nama')}
+                >
+                  Nama
+                </DropdownItem>
+                <DropdownItem
+                  key='Tanggal'
+                  onClick={() => this.setSort('Tanggal')}
+                >
+                  Tanggal
+                </DropdownItem>
+            </Dropdown>
+            </div>
+          </div>
+        </div>        
+
+        {/* <Collapse in={this.state.showAdd}>
           <Paper square style={{ padding: 24 }}>
             <Grid container spacing={4}>
               <Grid item xs={12}>
@@ -720,7 +783,7 @@ class Pages extends Component {
               </Grid>
             </Grid>
           </Paper>
-        </Collapse>
+        </Collapse> */}
 
         <div className={style["grid-container"]}>
 

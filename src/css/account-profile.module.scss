@@ -27,7 +27,7 @@
 
 .form-wrapper{
     margin-top: 20px;
-    padding: 0px 40px;
+    padding: 0px 35px;
     border: 1px solid #DADCE0;
     border-radius: 8px;
 
@@ -46,13 +46,18 @@
             padding: 10px;
             // justify-content: space-between;
             .form-text{
-                width: 150px;
-                margin-top: 12px;
+                // width: 150px;
+                margin-top: 0;
+
+                flex-basis: 27%;
+                margin-right: 10px;
             }
             .input-wrapper{
                 margin-top: 0;
                 display: flex;
                 flex-direction: column;
+                min-width: 0;
+                    width: auto;
                 input{
                     border-radius: 8px;
                     margin-bottom: 10px;
@@ -82,6 +87,47 @@
             justify-content: space-between;
             padding: 10px;
 
+            // column-gap: 30px;
+
+            .left{
+                flex-basis: 27%;
+                margin-right: 10px;
+            }
+            .middle{
+                flex: 4;
+                display: flex;
+                flex-wrap: wrap;
+                column-gap: 15px;
+
+                align-items: center;
+                .avatar{
+                    // margin-right: 15px;
+                    width:100px;
+                    height: 100px;
+                }
+            }
+
+            .btn-text {
+                display: flex;
+                align-items: center;
+                text-align: right;
+                color: #2196f3;
+                font-weight: 400;
+                background: transparent;
+                border: none;
+                font-size: 13pt;
+                &:hover {
+                  cursor: pointer;
+                  color: #00bcd4;
+                  span{
+                    color: #00bcd4;
+                  }
+                }
+                span{
+                  color: #2196f3;
+                }
+              }
+
             .form-text{
                 display: flex;
                 flex-direction: row;
@@ -96,25 +142,30 @@
                     display: flex;
                     align-items: center;
                     list-style-type: none;
-                    .btn-ubah{
-                        margin-left: 15px;
-                        button{
-                            padding: 0;
-                            height: 40px;
-                            width: 90px;
-                            min-width: 90px;
-                            svg{
-                                margin-right: 5px;
-                            }
-                        }
-                        aside{
-                            font-weight: normal;
-                            ul{
-                                list-style-type: none;
-                            }                        
-                        }
+                    .avatar{
+                        margin-right: 15px;
+                        width:100px;
+                        height: 100px;
                     }
                 }
+            }
+        }
+        .btn-ubah{
+            // margin-left: 15px;=
+            button{
+                padding: 0 10px;
+                height: 35px;
+                min-width: 100px;
+                font-weight: normal;
+                svg, span{
+                    margin-right: 5px;
+                }
+            }
+            aside{
+                font-weight: normal;
+                ul{
+                    list-style-type: none;
+                }                        
             }
         }
         

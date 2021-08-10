@@ -26,7 +26,9 @@ function Dropzone() {
     // Disable click and keydown behavior
     noClick: true,
     noKeyboard: true,
-    maxFiles:1
+    maxFiles:1,
+    noDrag: true,
+    accept: 'image/jpeg, image/png'
   });
 
   const acceptedFileItems  = acceptedFiles.map(file => (
@@ -57,8 +59,8 @@ function Dropzone() {
       </div>
       <aside>
         {/* <h4>Files</h4> */}
-        <ul>{acceptedFileItems }</ul>
-        <ul>{fileRejectionItems}</ul>
+        {/* <ul>{acceptedFileItems }</ul> */}
+        {/* <ul>{fileRejectionItems}</ul> */}
       </aside>
     </div>
   );
@@ -282,35 +284,55 @@ class Profile extends Component {
 
                 <div className={style['form-container']} style={{borderTop: "none"}}>
                   <div className={style['form-unedit']}>
-                    <div className={style['form-text']}>
+
+                  <div className={style.left}>
                       <p>Foto</p>
-                      <div className={style['form-input']}>
-                        <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{width:"100px", height:"100px"}} />
+                    </div>
+                    
+                    <div className={style.middle}>
+                      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" className={style.avatar} />
                         <div className={style['btn-ubah']}>
                           {/* <Button type="primary">
                             <Icon>photo_camera</Icon>Ubah
                             <CameraAltOutlinedIcon />Ubah
                           </Button> */}
+                          {/* <Dropzone /> */}
+                          <input type="file" name="avatar" id="avatar" accept="image/*" style={{display: "none"}} />
+                          <label for="avatar">Click me to upload image</label>
+                        </div>
+                    </div>
+
+                    <div className={style.right}>
+                      {/* <Button type="text">
+                        <Icon>delete</Icon>Hapus
+                      </Button> */}
+                      <button
+                        type="button"
+                        onClick={this.handleClickOpen}
+                        className={style["btn-text"]}
+                      >
+                        <Icon>delete</Icon>Hapus
+                      </button>
+                    </div>
+                    {/* <div className={style['form-text']}>
+                      <p>Foto</p>
+                      <div className={style['form-input']}>
+                        <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" className={style.avatar} />
+                        <div className={style['btn-ubah']}>
+                          <Button type="primary">
+                            <Icon>photo_camera</Icon>Ubah
+                            <CameraAltOutlinedIcon />Ubah
+                          </Button>
                           <Dropzone />
                         </div>
-                        {/* <Badge
-                          overlap="circular"
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                          }}
-                          badgeContent={<Avatar style={{color: "white", backgroundColor: "#41A4D5", width:"35px", height:"35px"}}><CameraAltOutlinedIcon /></Avatar>}
-                        >
-                          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" style={{width:"75px", height:"75px"}} />
-                        </Badge> */}
                       </div>
-                    </div>
+                    </div> */}
                     
-                    <div className={style['form-action']}>
+                    {/* <div className={style['form-action']}>
                       <Button type="text">
                         <Icon>delete</Icon>Hapus
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 
@@ -343,7 +365,27 @@ class Profile extends Component {
                   </form>
                   : 
                   <div className={style['form-unedit']}>
-                    <div className={style['form-text']}>
+                    <div className={style.left}>
+                      <p>Nama</p>
+                    </div>
+                    
+                    <div className={style.middle}>
+                      <p>{this.state.name}</p>
+                    </div>
+
+                    <div className={style.right}>
+                      {/* <Button type="text" onClick={this.handleClickOpenNama}>
+                        <Icon>edit</Icon>Edit
+                      </Button> */}
+                      <button
+                        type="button"
+                        onClick={this.handleClickOpenNama}
+                        className={style["btn-text"]}
+                      >
+                        <Icon>edit</Icon>Edit
+                      </button>
+                    </div>
+                    {/* <div className={style['form-text']}>
                       <p>Nama</p>
                       <p>{this.state.name}</p>
                     </div>
@@ -352,7 +394,7 @@ class Profile extends Component {
                       <Button type="text" onClick={this.handleClickOpenNama}>
                         <Icon>edit</Icon>Edit
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
                   // <div className={style['form-edit']}>
                   //   <div className={style['form-input']}>
@@ -371,7 +413,16 @@ class Profile extends Component {
 
                 <div className={style['form-container']}>
                   <div className={style['form-unedit']}>
-                    <div className={style['form-text']}>
+                    <div className={style.left}>
+                      <p>Email</p>
+                    </div>
+                    
+                    <div className={style.middle}>
+                      <p style={{color: "#05A1D1"}}>{this.state.email}</p>
+                    </div>
+
+                    
+                    {/* <div className={style['form-text']}>
                       <p>Email</p>
                       <div className={style['form-input']}>
                         <p style={{color: "#05A1D1"}}>{this.state.email}</p>
@@ -379,10 +430,10 @@ class Profile extends Component {
                     </div>                 
 
                     <div className={style['form-action']}>
-                      {/* <Button type="text">
+                      <Button type="text">
                         <Icon>edit</Icon>Edit
-                      </Button> */}
-                    </div>
+                      </Button>
+                    </div> */}
                   </div>
                 </div>
 
@@ -391,7 +442,7 @@ class Profile extends Component {
                   {this.state.openPassword ? 
 
                   <form onSubmit={this.onUpdatePassword} className={style['form-edit']}>
-                    <div className={style['form-text']}>
+                    <div className={style['form-text']} style={{marginTop: "5px"}}>
                       <p>Password</p>
                     </div>
                     <div className={style['input-wrapper']}>
@@ -452,18 +503,32 @@ class Profile extends Component {
                   </form> 
                   :
                   <div className={style['form-unedit']}>
-                    <div className={style['form-text']}>
+                    <div className={style.left}>
                       <p>Password</p>
-                      <div className={style['form-input']}>
-                        {/* <p>{this.state.currentPassword}</p> */}
+                    </div>
+                    
+                    <div className={style.middle}>
+                      <div className={style['btn-ubah']}>
+                        <Button type="primary" onClick={this.handleClickOpenPassword}>
+                          <Icon>edit</Icon>Ubah Password
+                        </Button>
                       </div>
-                    </div>                    
+                    </div>
 
-                    <div className={style['form-action']}>
+                    {/* <div className={style['form-text']}>
+                      <p>Password</p>
+                      <div className={style["btn-ubah"]}>
+                      <Button type="primary" onClick={this.handleClickOpenPassword}>
+                        <Icon>edit</Icon>Ubah Password
+                      </Button>
+                      </div>
+                    </div>                     */}
+
+                    {/* <div className={style['form-action']}>
                       <Button type="text" onClick={this.handleClickOpenPassword}>
                         <Icon>edit</Icon>Edit
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
                   }
                 </div>

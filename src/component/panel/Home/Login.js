@@ -70,12 +70,12 @@ class Login extends Component {
                   // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
                   // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
                   hintText={
-                    this.state.error === "Error: User not found"
+                    this.context.error === "User not found"
                       ? "Email yang anda masukkan tidak valid"
                       : ""
                   }
                   action={
-                    this.state.error === "Error: User not found" ? "error" : ""
+                    this.context.error === "User not found" ? "error" : ""
                   }
                   // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                   // ref={this.state.inputRef}
@@ -93,12 +93,12 @@ class Login extends Component {
                   handleChange={this.handleChange("password")}
                   style={{ borderRadius: "6px" }}
                   hintText={
-                    this.state.error === "Error: Invalid password"
+                    this.context.error === "Invalid password"
                       ? "Password yang anda masukkan salah"
                       : ""
                   }
                   action={
-                    this.state.error === "Error: Invalid password"
+                    this.context.error === "Invalid password"
                       ? "error"
                       : ""
                   }

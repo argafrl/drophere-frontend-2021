@@ -33,20 +33,89 @@
     }
   }
 
+  .heading-wrapper{
+    padding: 0 0 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    // justify-content: flex-end;
+    // column-gap: 20px;
+    position: relative;
+    .heading{
+      // height: 48px;
+      flex: 1;
+      // flex: 0 1 auto;
+      // flex-basis: 58%;
+      // flex: 3;
+    }
+    .actions{
+      display: flex;
+      // flex-grow: 42%;
+      flex-basis: 42%;
+      // flex-grow: 1;
+      // // background-color: blue;
+      // display: flex;
+      align-items: flex-start;
+      // justify-content: flex-end;
+      justify-content: space-between;
+      // position: absolute;
+      // right: 0;
+      // flex: 2;
+      svg{
+        path{
+          color: #3E3E3E;
+          background-color: #3E3E3E;
+        }
+      }
+      input{
+        background-color: #F1F3F4;
+        border-radius: 8px;
+        border: none;
+        // margin-right: 15px;
+        // width: 200px;
+        width: 100%;
+        min-width: 0;
+        padding: 16px 16px 16px 48px;
+      }
+
+      .dropdown{
+        :last-child{
+          :first-child{
+            // width: 100%;
+            // min-width: 0;
+            // flex-grow: 1;
+            border: none;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            svg{
+              height: 40px;
+            }
+          }
+          // background-color: black;
+        }
+      }
+
+      
+    }
+  }
+
   .grid-container{
     margin-top: 0;
     display: grid;
-    // grid-template-rows: 210px 210px 210px 210px 210px;
-    grid-template-rows: 210px 210px;
+    // grid-template-rows: 210px;
+    grid-auto-rows: 210px;
     // grid-template-columns:  repeat(10, [col-start] 1fr);;
-    grid-template-columns: 193.5px 193.5px 193.5px 193.5px 193.5px;
+    // grid-template-columns: 193.5px 193.5px 193.5px 193.5px 193.5px;
+    grid-template-columns: repeat(auto-fill, minmax(193.5px, 1fr));;
     // grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     // row-gap: 30px;
     gap: 24px 24px;
 
-    @media only screen and (max-width: 600px) {
-      grid-template-columns: auto;
-    }
+    // @media only screen and (max-width: 600px) {
+    //   grid-template-columns: auto;
+    // }
 
     .item{
       // grid-column: span 2;

@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <div className={style.container}>
       <div className={style.top}>
-        <img src="/img/home-vector.png" alt="HOME VECTOR" />
+        <img src="/img/home-header.png" alt="HOME VECTOR" />
       </div>
       <div className={style.middle}>
         <h1>Kumpulkan Filemu di Sini!</h1>
