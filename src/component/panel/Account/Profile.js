@@ -121,7 +121,7 @@ class Profile extends Component {
 
   async componentDidMount() {
     try {
-      this.context.fetchUserInfo();
+      await this.context.fetchUserInfo();
       this.setState({
         name: this.context.full_name,
         email: this.context.email,
@@ -159,12 +159,12 @@ class Profile extends Component {
     try{
       const bodyFormData = new FormData();
       bodyFormData.append("profile_image", this.state.profile_image);
-      bodyFormData.append("full_name", this.state.full_name);
+      bodyFormData.append("full_name", this.state.name);
       bodyFormData.append("email", this.state.email);
       
       await mainApi.patch("/users/profile", bodyFormData, {
         headers: {
-          Authorization: localStorage.getItem("bccdrophere_token"),
+          "Authorization": localStorage.getItem("bccdrophere_token"),
           "Content-Type": "multipart/form-data"
         },
       });
