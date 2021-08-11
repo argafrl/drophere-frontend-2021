@@ -40,11 +40,11 @@ export class UserStore extends React.Component {
 
       localStorage.setItem("bccdrophere_token", token);
 
-      this.setState({ isAuthenticated: true });
+      this.setState({ isAuthenticated: true, error: "" });
     } catch (err) {
-      console.log(err);
+      // console.log(err.response.data.message);
       this.setState({
-        error: err.message,
+        error: err.response.data.message,
         isAuthenticated: false,
       });
     } finally {

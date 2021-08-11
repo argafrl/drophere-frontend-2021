@@ -67,7 +67,7 @@ const AddNewPage = () => {
       <p>
         Halaman ini digunakan sebagai tempat pengumpulan file yang anda butuhkan
       </p>
-      <form className={style["form"]} onSubmit={handleSubmit}>
+      <div className={style["form"]} >
         <div className={style["form__control"]}>
           <label>Judul</label>
           <Input value={title} handleChange={(e) => setTitle(e.target.value)} />
@@ -316,7 +316,7 @@ const AddNewPage = () => {
             Buat Halaman
           </Button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
