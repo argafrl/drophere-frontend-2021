@@ -4,10 +4,6 @@ import Authorization from "../component/panel/Account/Authorization";
 
 export const defaultValue = {
   userInfo: null,
-  id: "",
-  full_name: "",
-  email: "",
-  profile_image: "",
 
   isAuthenticated: !!localStorage.getItem("bccdrophere_token"),
   fetchUserInfo: () => {},
@@ -31,10 +27,6 @@ export class UserStore extends React.Component {
         headers: {Authorization: localStorage.getItem("bccdrophere_token")}
       });
       this.setState({ userInfo: data.data });
-      const { id, full_name, email, profile_image } = data.data;
-      this.setState({
-        id, full_name, email, profile_image
-      })
       // console.log(data.data);
     } catch (error) {
       console.log(error);
@@ -44,14 +36,19 @@ export class UserStore extends React.Component {
     }
   };
 
-  update = async(profile_image, email, password) => {
+  update = async(profile_image, name, email) => {
     try{
       const bodyFormData = new FormData();
-      bodyFormData.append(profile_image, email, password);
+      bodyFormData.append("profile_image", profile_image);
+      bodyFormData.append("full_name", name);
+      bodyFormData.append("email", email);
       
-      await mainApi.patch("/users/profile", {
-        headers: {Authorization: localStorage.getItem("bccdrophere_token")},
-        data: bodyFormData,
+      await mainApi.patch("/users/profile", bodyFormData, {
+        headers: {
+          "Authorization": localStorage.getItem("bccdrophere_token"),
+          "Content-Type": "multipart/form-data"
+        },
+        // data: bodyFormData,
       });
     } catch (err) {
       console.log(err);

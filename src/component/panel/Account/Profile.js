@@ -119,14 +119,17 @@ class Profile extends Component {
     })
   }
 
+  constructor(props){
+    super(props);
+  }
+
   async componentDidMount() {
-    try {
-      await this.context.fetchUserInfo();
-      this.setState({
-        name: this.context.full_name,
-        email: this.context.email,
-        profile_image: this.context.profile_image
-      });
+    await this.context.fetchUserInfo();
+    this.setState({
+      name: this.context.userInfo.full_name,
+      email: this.context.userInfo.email,
+      profile_image: this.context.userInfo.profile_image
+    });
       // const { name, email } = resp.data.data.me;
       // this.setState({ name, email, isPageLoading: false });
 
@@ -145,40 +148,13 @@ class Profile extends Component {
 
       // const { name, email } = resp.data.data.me;
       // this.setState({ name, email, isPageLoading: false });
-    } catch (error) {
-      // this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
-      // this.setState({ isPageLoading: false });
-      // this.context.setToken('');
-      // this.props.history.push('/home');
-    }
   }
 
   onUpdateProfile = async (e) => {
     e.preventDefault();
-    console.log('a')
-    try{
-      const bodyFormData = new FormData();
-      bodyFormData.append("profile_image", this.state.profile_image);
-      bodyFormData.append("full_name", this.state.name);
-      bodyFormData.append("email", this.state.email);
-      
-      await mainApi.patch("/users/profile", bodyFormData, {
-        headers: {
-          "Authorization": localStorage.getItem("bccdrophere_token"),
-          "Content-Type": "multipart/form-data"
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    this.context.update(this.state.profile_image, this.state.name, this.state.email);
   };
 
-  // async componentDidUpdate() {
-  //   this.context.fetchUserInfo();
-  //   this.setState({
-  //     name: this.context.full_name,
-  //   });
-  // }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
