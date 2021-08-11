@@ -20,6 +20,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 
 import { withSnackbar } from 'notistack';
+import { Link } from 'react-router-dom';
 
 function Dropzone() {
   const {getRootProps, getInputProps, open, acceptedFiles, fileRejections} = useDropzone({
@@ -74,6 +75,8 @@ class Profile extends Component {
     openNama: false,
     openPassword: false,
 
+    verifikasi: false,
+
     name: '',
     email: '',
 
@@ -104,6 +107,12 @@ class Profile extends Component {
   handleClickOpenPassword = () => {
     this.setState({
       openPassword: !this.state.openPassword
+    })
+  }
+
+  handleVerifikasi = () => {
+    this.setState({
+      verifikasi: !this.state.verifikasi
     })
   }
 
@@ -297,8 +306,10 @@ class Profile extends Component {
                             <CameraAltOutlinedIcon />Ubah
                           </Button> */}
                           {/* <Dropzone /> */}
-                          <input type="file" name="avatar" id="avatar" accept="image/*" style={{display: "none"}} />
-                          <label for="avatar">Click me to upload image</label>
+                          <input type="file" name="avatar" id="btn-avatar" accept="image/*" style={{display: "none"}} />
+                          <div className={style['btn-avatar-wrapper']}>
+                            <label for="btn-avatar"><CameraAltOutlinedIcon />Ubah</label>
+                          </div>
                         </div>
                     </div>
 
@@ -419,6 +430,13 @@ class Profile extends Component {
                     
                     <div className={style.middle}>
                       <p style={{color: "#05A1D1"}}>{this.state.email}</p>
+                      { this.state.email && <div className={style.verifikasi} style={ this.state.verifikasi ? {backgroundColor: "#40C02B"} : {backgroundColor: "#F4B12F"}}>
+                        { this.state.verifikasi ? 
+                          <p style={{color: "white"}}>Terverifikasi</p>
+                          : 
+                          <p>Belum terverifikasi. <Link onClick={this.handleVerifikasi}>Kirim ulang</Link></p>
+                        }
+                      </div>}
                     </div>
 
                     

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import ForgotPassword from "../../common/ForgotPassword";
-import { Card, Button, Input } from "@bccfilkom/designsystem/build";
+import { Card, Button, Input, Dialog } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 
 class Login extends Component {
@@ -119,12 +119,31 @@ class Login extends Component {
             {this.context.isLogin ? <Loading /> : ""}
           </form>
 
-          <ForgotPassword
+          {/* <ForgotPassword
             open={this.state.open}
             onClose={this.handleClose}
             value={this.state.email}
             handleChange={this.handleChange("email")}
-          />
+          /> */}
+
+          <Dialog
+            title="Title"
+            visible={this.state.open}
+            onCancel={this.handleClose}
+            primaryButton={{
+              text: "Lanjut",
+              onClick: this.handleClose,
+            }}
+            secondaryButton={{
+              text: "Hapus",
+              onClick: this.handleClose,
+            }}
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            cursus fermentum risus, sit amet fringilla nunc pellentesque quis.
+            Duis quis odio ultrices, cursus lacus ac, posuere felis.
+          </Dialog>
+
           {/* <Button onClick={ this.handleClickOpen }>
             Show Dialog
           </Button> */}

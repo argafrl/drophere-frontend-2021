@@ -56,7 +56,7 @@ class Register extends Component {
     } catch (err) {
       this.setState({ 
         isLoading: false, 
-        error: err });
+        error: err.message });
     }
   }
 
@@ -133,7 +133,7 @@ class Register extends Component {
                 />
               </div> */}
 
-              {/* {this.state.error ? <div className="error">{this.state.error.message}</div> : ''} */}
+              {this.state.error ? <div className="error">{this.state.error}</div> : ''}
               <Button className={style['button-daftar']}>Daftar</Button>
               
             </div>

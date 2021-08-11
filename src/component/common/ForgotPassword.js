@@ -9,9 +9,9 @@ import style from "../../css/forgot-password.module.scss";
 
 import Loading from "./Loading";
 
-import { Button, Input } from "@bccfilkom/designsystem/build";
+import { Button, Input, Dialog } from "@bccfilkom/designsystem/build";
 import {
-  Dialog,
+  // Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -108,13 +108,20 @@ const ForgotPassword = (props) => {
 
   return (
     <div className={style["forgot-password"]}>
+      
       <Dialog
-        open={open}
-        onClose={onClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        maxWidth="xs"
         className={style.dialog}
+        title="Title"
+        visible={open}
+        onCancel={onClose}
+        primaryButton={{
+          text: "Lanjut",
+          onClick: onClose,
+        }}
+        secondaryButton={{
+          text: "Hapus",
+          onClick: onClose,
+        }}
       >
         <form onSubmit={onSubmitHandler} id="reset-password-form">
           <DialogContent className={style.content}>

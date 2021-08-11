@@ -297,6 +297,8 @@ class Pages extends Component {
     isClosed: '',
     isClosedBinary: true,
 
+    sendEmail: false,
+
     search: '',
     sort: 'Nama',
 
@@ -346,7 +348,7 @@ class Pages extends Component {
       isClosed: closing,
       isClosedBinary: binary
     });
-    // console.log(this.state.isClosed);
+    console.log(this.state.isClosed);
     // console.log(this.state.isClosedBinary);
   };
 
@@ -368,6 +370,12 @@ class Pages extends Component {
       sort: e,
     });
   };
+
+  handleSendEmail = (e) => {
+    this.setState({
+      sendEmail: e,
+    })
+  }
 
   fetchUserConnectedStorageProviders = async () => {
     const resp = await axios.post(endpointURL, {
@@ -685,9 +693,10 @@ class Pages extends Component {
   render() {
     return (
       <div className={style.container}>
-        <div className={style['verify-alert']}>
+        { this.state.sendEmail!=true && <div className={style['verify-alert']}>
           <h6>Verifikasi Email Anda</h6>
-          <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={() => this.handleClickOpenAlert(true)}>Kirim ulang</span></p>
+          {/* <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={() => this.handleClickOpenAlert(true)}>Kirim ulang</span></p> */}
+          <p>Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum menerima email? <span onClick={() => this.handleSendEmail(true)}>Kirim ulang</span></p>
           <Dialog
             title="Title"
             visible={this.state.openAlert}
@@ -730,7 +739,7 @@ class Pages extends Component {
               </DialogActions>
             {this.state.isLoading ? <Loading /> : ''}
           </Dialog> */}
-        </div>
+        </div>}
 
         <div className={style['heading-wrapper']}>
           <div>
@@ -795,14 +804,17 @@ class Pages extends Component {
                   <div className={style.body}>
                     <div className={style.top}>
                       <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
-                      <div ref={this.wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
-                        <button onClick={() => this.setOpenMenu(linkIdx, false)}></button>    
+                      <div className={style.menu}>
                         { this.state.isClosed === linkIdx &&
                           <Menu opened={this.state.isClosedBinary}>
-                            <Menu.Item name="Edit" onClick={() => this.setCloseMenu(true)} />
-                            <Menu.Item name="Hapus" hasDivider onClick={() => this.setCloseMenu(true)} />
+                            <Menu.Item name="Edit halaman" onClick={() => this.setCloseMenu(true)} />
+                            <Menu.Item name="Salin link" onClick={() => this.setCloseMenu(true)} />
+                            <Menu.Item name="Hapus" onClick={() => this.setCloseMenu(true)} />
                           </Menu>
                         }
+                      </div>
+                      <div ref={this.wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
+                        <button value={linkIdx} onClick={() => this.setOpenMenu(linkIdx, !this.state.isClosedBinary)}></button>    
                       </div>
                     </div>
                     
