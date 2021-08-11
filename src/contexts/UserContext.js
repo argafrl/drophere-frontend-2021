@@ -1,6 +1,5 @@
-import axios from "axios";
 import React from "react";
-import { endpointURL } from "../config";
+import mainApi from "../api/mainApi";
 
 export const defaultValue = {
   userInfo: null,
@@ -21,26 +20,8 @@ export class UserStore extends React.Component {
   fetchUserInfo = async () => {
     try {
       this.setState({ isFetchingUserInfo: true });
-      const { data } = await axios.post(
-        endpointURL,
-        {
-          query: `
-              query {
-                me {
-                  email
-                  name
-                }
-              }`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "bccdrophere_token"
-            )}`,
-          },
-        }
-      );
-      this.setState({ userInfo: data.data.me });
+      const { data } = await mainApi.get("/users/profile");
+      this.setState({ userInfo: data.data });
     } catch (error) {
       console.log(error);
       this.logout();
@@ -52,27 +33,13 @@ export class UserStore extends React.Component {
   login = async (email, password) => {
     try {
       this.setState({ isLogin: true });
-      const resp = await axios.post(endpointURL, {
-        query: `
-      mutation login($email:String!,$password:String!){
-        login(email:$email, password:$password){
-          loginToken
-        }
-      }
-      `,
-        variables: {
-          email,
-          password,
-        },
-        operationName: "login",
-      });
-      const loginResp = resp.data.data.login;
-      if (loginResp) {
-        localStorage.setItem("bccdrophere_token", loginResp.loginToken);
-        this.setState({ isAuthenticated: true });
-        return;
-      }
-      throw new Error(resp.data.errors[0].message);
+      const { data } = await mainApi.post("/sign_in", { email, password });
+
+      const token = data.data.replace("Bearer ", "");
+
+      localStorage.setItem("bccdrophere_token", token);
+
+      this.setState({ isAuthenticated: true });
     } catch (err) {
       this.setState({
         error: err.message,

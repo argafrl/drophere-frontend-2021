@@ -647,23 +647,23 @@ class Pages extends Component {
   async componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     // document.getElementById("dropdown").innerHTML = 'a'
-    try {
-      this.setState({ isLinksLoading: true });
-      await Promise.all([
-        this.fetchUserConnectedStorageProviders(),
-        this.reloadLinks(),
-      ]);
-      this.setState({ isLinksLoading: false });
-    } catch (error) {
-      this.props.enqueueSnackbar("Error when loading links", {
-        variant: "error",
-      });
-      console.log("error happen: " + error);
-      this.setState({
-        error,
-        isLinksLoading: false,
-      });
-    }
+    // try {
+    //   this.setState({ isLinksLoading: true });
+    //   await Promise.all([
+    //     this.fetchUserConnectedStorageProviders(),
+    //     this.reloadLinks(),
+    //   ]);
+    //   this.setState({ isLinksLoading: false });
+    // } catch (error) {
+    //   this.props.enqueueSnackbar("Error when loading links", {
+    //     variant: "error",
+    //   });
+    //   console.log("error happen: " + error);
+    //   this.setState({
+    //     error,
+    //     isLinksLoading: false,
+    //   });
+    // }
   }
 
   componentWillUnmount(){

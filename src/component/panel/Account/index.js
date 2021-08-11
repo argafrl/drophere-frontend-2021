@@ -6,17 +6,10 @@ import { TokenContext } from "../../../contexts/token";
 import style from "../../../css/account.module.scss";
 
 import Content from "./Content";
+import mainApi from "../../../api/mainApi";
 
 export default class Account extends Component {
   static contextType = TokenContext;
-
-  componentWillMount() {
-    axios.defaults.headers.post["Content-Type"] = "application/json";
-    const currentToken = localStorage.getItem("bccdrophere_token");
-    if (currentToken != null && currentToken.length > 0) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${currentToken}`;
-    }
-  }
 
   render() {
     return (

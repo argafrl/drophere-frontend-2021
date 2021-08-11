@@ -4,6 +4,7 @@ import { Button } from "@bccfilkom/designsystem/build";
 import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
 import { SidebarContext } from "../../contexts/SidebarContext";
+import mainApi from "../../api/mainApi";
 
 const Header = () => {
   const {
@@ -18,6 +19,9 @@ const Header = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      mainApi.defaults.headers.post["Content-Type"] = "application/json";
+      mainApi.defaults.headers.common["Authorization"] =
+        localStorage.getItem("bccdrophere_token");
       fetchUserInfo();
     }
   }, [isAuthenticated, fetchUserInfo]);
@@ -43,7 +47,9 @@ const Header = () => {
             <p>
               Hi,{" "}
               <strong>
-                {isFetchingUserInfo || !userInfo ? "Loading..." : userInfo.name}
+                {isFetchingUserInfo || !userInfo
+                  ? "Loading..."
+                  : userInfo.full_name}
               </strong>
             </p>
           </div>

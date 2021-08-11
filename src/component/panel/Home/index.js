@@ -25,7 +25,6 @@ const Home = ({ location }) => {
             <Redirect from="/login" to="/home" />
             <Route path="/home" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/reset-password" exact component={ResetPassword} />
             <Route path="/connect-account" exact component={ConnectAccount} />
           </Switch>
         </div>
