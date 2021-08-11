@@ -50,6 +50,20 @@ export class UserStore extends React.Component {
     }
   };
 
+  // handleLogin= async(email, password) =>{
+  //   e.preventDefault()
+  //     await genose.post("/user/login",{
+  //         email:email,
+  //         password:password
+  //   }).then((res) => {
+  //         res.status === 200 && setAuthTokens(res.data.data.jwtoken)
+  //         setLoggedIn(true)
+  //         console.log(res);
+  //   }).catch(err => {
+  //         console.log(err);
+  //   })
+  //   }
+
   logout = () => {
     this.setState({ isAuthenticated: false });
     localStorage.removeItem("bccdrophere_token");

@@ -113,7 +113,7 @@ class Login extends Component {
               >
                 Lupa Password?
               </button>
-
+              {this.state.error ? <div className="error">{this.state.error}</div> : ''}
               <Button className={style["button-masuk"]}>Masuk</Button>
             </div>
             {this.context.isLogin ? <Loading /> : ""}
