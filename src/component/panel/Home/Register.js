@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import { TokenContext } from '../../../contexts/token';
+// import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
+
+import mainApi from '../../../api/mainApi';
 
 import style from '../../../css/login.module.scss';
 // import Input from '../../common/WrappedInput';
 import Loading from '../../common/Loading';
 
 import { Card, Button, Input } from '@bccfilkom/designsystem/build';
+import { UserContext } from '../../../contexts/UserContext';
 
 class Register extends Component {
+  static contextType = UserContext;
+
   state = {
     name: '',
     password: '',
@@ -25,40 +30,62 @@ class Register extends Component {
     this.setState({ [name]: event.target.value });
   }
 
-  onSubmitHandler = async (e) => {
+  // onSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   const { email, name, password } = this.state;
+
+  //   try {
+  //     this.setState({ isLoading: true });
+  //     const resp = await axios.post(endpointURL, {
+  //       query: `
+  //       mutation register($email:String!,$name:String!,$password:String!){
+  //         register(email:$email,name:$name,password:$password){
+  //           loginToken
+  //         }
+  //       }
+  //     `,
+  //       variables: {
+  //         email,
+  //         name,
+  //         password,
+  //       },
+  //       operationName: 'register',
+  //     })
+  //     const registerResp = resp.data.data.register;
+  //     if (registerResp) {
+  //       this.context.setToken(registerResp.loginToken);
+  //       this.setState({ isLoading: false });
+  //       return;
+  //     }
+  //     throw new Error(resp.data.errors[0].message);
+  //   } catch (err) {
+  //     this.setState({ 
+  //       isLoading: false, 
+  //       error: err.message });
+  //   }
+  // }
+
+  handleSignup = async(e) => {
     e.preventDefault();
+
     const { email, name, password } = this.state;
 
-    try {
-      this.setState({ isLoading: true });
-      const resp = await axios.post(endpointURL, {
-        query: `
-        mutation register($email:String!,$name:String!,$password:String!){
-          register(email:$email,name:$name,password:$password){
-            loginToken
-          }
-        }
-      `,
-        variables: {
-          email,
-          name,
-          password,
-        },
-        operationName: 'register',
-      })
-      const registerResp = resp.data.data.register;
-      if (registerResp) {
-        this.context.setToken(registerResp.loginToken);
-        this.setState({ isLoading: false });
-        return;
+    await mainApi.post("sign_up", {
+        full_name:  name,
+        email: email,
+        password: password
+    }).then((res) => {
+      if(res.data.is_success == true){
+        this.context.login(email, password);
       }
-      throw new Error(resp.data.errors[0].message);
-    } catch (err) {
+    }).catch(err => {
       this.setState({ 
         isLoading: false, 
-        error: err.message });
-    }
-  }
+        error: err.message 
+      });
+    })
+    
+}
 
   render() {
     return (
@@ -70,7 +97,7 @@ class Register extends Component {
             <p>Sudah punya akun? <Link to="/home">Masuk</Link></p>
           </div>
 
-          <form onSubmit={this.onSubmitHandler}>
+          <form onSubmit={this.handleSignup}>
             <div className={style['form-container']}>
 
               <div className={style['input-wrapper']}>
@@ -145,6 +172,6 @@ class Register extends Component {
     );
   }
 }
-Register.contextType = TokenContext;
+// Register.contextType = TokenContext;
 
 export default Register;

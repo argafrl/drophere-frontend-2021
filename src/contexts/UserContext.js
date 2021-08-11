@@ -42,6 +42,7 @@ export class UserStore extends React.Component {
 
       this.setState({ isAuthenticated: true });
     } catch (err) {
+      console.log(err);
       this.setState({
         error: err.message,
         isAuthenticated: false,
