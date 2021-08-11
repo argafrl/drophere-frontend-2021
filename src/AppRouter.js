@@ -11,6 +11,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import SidebarStore from "./contexts/SidebarContext";
+import PageStore from "./contexts/PageContext";
 
 class AppRouter extends Component {
   state = { particle: false };
@@ -27,15 +28,17 @@ class AppRouter extends Component {
         >
           <SidebarStore>
             <UserStore>
-              <Header />
-              <main>
-                <Switch>
-                  <Route path="/link/:slug" exact component={Drop} />
-                  <PrivateRoute path="/account" component={Account} />
-                  <AuthRoute path="/" component={Home} />
-                </Switch>
-              </main>
-              <Footer />
+              <PageStore>
+                <Header />
+                <main>
+                  <Switch>
+                    <Route path="/link/:slug" exact component={Drop} />
+                    <PrivateRoute path="/account" component={Account} />
+                    <AuthRoute path="/" component={Home} />
+                  </Switch>
+                </main>
+                <Footer />
+              </PageStore>
             </UserStore>
           </SidebarStore>
         </SnackbarProvider>

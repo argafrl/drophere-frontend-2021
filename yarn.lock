@@ -1132,10 +1132,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bccfilkom/designsystem@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@bccfilkom/designsystem/-/designsystem-1.0.3.tgz#19556b744e69b04803b249378d77b945cfbbc2e6"
-  integrity sha512-xxImrlnKRddBe+jf6O0jIkGScxHuNTleDTP68wEeF0aqZeQkJSk5POA9spsTnWPoGoZ6gNmjBA2Sgek4ehyWsw==
+"@bccfilkom/designsystem@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@bccfilkom/designsystem/-/designsystem-1.0.4.tgz#6dc756e5023ed4654a3f9cd7860eef04fd702198"
+  integrity sha512-m9q1yHWuBhDn89CGPCk/X6L0+FDZtYGIq4/KpQ+CS3XabSy5H1Lo+AmoG/SHPaw6aNzrCL8MIXfCZZUwivPEzw==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -8551,7 +8551,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8778,6 +8778,13 @@ react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+
+react-portal@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-4.2.1.tgz#12c1599238c06fb08a9800f3070bea2a3f78b1a6"
+  integrity sha512-fE9kOBagwmTXZ3YGRYb4gcMy+kSA+yLO0xnPankjRlfBv4uCpFXqKPfkpsGQQR15wkZ9EssnvTOl1yMzbkxhPQ==
+  dependencies:
+    prop-types "^15.5.8"
 
 react-redux@^7.0.3:
   version "7.2.2"

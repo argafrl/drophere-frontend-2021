@@ -76,7 +76,7 @@ const Menu = (props) => {
         <p>
           Hi,{" "}
           <strong>
-            {isFetchingUserInfo || !userInfo ? "Loading..." : userInfo.name}
+            {isFetchingUserInfo || !userInfo ? "Loading..." : userInfo.full_name}
           </strong>
         </p>
       </div>

@@ -5,6 +5,7 @@ import Loading from "../../common/Loading";
 import ForgotPassword from "../../common/ForgotPassword";
 import { Card, Button, Input, Dialog } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
+import { Portal } from "react-portal";
 
 class Login extends Component {
   static contextType = UserContext;
@@ -98,9 +99,7 @@ class Login extends Component {
                       : ""
                   }
                   action={
-                    this.context.error === "Invalid password"
-                      ? "error"
-                      : ""
+                    this.context.error === "Invalid password" ? "error" : ""
                   }
                   // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
@@ -113,7 +112,11 @@ class Login extends Component {
               >
                 Lupa Password?
               </button>
-              {this.state.error ? <div className="error">{this.state.error}</div> : ''}
+              {this.state.error ? (
+                <div className="error">{this.state.error}</div>
+              ) : (
+                ""
+              )}
               <Button className={style["button-masuk"]}>Masuk</Button>
             </div>
             {this.context.isLogin ? <Loading /> : ""}
@@ -125,24 +128,26 @@ class Login extends Component {
             value={this.state.email}
             handleChange={this.handleChange("email")}
           /> */}
-
-          <Dialog
-            title="Title"
-            visible={this.state.open}
-            onCancel={this.handleClose}
-            primaryButton={{
-              text: "Lanjut",
-              onClick: this.handleClose,
-            }}
-            secondaryButton={{
-              text: "Hapus",
-              onClick: this.handleClose,
-            }}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            cursus fermentum risus, sit amet fringilla nunc pellentesque quis.
-            Duis quis odio ultrices, cursus lacus ac, posuere felis.
-          </Dialog>
+          <Portal>
+            <Dialog
+              title="Title"
+              visible={this.state.open}
+              onCancel={this.handleClose}
+              primaryButton={{
+                text: "Lanjut",
+                onClick: this.handleClose,
+              }}
+              secondaryButton={{
+                text: "Hapus",
+                onClick: this.handleClose,
+              }}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse cursus fermentum risus, sit amet fringilla nunc
+              pellentesque quis. Duis quis odio ultrices, cursus lacus ac,
+              posuere felis.
+            </Dialog>
+          </Portal>
 
           {/* <Button onClick={ this.handleClickOpen }>
             Show Dialog
