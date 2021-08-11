@@ -19,13 +19,13 @@ const FileItem = ({ name, size, onRemove }) => {
         className={style["file__icon"]}
       >
         <button onClick={onRemove}>
-          <img src="/img/icons/cross.svg" alt='remove' />
+          <img src="/img/icons/cross.svg" alt="remove" />
         </button>
         <h3>{fileExt}</h3>
       </div>
       <div className={style["file__info"]}>
         <h4>{fileName}</h4>
-        <h5>{Math.round((size / 1000) * 100) / 100} kb</h5>
+        <h5>{size}</h5>
       </div>
     </div>
   );

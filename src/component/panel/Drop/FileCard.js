@@ -2,19 +2,17 @@ import React from "react";
 import style from "../../../css/drop-file-card.module.scss";
 import { FILE_TYPES } from "../../../utils";
 
-const ProgressBar = ({ size, uploaded }) => {
-  let percentage = Math.round((uploaded / size) * 100);
-
+const ProgressBar = ({ uploaded }) => {
   return (
     <div className={style["progress"]}>
       <div className={style["progress-wrapper"]}>
         <div
           className={style["progress__bar"]}
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${uploaded}%` }}
         ></div>
       </div>
 
-      <span className={style["progress__percentage"]}>{percentage}%</span>
+      <span className={style["progress__percentage"]}>{uploaded}%</span>
     </div>
   );
 };
@@ -43,7 +41,7 @@ const FileCard = ({ name, size, uploaded, submitted, success, error }) => {
           <ProgressBar size={size} uploaded={uploaded} />
         ) : !success ? (
           !error ? (
-            <h5>{size} kb</h5>
+            <h5>{size}</h5>
           ) : (
             <h5>Gagal, ingin kirim ulang?</h5>
           )

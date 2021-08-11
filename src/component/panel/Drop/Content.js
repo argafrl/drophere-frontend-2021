@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Button } from "@bccfilkom/designsystem/build";
 import { useDropzone } from "react-dropzone";
 import style from "../../../css/drop-content.module.scss";
@@ -8,27 +8,23 @@ import Inaccessible from "./Inaccessible";
 import ConfirmSend from "./ConfirmSend";
 
 const Content = () => {
-  const [files, setFiles] = useState([]);
   const { slug } = useParams();
   const [confirmModalShown, showConfirmModal] = useState(false);
+
+  const [files, setFiles] = useState([]);
 
   const onDrop = (receivedFiles) => {
     setFiles(() => receivedFiles);
   };
 
-  const {
-    getRootProps,
-    getInputProps,
-    open,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    noClick: true,
-    noKeyboard: true,
-    onDrop,
-    multiple: false,
-    onDropRejected: () => console.log("rejected"),
-  });
+  const { getRootProps, getInputProps, open, isDragAccept, isDragReject } =
+    useDropzone({
+      noClick: true,
+      noKeyboard: true,
+      onDrop,
+      multiple: false,
+      onDropRejected: () => console.log("rejected"),
+    });
 
   const handleRemove = (deletedFile) => {
     setFiles(files.filter((file) => file !== deletedFile));
@@ -72,12 +68,22 @@ const Content = () => {
     return <Inaccessible />;
   }
 
+  const formatBytes = (bytes, decimals) => {
+    if (bytes === 0) return "0 Bytes";
+    let k = 1024,
+      dm = decimals || 2,
+      sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+      i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
+
   return (
     <div className={style["wrapper"]}>
       <ConfirmSend
         open={confirmModalShown}
         onClose={() => showConfirmModal(false)}
         files={files}
+        formatBytes={formatBytes}
         emptyFiles={emptyFiles}
       />
       <div className={style["page"]}>
@@ -105,7 +111,7 @@ const Content = () => {
                   <FileItem
                     key={i}
                     name={file.name}
-                    size={file.size}
+                    size={formatBytes(file.size)}
                     onRemove={() => handleRemove(file)}
                   />
                 ))}
