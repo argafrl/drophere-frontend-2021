@@ -33,6 +33,7 @@ export class UserStore extends React.Component {
   login = async (email, password) => {
     try {
       this.setState({ isLogin: true });
+
       const { data } = await mainApi.post("/sign_in", { email, password });
 
       const token = data.data.replace("Bearer ", "");
@@ -49,20 +50,6 @@ export class UserStore extends React.Component {
       this.setState({ isLogin: false });
     }
   };
-
-  // handleLogin= async(email, password) =>{
-  //   e.preventDefault()
-  //     await genose.post("/user/login",{
-  //         email:email,
-  //         password:password
-  //   }).then((res) => {
-  //         res.status === 200 && setAuthTokens(res.data.data.jwtoken)
-  //         setLoggedIn(true)
-  //         console.log(res);
-  //   }).catch(err => {
-  //         console.log(err);
-  //   })
-  //   }
 
   logout = () => {
     this.setState({ isAuthenticated: false });
