@@ -42,20 +42,19 @@
   font-weight: 600;
 }
 
-.logout {
-  border-top: rgba(158, 158, 158, 0.41) dotted 1px;
-  margin-top: 30px;
-
-  span {
-    color: #e74c3c !important;
-  }
+.btn-logout {
+  display: none!important;
 }
 
 @media screen and (max-width: 768px) {
   .container {
     position: relative;
-    .user{
+    .user {
       display: flex;
     }
+  }
+
+  .btn-logout {
+    display: block!important;
   }
 }

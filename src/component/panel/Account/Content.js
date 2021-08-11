@@ -30,7 +30,9 @@ function MenuItem(props) {
       style={props.selected ? { backgroundColor: "#D9EDF7" } : {}}
     >
       {props.icon != null ? (
-        <ListItemIcon className={menuStyle["list-item-icon"]}>
+        <ListItemIcon
+          className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
+        >
           <Icon
             style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
           >
@@ -41,7 +43,7 @@ function MenuItem(props) {
         ""
       )}
       <ListItemText
-        className={menuStyle["list-item-text"]}
+        className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
         primary={props.caption}
         style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
       />
@@ -52,7 +54,7 @@ function MenuItem(props) {
 const Menu = (props) => {
   const history = useHistory();
   const { closeSidebar } = useContext(SidebarContext);
-  const { isFetchingUserInfo, userInfo } = useContext(UserContext);
+  const { isFetchingUserInfo, userInfo, logout } = useContext(UserContext);
 
   const selectedIndex =
     typeof props.selectedIndex === "number" ? props.selectedIndex : -1;
@@ -76,7 +78,9 @@ const Menu = (props) => {
         <p>
           Hi,{" "}
           <strong>
-            {isFetchingUserInfo || !userInfo ? "Loading..." : userInfo.full_name}
+            {isFetchingUserInfo || !userInfo
+              ? "Loading..."
+              : userInfo.full_name}
           </strong>
         </p>
       </div>
@@ -96,6 +100,9 @@ const Menu = (props) => {
             onClick={() => {
               onClickHandler(index);
               closeSidebar();
+              if (item.caption === "Logout") {
+                logout();
+              }
             }}
             icon={item.icon}
             caption={item.caption}
@@ -115,6 +122,7 @@ class Content extends Component {
     { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
     { caption: "Masukan", icon: "comment", url: "/support" },
     { caption: "Profile", icon: "person_outline", url: "/profile" },
+    { caption: "Logout", icon: "logout", url: "/home" },
   ];
 
   constructor(props) {

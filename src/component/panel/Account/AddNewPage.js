@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   TextArea,
   Input,
@@ -33,7 +33,8 @@ const AddNewPage = () => {
     Audio: true,
   });
 
-  const { createSubmission, isCreatingSubmission } = useContext(PageContext);
+  const { createSubmission, isCreatingSubmission, successCreatingSubmission } =
+    useContext(PageContext);
 
   const history = useHistory();
 
@@ -48,12 +49,6 @@ const AddNewPage = () => {
       storage_type: 1,
     };
 
-    console.log(
-      Object.keys(body)
-        .filter((key) => body[key])
-        .reduce((acc, key) => ({ ...acc, [key]: body[key] }), {})
-    );
-
     createSubmission(
       Object.keys(body)
         .filter((key) => body[key])
@@ -61,13 +56,19 @@ const AddNewPage = () => {
     );
   };
 
+  useEffect(() => {
+    if (successCreatingSubmission) {
+      console.log("sukses bro");
+    }
+  }, [successCreatingSubmission]);
+
   return (
     <div className={style["container"]}>
       <h1>Buat Halaman</h1>
       <p>
         Halaman ini digunakan sebagai tempat pengumpulan file yang anda butuhkan
       </p>
-      <div className={style["form"]} >
+      <div className={style["form"]}>
         <div className={style["form__control"]}>
           <label>Judul</label>
           <Input value={title} handleChange={(e) => setTitle(e.target.value)} />

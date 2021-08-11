@@ -17,8 +17,14 @@ export default class PageStore extends React.Component {
   createSubmission = async (data) => {
     try {
       this.setState({ isCreatingSubmission: true });
-      await mainApi.post("/submissions", data);
-      this.setState({ isCreatingSubmission: true });
+
+      await mainApi.post("/submissions/", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+
+      this.setState({ successCreatingSubmission: true });
     } catch (error) {
       this.setState({
         error:
@@ -26,11 +32,6 @@ export default class PageStore extends React.Component {
             ? error.response.data.message
             : error.message,
       });
-      console.log(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
       this.setState({ isCreatingSubmission: false });
     } finally {
       this.setState({ isCreatingSubmission: false });
