@@ -70,12 +70,12 @@ class Login extends Component {
                   // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
                   // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
                   hintText={
-                    this.context.error === "User not found"
+                    this.context.error === "empty row"
                       ? "Email yang anda masukkan tidak valid"
                       : ""
                   }
                   action={
-                    this.context.error === "User not found" ? "error" : ""
+                    this.context.error === "empty row" ? "error" : ""
                   }
                   // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                   // ref={this.state.inputRef}
@@ -93,18 +93,19 @@ class Login extends Component {
                   handleChange={this.handleChange("password")}
                   style={{ borderRadius: "6px" }}
                   hintText={
-                    this.context.error === "Invalid password"
+                    this.context.error === "crypto/bcrypt: hashedPassword is not the hash of the given password"
                       ? "Password yang anda masukkan salah"
                       : ""
                   }
                   action={
-                    this.context.error === "Invalid password"
+                    this.context.error === "crypto/bcrypt: hashedPassword is not the hash of the given password"
                       ? "error"
                       : ""
                   }
                   // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
               </div>
+              {/* {this.context.error ? <div className="error">{this.context.error}</div> : ''} */}
 
               <button
                 type="button"
@@ -113,7 +114,6 @@ class Login extends Component {
               >
                 Lupa Password?
               </button>
-              {this.state.error ? <div className="error">{this.state.error}</div> : ''}
               <Button className={style["button-masuk"]}>Masuk</Button>
             </div>
             {this.context.isLogin ? <Loading /> : ""}
