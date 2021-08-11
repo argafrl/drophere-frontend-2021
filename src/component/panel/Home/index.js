@@ -8,7 +8,6 @@ import Login from "./Login";
 
 import Register from "./Register";
 import ConnectAccount from "./ConnectAccount";
-import ResetPassword from "./ResetPassword";
 
 const Home = ({ location }) => {
   return (

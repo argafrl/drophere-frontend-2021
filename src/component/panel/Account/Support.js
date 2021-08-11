@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import style from "../../../css/account-support.module.scss";
 import { TextArea, Button } from "@bccfilkom/designsystem/build";
+import { SupportContext } from "../../../contexts/SupportContext";
 
 export default function Support() {
   const [message, setMessage] = useState("");
+  const { error, success, isPostingFeedback, postFeedback, resetState } =
+    useContext(SupportContext);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-
-    setMessage("");
+    if (message) {
+      postFeedback(message);
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+
+    if (success) {
+      setMessage("");
+      resetState();
+    }
+  }, [success, resetState, error]);
 
   return (
     <div className={style.container + " opening-transition"}>
@@ -20,11 +35,15 @@ export default function Support() {
         <TextArea
           placeholder="Tulis masukan anda"
           value={message}
-          onChange={(event) => {
+          handleChange={(event) => {
             setMessage(event.target.value);
           }}
         />
-        <Button size="large" type="submit">
+        <Button
+          size="large"
+          type="submit"
+          disabled={isPostingFeedback}
+        >
           Kirim
         </Button>
       </form>
