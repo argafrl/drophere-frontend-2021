@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { TokenContext } from '../../../contexts/token';
+// import { TokenContext } from '../../../contexts/token';
 import { endpointURL } from '../../../config';
 
 import style from '../../../css/account-profile.module.scss';
@@ -21,6 +21,8 @@ import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 
 import { withSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../../contexts/UserContext';
+import mainApi from '../../../api/mainApi';
 
 function Dropzone() {
   const {getRootProps, getInputProps, open, acceptedFiles, fileRejections} = useDropzone({
@@ -69,7 +71,7 @@ function Dropzone() {
 
 class Profile extends Component {
 
-  static contextType = TokenContext;
+  static contextType = UserContext;
 
   state = {
     openNama: false,
@@ -79,6 +81,7 @@ class Profile extends Component {
 
     name: '',
     email: '',
+    profile_image:'',
 
     currentPassword: '',
     newPassword: '',
@@ -118,29 +121,64 @@ class Profile extends Component {
 
   async componentDidMount() {
     try {
+      this.context.fetchUserInfo();
+      this.setState({
+        name: this.context.full_name,
+        email: this.context.email,
+        profile_image: this.context.profile_image
+      });
+      // const { name, email } = resp.data.data.me;
+      // this.setState({ name, email, isPageLoading: false });
 
-      const resp = await axios.post(endpointURL, {
-        query: `
-        query {
-          me {
-            email
-            name
-          }
-        }`
-      })
-      if (resp.data.errors) {
-        throw new Error(resp.data.errors[0].message);
-      }
+      // const resp = await axios.post(endpointURL, {
+      //   query: `
+      //   query {
+      //     me {
+      //       email
+      //       name
+      //     }
+      //   }`
+      // })
+      // if (resp.data.errors) {
+      //   throw new Error(resp.data.errors[0].message);
+      // }
 
-      const { name, email } = resp.data.data.me;
-      this.setState({ name, email, isPageLoading: false });
+      // const { name, email } = resp.data.data.me;
+      // this.setState({ name, email, isPageLoading: false });
     } catch (error) {
-      this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
-      this.setState({ isPageLoading: false });
-      this.context.setToken('');
-      this.props.history.push('/home');
+      // this.props.enqueueSnackbar('Error when fetching user profile', { variant: 'error' });
+      // this.setState({ isPageLoading: false });
+      // this.context.setToken('');
+      // this.props.history.push('/home');
     }
   }
+
+  onUpdateProfile = async (e) => {
+    e.preventDefault();
+    console.log('a')
+    try{
+      const bodyFormData = new FormData();
+      bodyFormData.append("profile_image", this.state.profile_image);
+      bodyFormData.append("full_name", this.state.full_name);
+      bodyFormData.append("email", this.state.email);
+      
+      await mainApi.patch("/users/profile", bodyFormData, {
+        headers: {
+          Authorization: localStorage.getItem("bccdrophere_token"),
+          "Content-Type": "multipart/form-data"
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // async componentDidUpdate() {
+  //   this.context.fetchUserInfo();
+  //   this.setState({
+  //     name: this.context.full_name,
+  //   });
+  // }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -299,7 +337,7 @@ class Profile extends Component {
                     </div>
                     
                     <div className={style.middle}>
-                      <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" className={style.avatar} />
+                      <Avatar alt="Travis Howard" src={this.state.profile_image} className={style.avatar} />
                         <div className={style['btn-ubah']}>
                           {/* <Button type="primary">
                             <Icon>photo_camera</Icon>Ubah
@@ -349,7 +387,7 @@ class Profile extends Component {
                 
                 <div className={style['form-container']}>
                   {this.state.openNama ? 
-                  <form onSubmit={this.onSave} className={style['form-edit']}>
+                  <form onSubmit={this.onUpdateProfile} className={style['form-edit']}>
                     <div className={style['form-text']}>
                       <p>Nama</p>
                     </div>

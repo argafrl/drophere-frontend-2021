@@ -83,9 +83,8 @@ class Register extends Component {
         isLoading: false, 
         error: err.response.data.message 
       });
-    })
-    
-}
+    }) 
+  }
 
   render() {
     return (
