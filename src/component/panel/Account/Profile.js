@@ -98,7 +98,7 @@ class Profile extends Component {
     isUpdateProfileLoading: false,
     isUpdatePasswordLoading: false,
 
-    // isPageLoading: true,
+    isPageLoading: true,
   };
 
   handleClickOpenNama = () => {
@@ -128,7 +128,8 @@ class Profile extends Component {
     this.setState({
       name: this.context.userInfo.full_name,
       email: this.context.userInfo.email,
-      profile_image: this.context.userInfo.profile_image
+      profile_image: this.context.userInfo.profile_image,
+      isPageLoading: false,
     });
       // const { name, email } = resp.data.data.me;
       // this.setState({ name, email, isPageLoading: false });

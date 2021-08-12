@@ -119,14 +119,15 @@ class Login extends Component {
             </div>
             {this.context.isLogin ? <Loading /> : ""}
           </form>
-
-          {/* <ForgotPassword
-            open={this.state.open}
-            onClose={this.handleClose}
-            value={this.state.email}
-            handleChange={this.handleChange("email")}
-          /> */}
           <Portal>
+            <ForgotPassword
+              open={this.state.open}
+              onClose={this.handleClose}
+              value={this.state.email}
+              handleChange={this.handleChange("email")}
+            />
+          </Portal>
+          {/* <Portal>
             <Dialog
               title="Title"
               visible={this.state.open}
@@ -145,7 +146,7 @@ class Login extends Component {
               pellentesque quis. Duis quis odio ultrices, cursus lacus ac,
               posuere felis.
             </Dialog>
-          </Portal>
+          </Portal> */}
 
           {/* <Button onClick={ this.handleClickOpen }>
             Show Dialog
