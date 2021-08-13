@@ -42,6 +42,8 @@ import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
 import MomentUtils from "@date-io/moment";
 import { withSnackbar } from "notistack";
+import { UserContext } from "../../../contexts/UserContext";
+import mainApi from "../../../api/mainApi";
 
 const excludeSlugRegexp = new RegExp("^(" + excludeSlug.join("|") + ")$");
 
@@ -290,6 +292,9 @@ function EditForm(props) {
 }
 
 class Pages extends Component {
+  static contextType = UserContext;
+
+
   state = {
     openKebab: false,
     openAlert: false,
@@ -371,10 +376,25 @@ class Pages extends Component {
     });
   };
 
-  handleSendEmail = (e) => {
-    this.setState({
-      sendEmail: e,
-    })
+  handleSendEmail = async (e) => {
+    // this.context.sendEmailVerification();
+    // this.setState({
+    //   sendEmail: e,
+    // })
+    try {
+      // this.setState({ isSendingEmailVerification: true });
+      await mainApi.get("/users/verify",{
+        headers: {Authorization: localStorage.getItem("bccdrophere_token")}
+      });
+      this.setState({
+        sendEmail: e,
+      })
+      // this.setState({ successSendEmailVerification: true });
+      // console.log(data.data);
+    } catch (error) {
+      console.log(error);
+      // this.logout();
+    }
   }
 
   fetchUserConnectedStorageProviders = async () => {
@@ -654,6 +674,15 @@ class Pages extends Component {
 
   async componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    try {
+      await this.context.fetchUserInfo();
+      this.setState({
+        sendEmail: this.context.userInfo.is_verified,
+      });
+    } catch (err) {
+      console.log(err)
+    }
+    
     // document.getElementById("dropdown").innerHTML = 'a'
     // try {
     //   this.setState({ isLinksLoading: true });

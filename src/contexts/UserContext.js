@@ -9,6 +9,11 @@ export const defaultValue = {
   fetchUserInfo: () => {},
   isFetchingUserInfo: false,
   error: "",
+
+  isSendingEmailVerification: false,
+  sendEmailVerification: () => {},
+  successSendEmailVerification: false,
+
   login: () => {},
   isLogin: false,
   update: () => {},
@@ -27,7 +32,7 @@ export class UserStore extends React.Component {
         headers: {Authorization: localStorage.getItem("bccdrophere_token")}
       });
       this.setState({ userInfo: data.data });
-      // console.log(data.data);
+      // console.log(this.state.userInfo);
     } catch (error) {
       console.log(error);
       // this.logout();
@@ -36,6 +41,24 @@ export class UserStore extends React.Component {
     }
   };
 
+  //Main Page
+  sendEmailVerification = async () => {
+    try {
+      this.setState({ isSendingEmailVerification: true });
+      await mainApi.get("/users/verify",{
+        headers: {Authorization: localStorage.getItem("bccdrophere_token")}
+      });
+      this.setState({ successSendEmailVerification: true });
+      // console.log(data.data);
+    } catch (error) {
+      console.log(error);
+      // this.logout();
+    } finally {
+      this.setState({ isSendingEmailVerification: false });
+    }
+  };
+
+  // Profile
   update = async(profile_image, name, email) => {
     try{
       const bodyFormData = new FormData();
@@ -45,7 +68,7 @@ export class UserStore extends React.Component {
       
       await mainApi.patch("/users/profile", bodyFormData, {
         headers: {
-          "Authorization": localStorage.getItem("bccdrophere_token"),
+          Authorization: localStorage.getItem("bccdrophere_token"),
           "Content-Type": "multipart/form-data"
         },
         // data: bodyFormData,

@@ -105,6 +105,7 @@
                 flex: 4;
                 display: flex;
                 flex-wrap: wrap;
+                row-gap: 10px;
                 column-gap: 15px;
                 align-items: center;
                 .avatar{
@@ -116,6 +117,8 @@
                     font-size: 14px;        
                     display: flex;
                     align-items: center;
+                    justify-content: center;
+                    min-width: 100px;
                     // padding: 0 10px;
                     // height: 35px;
                     background-color: #3498DB;
@@ -138,7 +141,8 @@
                     border-radius: 15px;
                     padding: 3px 10px;
                     font-size: 12px;
-                    a{
+                    span{
+                        cursor: pointer;
                         color: #3598DB;
                         text-decoration: underline;
                     }
@@ -190,10 +194,11 @@
         }
         .btn-ubah{
             // margin-left: 15px;=
+            // min-width: 100px;
             button{
                 padding: 0 10px;
                 height: 35px;
-                min-width: 100px;
+                // min-width: 100px;
                 font-weight: normal;
                 svg, span{
                     margin-right: 3px;

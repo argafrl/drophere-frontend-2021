@@ -19,6 +19,7 @@ import EditPage from "./EditPage";
 import Authorization from "./Authorization";
 import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
+import PagesNew from "./PagesNew";
 
 function MenuItem(props) {
   return (
@@ -175,7 +176,7 @@ class Content extends Component {
         <div className={style.content}>
           <Switch>
             <Redirect from="/account" exact to="/account/pages" />
-            <Route path="/account/pages" exact component={Pages} />
+            <Route path="/account/pages" exact component={PagesNew} />
             <Route path="/account/pages/add" component={AddNewPage} />
             <Route path="/account/pages/:id/edit" component={EditPage} />
             <Route path="/account/profile" component={Profile} />

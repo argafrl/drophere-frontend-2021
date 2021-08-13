@@ -71,11 +71,11 @@ class Login extends Component {
                   // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
                   // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
                   hintText={
-                    this.context.error === "empty row"
+                    this.context.error === "entry not found"
                       ? "Email yang anda masukkan tidak valid"
                       : ""
                   }
-                  action={this.context.error === "empty row" ? "error" : ""}
+                  action={this.context.error === "entry not found" ? "error" : ""}
                   // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                   // ref={this.state.inputRef}
                 />
@@ -106,7 +106,7 @@ class Login extends Component {
                   // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
               </div>
-              {/* {this.context.error ? <div className="error">{this.context.error}</div> : ''} */}
+              {/* {this.context.error === "entry not found" ? <div className="error">Akun tidak ditemukan</div> : ''} */}
 
               <button
                 type="button"

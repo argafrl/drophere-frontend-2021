@@ -126,8 +126,8 @@ class Register extends Component {
                   handleChange={this.handleChange('email')}
                   style={{borderRadius: "6px"}}
                   // hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email ${this.state.email} sudah terdaftar` : '' }
-                  hintText={this.state.error === "Error: Duplicated email" ? `Akun dengan email tersebut sudah terdaftar` : '' }
-                  action={this.state.error === "Error: Duplicated email" ? "error" : ''}
+                  hintText={this.state.error === "supabase error: duplicate key value violates unique constraint " + "\"users_email_key\"" ? `Akun dengan email tersebut sudah terdaftar` : '' }
+                  action={this.state.error === "supabase error: duplicate key value violates unique constraint " + "\"users_email_key\"" ? "error" : ''}
                 />
               </div>
 
@@ -159,7 +159,9 @@ class Register extends Component {
                 />
               </div> */}
 
-              {this.state.error ? <div className="error">{this.state.error}</div> : ''}
+              {/* {this.state.error ? <div className="error">{this.state.error}</div> : ''} */}
+              {this.state.error}
+              {this.state.error === "supabase error: duplicate key value violates unique constraint " + "users_pkey" ? <div className="error">Email sudah digunakan</div> : ''}
               <Button className={style['button-daftar']}>Daftar</Button>
               
             </div>

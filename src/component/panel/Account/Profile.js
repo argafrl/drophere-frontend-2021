@@ -19,7 +19,7 @@ import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 
-import { withSnackbar } from 'notistack';
+import { useSnackbar, withSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../../contexts/UserContext';
 import mainApi from '../../../api/mainApi';
@@ -69,6 +69,8 @@ function Dropzone() {
   );
 }
 
+// const { enqueueSnackbar } = useSnackbar();
+
 class Profile extends Component {
 
   static contextType = UserContext;
@@ -113,24 +115,35 @@ class Profile extends Component {
     })
   }
 
-  handleVerifikasi = () => {
+  handleVerifikasi = (e) => {
     this.setState({
-      verifikasi: !this.state.verifikasi
+      verifikasi: e,
     })
   }
 
-  constructor(props){
-    super(props);
-  }
+  // constructor(props){
+  //   super(props);
+  // }
 
   async componentDidMount() {
-    await this.context.fetchUserInfo();
-    this.setState({
-      name: this.context.userInfo.full_name,
-      email: this.context.userInfo.email,
-      profile_image: this.context.userInfo.profile_image,
-      isPageLoading: false,
-    });
+    try {
+      await this.context.fetchUserInfo();
+      this.setState({
+        name: this.context.userInfo.full_name,
+        email: this.context.userInfo.email,
+        profile_image: this.context.userInfo.profile_image,
+        verifikasi: this.context.userInfo.is_verified,
+        isPageLoading: false,
+      });
+    } catch (error) {
+      this.props.enqueueSnackbar('Error when updating profile', { variant: 'error' });
+      console.log('error happen: ' + error);
+      this.setState({
+        isUpdateProfileLoading: false,
+        isUpdateProfileError: error,
+      })
+    }
+    
       // const { name, email } = resp.data.data.me;
       // this.setState({ name, email, isPageLoading: false });
 
@@ -152,8 +165,30 @@ class Profile extends Component {
   }
 
   onUpdateProfile = async (e) => {
+    
     e.preventDefault();
-    this.context.update(this.state.profile_image, this.state.name, this.state.email);
+    
+    // this.context.update(this.state.profile_image, this.state.name, this.state.email);
+    try{
+      const bodyFormData = new FormData();
+      bodyFormData.append("profile_image", this.state.profile_image);
+      bodyFormData.append("full_name", this.state.name);
+      bodyFormData.append("email", this.state.email);
+      
+      await mainApi.patch("/users/profile", bodyFormData, {
+        headers: {
+          Authorization: localStorage.getItem("bccdrophere_token"),
+          "Content-Type": "multipart/form-data"
+        },
+        // data: bodyFormData,
+      });
+    } catch (err) {
+      // this.props.enqueueSnackbar(err, {
+      //   variant: "error",
+      // });
+      console.log(err);
+    }
+  
   };
 
 
@@ -323,7 +358,7 @@ class Profile extends Component {
                           {/* <Dropzone /> */}
                           <input type="file" name="avatar" id="btn-avatar" accept="image/*" style={{display: "none"}} />
                           <div className={style['btn-avatar-wrapper']}>
-                            <label for="btn-avatar"><CameraAltOutlinedIcon />Ubah</label>
+                            <label htmlFor="btn-avatar"><CameraAltOutlinedIcon />Ubah</label>
                           </div>
                         </div>
                     </div>
@@ -449,7 +484,7 @@ class Profile extends Component {
                         { this.state.verifikasi ? 
                           <p style={{color: "white"}}>Terverifikasi</p>
                           : 
-                          <p>Belum terverifikasi. <Link onClick={this.handleVerifikasi}>Kirim ulang</Link></p>
+                          <p>Belum terverifikasi. <span onClick={this.handleVerifikasi}>Kirim ulang</span></p>
                         }
                       </div>}
                     </div>
