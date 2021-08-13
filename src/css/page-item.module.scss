@@ -1,111 +1,93 @@
-.item{
-    border: 1px solid #DADCE0;
-    border-radius: 8px;
-
-    .body{
+.item {
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  .body {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #dadce0;
+    height: 80%;
+    padding: 10px;
+    .top {
       display: flex;
-      flex-direction: column;
-      border-bottom: 1px solid #DADCE0;
-      height: 80%;
-      padding: 10px;
-      .top{
-        // height: 10%;
-        display: flex;
-        justify-content: space-between;
-        img{
-          width: 20px;
-        }
-        button{
-          width: 20px;
-          height: 20px;
-          background: url("/img/icons/kebab-menu.svg");
-          background-size: cover;
-          background-repeat: no-repeat;
-          // background: transparent;
-          border: none;
-          cursor: pointer;
-
-        }
+      justify-content: space-between;
+      img {
+        width: 20px;
       }
-      .bottom{
-        flex: auto;
+      button {
+        width: 20px;
+        height: 20px;
+        background: url("/img/icons/kebab-menu.svg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        border: none;
+        cursor: pointer;
+      }
+      .menu {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        // height: 90%;
-        .title{
-          text-align: center;
-          font-weight: 600;
-        }
-        .files{
-          display: flex;
-          align-items: center;
+        flex-grow: 1;
+        justify-content: flex-end;
+        & > div {
+          border-radius: 2px;
+          max-width: 105px;
+          min-width: 0;
+          box-shadow: 0px 0px 2px rgba(120, 120, 121, 0.3);
           font-size: 12px;
-          color: #787879;
-          margin-top: 5px;
-          img{
-            margin-right: 5px;
-          }
-        }
-      }
-      .kebab-menu{
-        background-color: blue;
-        height: 300;
-        position: absolute;
-        left: 170px;
-        top: 120px;
-        z-index: 10;
-        // right: 0;
-        
-
-        
-
-        .dropdown{
-          transition: all 0.25s ease-out;
-          transform: scale(0);
-          transform-origin: 100% 0;
-          &:hover {
-            ul {
-              transform: scale(1);
+          li {
+            padding: 10px 16px;
+            &:hover {
+              color: #1a74a0;
             }
           }
         }
-
-        .dropdown.active {
-          transform: scale(1);
-          transition: all 0.25s cubic-bezier(.5,1.8,.9,.8);
-        }
       }
     }
-
-    .footer{
-      height: 20%;
-      font-size: 12px;
-      color: #787879;
+    .bottom {
+      flex: auto;
       display: flex;
-      // justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      padding: 0 10px 0 10px;
-      // background-color: blue;
-      
-      .calendar{
-        flex: 6;
-        display: flex;
-        align-items: center;
-        img{
-          width: 15%;
-          margin-right: 5px;
-        }
+      justify-content: center;
+      .title {
+        text-align: center;
+        font-weight: 600;
       }
-      .views{
-        flex: 5;
+      .files {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        img{
+        font-size: 12px;
+        color: #787879;
+        margin-top: 5px;
+        img {
           margin-right: 5px;
         }
       }
     }
   }
+
+  .footer {
+    height: 20%;
+    font-size: 12px;
+    color: #787879;
+    display: flex;
+    align-items: center;
+    padding: 0 10px 0 10px;
+    .calendar {
+      flex: 6;
+      display: flex;
+      align-items: center;
+      img {
+        width: 15%;
+        margin-right: 5px;
+      }
+    }
+    .views {
+      flex: 5;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      img {
+        margin-right: 5px;
+      }
+    }
+  }
+}

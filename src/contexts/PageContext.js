@@ -3,15 +3,19 @@ import mainApi from "../api/mainApi";
 
 export const defaultValue = {
   createSubmission: () => {},
-  isCreatingSubmission: false,
-  successCreatingSubmission: false,
-  uploadSubmission: () => {},
-  isUploadingSubmission: false,
-  successUploadSubmission: false,
-  uploadProgress: 0,
   error: "",
+  allPages: [],
+  isCreatingSubmission: false,
+  isUploadingSubmission: false,
+  isFetchingAllPages: false,
+  successCreatingSubmission: false,
+  successUploadSubmission: false,
+  successFetchAllPages: false,
+  uploadProgress: 0,
+  uploadSubmission: () => {},
   resetState: () => {},
   clearError: () => {},
+  getAllPages: () => {},
 };
 
 export const PageContext = React.createContext(defaultValue);
@@ -46,8 +50,7 @@ export default class PageStore extends React.Component {
   uploadSubmission = async (formData) => {
     try {
       this.setState({ isUploadingSubmission: true });
-
-      const res = await mainApi.post("/submissions/heroku/upload", formData, {
+      await mainApi.post("/submissions/heroku/upload", formData, {
         onUploadProgress: (progressEvent) => {
           let percentCompleted = Math.round(
             (progressEvent.loaded / progressEvent.total) * 100
@@ -71,8 +74,36 @@ export default class PageStore extends React.Component {
     }
   };
 
+  getAllPages = async () => {
+    try {
+      this.setState({ isFetchingAllPages: true });
+
+      const { data } = await mainApi.get("/submissions/");
+      console.log(data);
+      this.setState({ allPages: data.data });
+      this.setState({ successCreatingSubmission: true });
+    } catch (error) {
+      this.setState({
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+      this.setState({ successFetchAllPages: false });
+    } finally {
+      this.setState({ isFetchingAllPages: false });
+    }
+  };
+
   resetState = () => {
-    this.setState(defaultValue);
+    this.setState({
+      error: "",
+      isCreatingSubmission: false,
+      isUploadingSubmission: false,
+      successCreatingSubmission: false,
+      successUploadSubmission: false,
+      uploadProgress: 0,
+    });
   };
 
   clearError = () => {
@@ -88,6 +119,7 @@ export default class PageStore extends React.Component {
           resetState: this.resetState,
           uploadSubmission: this.uploadSubmission,
           clearError: this.clearError,
+          getAllPages: this.getAllPages,
         }}
       >
         {this.props.children}
