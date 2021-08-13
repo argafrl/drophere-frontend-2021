@@ -2,7 +2,6 @@ import React, { Component, useContext } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import Profile from "./Profile";
-import Pages from "./Pages";
 import Support from "./Support";
 import Storage from "./Storage";
 import style from "../../../css/account-content.module.scss";
@@ -12,7 +11,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ConnectAccount from "../Home/ConnectAccount";
 import { Button } from "@bccfilkom/designsystem/build";
 import AddNewPage from "./AddNewPage";
 import EditPage from "./EditPage";
@@ -186,7 +184,6 @@ class Content extends Component {
             />
             <Route path="/account/storage" component={Storage} />
             <Route path="/account/support" component={Support} />
-            <Route path="/account/connect" component={ConnectAccount} />
           </Switch>
         </div>
       </div>

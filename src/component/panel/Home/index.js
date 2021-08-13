@@ -8,6 +8,8 @@ import Login from "./Login";
 
 import Register from "./Register";
 import ConnectAccount from "./ConnectAccount";
+import PrivateRoute from "../../../routes/PrivateRoute";
+import AuthRoute from "../../../routes/AuthRoute";
 
 const Home = ({ location }) => {
   return (
@@ -22,9 +24,13 @@ const Home = ({ location }) => {
           <Switch>
             <Redirect from="/" to="/home" exact />
             <Redirect from="/login" to="/home" />
-            <Route path="/home" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/connect-account" exact component={ConnectAccount} />
+            <AuthRoute path="/home" exact component={Login} />
+            <AuthRoute path="/register" exact component={Register} />
+            <PrivateRoute
+              path="/connect-account"
+              exact
+              component={ConnectAccount}
+            />
           </Switch>
         </div>
       </div>

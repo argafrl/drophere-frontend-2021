@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import StorageStore from "../../../contexts/StorageContext";
 import SupportStore from "../../../contexts/SupportContext";
 import style from "../../../css/account.module.scss";
 import Content from "./Content";

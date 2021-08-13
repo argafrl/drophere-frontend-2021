@@ -12,6 +12,7 @@ import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import SidebarStore from "./contexts/SidebarContext";
 import PageStore from "./contexts/PageContext";
+import StorageStore from "./contexts/StorageContext";
 
 class AppRouter extends Component {
   state = { particle: false };
@@ -28,16 +29,18 @@ class AppRouter extends Component {
         >
           <SidebarStore>
             <UserStore>
+              <Header />
               <PageStore>
-                <Header />
-                <main>
-                  <Switch>
-                    <Route path="/link/:slug" exact component={Drop} />
-                    <PrivateRoute path="/account" component={Account} />
-                    <AuthRoute path="/" component={Home} />
-                  </Switch>
-                </main>
-                <Footer />
+                <StorageStore>
+                  <main>
+                    <Switch>
+                      <Route path="/link/:slug" exact component={Drop} />
+                      <PrivateRoute path="/account" component={Account} />
+                      <Route path="/" component={Home} />
+                    </Switch>
+                  </main>
+                  <Footer />
+                </StorageStore>
               </PageStore>
             </UserStore>
           </SidebarStore>

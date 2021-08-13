@@ -1,9 +1,47 @@
 import { Button } from "@bccfilkom/designsystem/build";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router";
+import { StorageContext } from "../../../contexts/StorageContext";
 import style from "../../../css/account-connect.module.scss";
 
 const ConnectAccount = () => {
   const [useDrive, setUseDrive] = useState(false);
+  const { search } = useLocation();
+  const history = useHistory();
+
+  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
+    useContext(StorageContext);
+
+  useEffect(async () => {
+    const query = new URLSearchParams(search);
+    const state = query.get("state");
+    const code = query.get("code");
+    const scope = query.get("scope");
+    if (state && code && scope) {
+      const data = await connectGoogleDrive({ state, code, scope });
+      if (data && data.is_success) {
+        console.log("success connect to drive");
+        setUseDrive(true);
+      }
+    }
+  }, [search]);
+
+  const openGoogleConsentScreen = async () => {
+    const { is_success, data } = await getOAuthUrl();
+    if (is_success) {
+      window.location.replace(data);
+    } else {
+      console.log("object");
+    }
+  };
+
+  const handleNextPage = () => {
+    if (useDrive) {
+      history.push("/account");
+    } else {
+      console.log("show continue page");
+    }
+  };
 
   return (
     <div className={style["container"]}>
@@ -29,7 +67,7 @@ const ConnectAccount = () => {
                 Batalkan{" "}
               </Button>
             ) : (
-              <Button onClick={() => setUseDrive(true)}>Tautkan </Button>
+              <Button onClick={openGoogleConsentScreen}>Tautkan </Button>
             )}
           </div>
         </div>
@@ -42,14 +80,14 @@ const ConnectAccount = () => {
             <p className={style["card__body__description"]}>
               Nantikan fitur baru untuk dapat terhubung ke Google Drive
             </p>
-            <div className={style["card__body__badge"]}>
-              Coming Soon
-            </div>
+            <div className={style["card__body__badge"]}>Coming Soon</div>
           </div>
         </div>
       </div>
       <div className={style["button-container"]}>
-        <Button type="secondary">Lanjutkan</Button>
+        <Button type="secondary" onClick={handleNextPage}>
+          Lanjutkan
+        </Button>
       </div>
     </div>
   );
