@@ -12,11 +12,7 @@ import Footer from "./component/common/Footer";
 import Header from "./component/common/Header";
 import SidebarStore from "./contexts/SidebarContext";
 import PageStore from "./contexts/PageContext";
-<<<<<<< HEAD
 import StorageStore from "./contexts/StorageContext";
-=======
-import PagesNotFound from "./component/panel/Home/PageNotFound";
->>>>>>> 94f06b6... Add Illustration, Redesign Sidebar
 
 class AppRouter extends Component {
   state = { particle: false };
