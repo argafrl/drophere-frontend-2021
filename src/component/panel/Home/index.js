@@ -1,21 +1,20 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-
 import style from "../../../css/home.module.scss";
-
 import Header from "./Header";
 import Login from "./Login";
-
 import Register from "./Register";
 import ConnectAccount from "./ConnectAccount";
 import PrivateRoute from "../../../routes/PrivateRoute";
 import AuthRoute from "../../../routes/AuthRoute";
+import NotFound from "../../common/NotFound";
 
 const Home = ({ location }) => {
   return (
     <div className={style.container}>
       <div className={style.content}>
-        {location.pathname !== "/connect-account" && (
+        {(location.pathname === "/home" ||
+          location.pathname === "/register") && (
           <div className={style.header + " left-to-right-anim"}>
             <Header />
           </div>
@@ -31,6 +30,7 @@ const Home = ({ location }) => {
               exact
               component={ConnectAccount}
             />
+            <Route path="*" component={NotFound} />
           </Switch>
         </div>
       </div>

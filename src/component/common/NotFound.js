@@ -1,5 +1,5 @@
 import React from "react";
-import style from "../../../css/drop-inaccessible-not-found.module.scss";
+import style from "../../css/drop-inaccessible-not-found.module.scss";
 
 const NotFound = () => {
   return (

@@ -1,6 +1,5 @@
 import React, { Component, useContext } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
-
 import Profile from "./Profile";
 import Support from "./Support";
 import Storage from "./Storage";
@@ -21,35 +20,35 @@ import PagesNew from "./PagesNew";
 
 function MenuItem(props) {
   return (
-    <ListItem
-      className={menuStyle["list-item"]}
-      button
-      selected={props.selected}
-      onClick={props.onClick}
-      style={props.selected ? { backgroundColor: "#D9EDF7" } : {}}
-    >
-      {props.icon != null ? (
-        <ListItemIcon
-          className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
-        >
-          <Icon
-            style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
-          >
-            {props.icon}
-          </Icon>
-        </ListItemIcon>
-      ) : (
-        ""
-      )}
-      <ListItemText
-        className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
-        primary={props.caption}
-        style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
-      />
-    </ListItem>
+    <div className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}>
+      <ListItem
+        className={menuStyle["list-item"]}
+        button
+        selected={props.selected}
+        onClick={props.onClick}
+        style={props.selected ? { backgroundColor: "#D9EDF7" } : {}}
+      >
+        {props.icon != null ? (
+          <ListItemIcon>
+            <Icon
+              style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
+            >
+              {props.icon}
+            </Icon>
+          </ListItemIcon>
+        ) : (
+          ""
+        )}
+        <ListItemText
+          primary={props.caption}
+          style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
+        />
+      </ListItem>
+    </div>
   );
 }
 
+//
 const Menu = (props) => {
   const history = useHistory();
   const { closeSidebar } = useContext(SidebarContext);
@@ -175,15 +174,16 @@ class Content extends Component {
           <Switch>
             <Redirect from="/account" exact to="/account/pages" />
             <Route path="/account/pages" exact component={PagesNew} />
-            <Route path="/account/pages/add" component={AddNewPage} />
-            <Route path="/account/pages/:id/edit" component={EditPage} />
-            <Route path="/account/profile" component={Profile} />
+            <Route path="/account/pages/add" exact component={AddNewPage} />
+            <Route path="/account/pages/:id/edit" exact component={EditPage} />
+            <Route path="/account/profile" exact component={Profile} />
             <Route
               path="/account/storage/authorize"
               component={Authorization}
             />
-            <Route path="/account/storage" component={Storage} />
-            <Route path="/account/support" component={Support} />
+            <Route path="/account/storage" exact component={Storage} />
+            <Route path="/account/support" exact component={Support} />
+            <Redirect from="*" to="/not-found" />
           </Switch>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { Button } from "@bccfilkom/designsystem/build";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { StorageContext } from "../../../contexts/StorageContext";
 import style from "../../../css/account-connect.module.scss";
 
@@ -12,6 +12,7 @@ const ConnectAccount = () => {
   const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
     useContext(StorageContext);
 
+  // eslint-disable-next-line
   useEffect(async () => {
     const query = new URLSearchParams(search);
     const state = query.get("state");
@@ -24,7 +25,8 @@ const ConnectAccount = () => {
         setUseDrive(true);
       }
     }
-  }, [search]);
+    // eslint-disable-next-line
+  }, [search, connectGoogleDrive]);
 
   const openGoogleConsentScreen = async () => {
     const { is_success, data } = await getOAuthUrl();

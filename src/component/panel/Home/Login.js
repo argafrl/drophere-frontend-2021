@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import ForgotPassword from "../../common/ForgotPassword";
-import { Card, Button, Input, Dialog } from "@bccfilkom/designsystem/build";
+import { Card, Button, Input } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Portal } from "react-portal";
 
@@ -58,9 +58,6 @@ class Login extends Component {
               <div className={style["input-wrapper"]}>
                 <p>Email</p>
                 <Input
-                  // icon='./img/bcc-logo-horizontal.png'
-                  // icon='../../../../public/img/background-diagonal.png'
-                  // icon={{WarningIcon}}
                   className={style.input}
                   type="email"
                   placeholder="Masukkan Email"
@@ -68,16 +65,14 @@ class Login extends Component {
                   value={this.state.email}
                   handleChange={this.handleChange("email")}
                   style={{ borderRadius: "6px" }}
-                  // hintText={this.state.error == "Error: User not found" ? this.state.error.message : ''}
-                  // hintText={this.state.error == "Error: User not found" && this.state.email != '' ? "Email yang anda masukkan tidak valid" : '' }
                   hintText={
                     this.context.error === "entry not found"
                       ? "Email yang anda masukkan tidak valid"
                       : ""
                   }
-                  action={this.context.error === "entry not found" ? "error" : ""}
-                  // style={this.state.error == "Error: User not found" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
-                  // ref={this.state.inputRef}
+                  action={
+                    this.context.error === "entry not found" ? "error" : ""
+                  }
                 />
               </div>
 
@@ -103,11 +98,8 @@ class Login extends Component {
                       ? "error"
                       : ""
                   }
-                  // style={this.state.error == "Error: Invalid password" ? { borderColor: "#E84C3D", borderRadius: "6px" } : { borderRadius: "6px" } }
                 />
               </div>
-              {/* {this.context.error === "entry not found" ? <div className="error">Akun tidak ditemukan</div> : ''} */}
-
               <button
                 type="button"
                 onClick={this.handleClickOpen}
@@ -127,30 +119,6 @@ class Login extends Component {
               handleChange={this.handleChange("email")}
             />
           </Portal>
-          {/* <Portal>
-            <Dialog
-              title="Title"
-              visible={this.state.open}
-              onCancel={this.handleClose}
-              primaryButton={{
-                text: "Lanjut",
-                onClick: this.handleClose,
-              }}
-              secondaryButton={{
-                text: "Hapus",
-                onClick: this.handleClose,
-              }}
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse cursus fermentum risus, sit amet fringilla nunc
-              pellentesque quis. Duis quis odio ultrices, cursus lacus ac,
-              posuere felis.
-            </Dialog>
-          </Portal> */}
-
-          {/* <Button onClick={ this.handleClickOpen }>
-            Show Dialog
-          </Button> */}
         </Card>
       </div>
     );

@@ -1,21 +1,17 @@
 import React from "react";
 import mainApi from "../api/mainApi";
-import Authorization from "../component/panel/Account/Authorization";
 
 export const defaultValue = {
   userInfo: null,
-
   isAuthenticated: !!localStorage.getItem("bccdrophere_token"),
-  fetchUserInfo: () => {},
-  isFetchingUserInfo: false,
   error: "",
-
-  isSendingEmailVerification: false,
-  sendEmailVerification: () => {},
-  successSendEmailVerification: false,
-
-  login: () => {},
   isLogin: false,
+  isFetchingUserInfo: false,
+  isSendingEmailVerification: false,
+  successSendEmailVerification: false,
+  fetchUserInfo: () => {},
+  login: () => {},
+  sendEmailVerification: () => {},
   update: () => {},
   logout: () => {},
 };
@@ -28,14 +24,12 @@ export class UserStore extends React.Component {
   fetchUserInfo = async () => {
     try {
       this.setState({ isFetchingUserInfo: true });
-      const { data } = await mainApi.get("/users/profile",{
-        headers: {Authorization: localStorage.getItem("bccdrophere_token")}
+      const { data } = await mainApi.get("/users/profile", {
+        headers: { Authorization: localStorage.getItem("bccdrophere_token") },
       });
       this.setState({ userInfo: data.data });
-      // console.log(this.state.userInfo);
     } catch (error) {
       console.log(error);
-      // this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });
     }
@@ -45,8 +39,8 @@ export class UserStore extends React.Component {
   sendEmailVerification = async () => {
     try {
       this.setState({ isSendingEmailVerification: true });
-      await mainApi.get("/users/verify",{
-        headers: {Authorization: localStorage.getItem("bccdrophere_token")}
+      await mainApi.get("/users/verify", {
+        headers: { Authorization: localStorage.getItem("bccdrophere_token") },
       });
       this.setState({ successSendEmailVerification: true });
       // console.log(data.data);
@@ -59,19 +53,18 @@ export class UserStore extends React.Component {
   };
 
   // Profile
-  update = async(profile_image, name, email) => {
-    try{
+  update = async (profile_image, name, email) => {
+    try {
       const bodyFormData = new FormData();
       bodyFormData.append("profile_image", profile_image);
       bodyFormData.append("full_name", name);
       bodyFormData.append("email", email);
-      
+
       await mainApi.patch("/users/profile", bodyFormData, {
         headers: {
           Authorization: localStorage.getItem("bccdrophere_token"),
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
         },
-        // data: bodyFormData,
       });
     } catch (err) {
       console.log(err);
@@ -83,16 +76,13 @@ export class UserStore extends React.Component {
       this.setState({ isLogin: true });
 
       const { data } = await mainApi.post("/sign_in", { email, password });
-
       const token = data.data.replace("Bearer ", "");
-
       localStorage.setItem("bccdrophere_token", token);
 
-      // console.log(token);
-
+      mainApi.defaults.headers.common["Authorization"] =
+        localStorage.getItem("bccdrophere_token");
       this.setState({ isAuthenticated: true, error: "" });
     } catch (err) {
-      // console.log(err.response.data.message);
       this.setState({
         error: err.response.data.message,
         isAuthenticated: false,
@@ -103,7 +93,7 @@ export class UserStore extends React.Component {
   };
 
   logout = () => {
-    this.setState({ 
+    this.setState({
       isAuthenticated: false,
       userInfo: null,
     });

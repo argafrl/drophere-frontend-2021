@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@bccfilkom/designsystem/build";
 import { useDropzone } from "react-dropzone";
 import style from "../../../css/drop-content.module.scss";

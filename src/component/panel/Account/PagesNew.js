@@ -25,7 +25,7 @@ const PagesNew = () => {
       setSendEmail(userInfo.is_verified);
     }
     getAllPages();
-  }, []);
+  }, [getAllPages, userInfo]);
 
   const handleSendEmail = async (e) => {
     try {
@@ -38,7 +38,7 @@ const PagesNew = () => {
 
   return (
     <div className={style.container}>
-      {sendEmail != true && (
+      {!sendEmail && (
         <div className={style["verify-alert"]}>
           <h6>Verifikasi Email Anda</h6>
           <p>
