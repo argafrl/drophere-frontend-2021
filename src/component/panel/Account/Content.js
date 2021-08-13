@@ -33,7 +33,7 @@ function MenuItem(props) {
           className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
         >
           <Icon
-            style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
+            style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
           >
             {props.icon}
           </Icon>
@@ -44,7 +44,7 @@ function MenuItem(props) {
       <ListItemText
         className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}
         primary={props.caption}
-        style={props.selected ? { color: "#1A74A0" } : { color: "#C4C4C4" }}
+        style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
       />
     </ListItem>
   );
@@ -120,7 +120,7 @@ class Content extends Component {
     { caption: "Halaman", icon: "description", url: "/pages" },
     { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
     { caption: "Masukan", icon: "comment", url: "/support" },
-    { caption: "Profile", icon: "person_outline", url: "/profile" },
+    { caption: "Profil", icon: "person_outline", url: "/profile" },
     { caption: "Logout", icon: "logout", url: "/home" },
   ];
 

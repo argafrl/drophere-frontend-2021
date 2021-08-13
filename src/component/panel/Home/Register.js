@@ -160,8 +160,8 @@ class Register extends Component {
               </div> */}
 
               {/* {this.state.error ? <div className="error">{this.state.error}</div> : ''} */}
-              {this.state.error}
-              {this.state.error === "supabase error: duplicate key value violates unique constraint " + "users_pkey" ? <div className="error">Email sudah digunakan</div> : ''}
+              {/* {this.state.error} */}
+              {/* {this.state.error === "supabase error: duplicate key value violates unique constraint " + "users_pkey" ? <div className="error">Email sudah digunakan</div> : ''} */}
               <Button className={style['button-daftar']}>Daftar</Button>
               
             </div>

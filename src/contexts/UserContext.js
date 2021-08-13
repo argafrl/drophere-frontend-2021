@@ -103,7 +103,10 @@ export class UserStore extends React.Component {
   };
 
   logout = () => {
-    this.setState({ isAuthenticated: false });
+    this.setState({ 
+      isAuthenticated: false,
+      userInfo: null,
+    });
     localStorage.removeItem("bccdrophere_token");
   };
 

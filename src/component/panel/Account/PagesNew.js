@@ -90,12 +90,15 @@ const PagesNew = () => {
     useEffect(() => {
       // mainApi.defaults.headers.post["Content-Type"] = "application/json";
       // mainApi.defaults.headers.common["Authorization"] = localStorage.getItem("bccdrophere_token");
+      mainApi.defaults.headers.post["Content-Type"] = "application/json";
+      mainApi.defaults.headers.common["Authorization"] =
+        localStorage.getItem("bccdrophere_token");
       fetchUserInfo();
       if(userInfo){
         setSendEmail(userInfo.is_verified);
       }
       console.log(userInfo)
-    }, [sendEmail]);
+    }, []);
 
     const handleClickOutside = (event) => {
       if (
@@ -186,68 +189,62 @@ const PagesNew = () => {
           </div>
         </div>        
 
-        <div className={style["grid-container"]}>
-
         {links.length <= 0
-          ? ""
+          ? <div className={style["noPage-container"]}>
+              <img
+                src="/img/no-page.png"
+                alt="Drophere Logo"
+                className={style["logo"]}
+              />
+              <p>Belum ada halaman dibuat</p>
+            </div>
           : links.map((link, linkIdx) => {
               return (
-                <div className={style["item"]} key={"link" + linkIdx}>
-                  <div className={style.body}>
-                    <div className={style.top}>
-                      <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
-                      <div className={style.menu}>
-                        { isClosed === linkIdx &&
-                          <Menu opened={isClosedBinary}>
-                            <Menu.Item name="Edit halaman" onClick={() => setCloseMenu(true)} />
-                            <Menu.Item name="Salin link" onClick={() => setCloseMenu(true)} />
-                            <Menu.Item name="Hapus" onClick={() => setCloseMenu(true)} />
-                          </Menu>
-                        }
+                <div className={style["grid-container"]}>
+                  <div className={style["item"]} key={"link" + linkIdx}>
+                    <div className={style.body}>
+                      <div className={style.top}>
+                        <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
+                        <div className={style.menu}>
+                          { isClosed === linkIdx &&
+                            <Menu opened={isClosedBinary}>
+                              <Menu.Item name="Edit halaman" onClick={() => setCloseMenu(true)} />
+                              <Menu.Item name="Salin link" onClick={() => setCloseMenu(true)} />
+                              <Menu.Item name="Hapus" onClick={() => setCloseMenu(true)} />
+                            </Menu>
+                          }
+                        </div>
+                        <div ref={wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
+                          <button value={linkIdx} onClick={() => setOpenMenu(linkIdx, !isClosedBinary)}></button>    
+                        </div>
                       </div>
-                      <div ref={wrapperRef} className={style['kebab-menu']} style={{ display: 'inline-block' }}>
-                        <button value={linkIdx} onClick={() => setOpenMenu(linkIdx, !isClosedBinary)}></button>    
-                      </div>
-                    </div>
-                    
-                    <div className={style.bottom}>
-                      <div className={style.title}>
-                        <p>{`${link.title}`}</p>
-                      </div>
-                      <div className={style.files}>
-                        <img src="/img/icons/folder.svg" alt="folder" />
-                        <p>25 files</p>
-                      </div>
-                    </div>
-                    { openKebab ? 
-                    <div className={style['kebab-menu']}>
-                      <ul class="dropdown">
-                        <li><a href="http://www.g.com">1</a></li>
-                        <li><a href="http://www.g.com">2</a></li>
-                        <li><a href="http://www.g.com">3</a></li>
-                        <li><a href="http://www.g.com">4</a></li>
-                      </ul>
-                    </div>:
-                    <div>
                       
+                      <div className={style.bottom}>
+                        <div className={style.title}>
+                          <p>{`${link.title}`}</p>
+                        </div>
+                        <div className={style.files}>
+                          <img src="/img/icons/folder.svg" alt="folder" />
+                          <p>25 files</p>
+                        </div>
+                      </div>
                     </div>
-                    }
-                  </div>
-                  <div className={style.footer}>
-                    <div className={style.calendar}>
-                      <img src="/img/icons/calendar.svg" alt="calendar" />
-                      <p>21 Jul 2021</p>
-                    </div>
-                    <div className={style.views}>
-                      <img src="/img/icons/views.svg" alt="views" />
-                      <p>40 Views</p>
+                    <div className={style.footer}>
+                      <div className={style.calendar}>
+                        <img src="/img/icons/calendar.svg" alt="calendar" />
+                        <p>21 Jul 2021</p>
+                      </div>
+                      <div className={style.views}>
+                        <img src="/img/icons/views.svg" alt="views" />
+                        <p>40 Views</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               );
             })}
 
-        </div>
+        
       </div>
     );
 }

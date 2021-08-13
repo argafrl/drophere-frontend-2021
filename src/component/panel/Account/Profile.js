@@ -334,7 +334,7 @@ class Profile extends Component {
   render() {
     return (
       <div className={style.container}>
-        <h1>Profile</h1>
+        <h1>Profil</h1>
         <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
         {!this.state.isPageLoading ?
           <div className="opening-transition">
