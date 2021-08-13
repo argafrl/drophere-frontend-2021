@@ -5,6 +5,7 @@ import { SnackbarProvider } from "notistack";
 import Home from "./component/panel/Home";
 import Account from "./component/panel/Account";
 import Drop from "./component/panel/Drop";
+import PageNotFound from "./component/panel/Home/PageNotFound";
 import { UserStore } from "./contexts/UserContext";
 import AuthRoute from "./routes/AuthRoute";
 import PrivateRoute from "./routes/PrivateRoute";
