@@ -65,6 +65,7 @@ class Profile extends Component {
       this.setState({
         ...this.context.userInfo,
         name: this.context.userInfo.full_name,
+        verifikasi: this.context.userInfo.is_verified,
       });
     }
   }

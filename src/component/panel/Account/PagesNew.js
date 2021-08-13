@@ -120,7 +120,7 @@ const PagesNew = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-              { search ? 
+              { search != "" ? 
                 allPagesFiltered.map((link, idx) => {
                   return <PageCard title={link.title} due_time={link.due_time} storage_type={link.storage_type} key={idx} />;
                 }) 
