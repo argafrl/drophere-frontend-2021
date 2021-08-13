@@ -22,15 +22,10 @@ class Register extends Component {
 
   handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
-<<<<<<< HEAD
+
   };
 
   handleSignup = async (e) => {
-=======
-  }
-
-  handleSignup = async(e) => {
->>>>>>> ce9b5a8... Add search function in Halaman
     e.preventDefault();
 
     const { email, name, password } = this.state;
@@ -70,17 +65,11 @@ class Register extends Component {
               <div className={style["input-wrapper"]}>
                 <p>Nama</p>
                 <Input
-<<<<<<< HEAD
                   className={style["input"]}
                   type="text"
                   placeholder="Masukkan Nama"
                   // label='Name'
                   // fullWidth
-=======
-                  className={style['input']}
-                  type='text'
-                  placeholder='Masukkan Nama'
->>>>>>> ce9b5a8... Add search function in Halaman
                   required
                   value={this.state.name}
                   handleChange={this.handleChange("name")}
@@ -96,7 +85,6 @@ class Register extends Component {
                   placeholder="Masukkan Email"
                   required
                   value={this.state.email}
-<<<<<<< HEAD
                   handleChange={this.handleChange("email")}
                   style={{ borderRadius: "6px" }}
                   // hintText={this.state.error == "Error: Duplicated email" ? `Akun dengan email ${this.state.email} sudah terdaftar` : '' }
@@ -114,12 +102,6 @@ class Register extends Component {
                       ? "error"
                       : ""
                   }
-=======
-                  handleChange={this.handleChange('email')}
-                  style={{borderRadius: "6px"}}
-                  hintText={this.state.error === "supabase error: duplicate key value violates unique constraint " + "\"users_email_key\"" ? `Akun dengan email tersebut sudah terdaftar` : '' }
-                  action={this.state.error === "supabase error: duplicate key value violates unique constraint " + "\"users_email_key\"" ? "error" : ''}
->>>>>>> ce9b5a8... Add search function in Halaman
                 />
               </div>
 
@@ -137,14 +119,9 @@ class Register extends Component {
               </div>
 
               {/* {this.state.error ? <div className="error">{this.state.error}</div> : ''} */}
-<<<<<<< HEAD
               {/* {this.state.error} */}
               {/* {this.state.error === "supabase error: duplicate key value violates unique constraint " + "users_pkey" ? <div className="error">Email sudah digunakan</div> : ''} */}
               <Button className={style["button-daftar"]}>Daftar</Button>
-=======
-              <Button className={style['button-daftar']}>Daftar</Button>
-              
->>>>>>> ce9b5a8... Add search function in Halaman
             </div>
             {this.state.isLoading ? <Loading /> : ""}
           </form>
