@@ -15,6 +15,7 @@ const PagesNew = () => {
   const { userInfo } = useContext(UserContext);
   const { allPages, getAllPages, isFetchingAllPages } = useContext(PageContext);
 
+  const [allPagesFiltered, setAllPagesFiltered] = useState([])
   const [openAlert, setOpenAlert] = useState(false);
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
@@ -35,6 +36,15 @@ const PagesNew = () => {
       console.log(error);
     }
   };
+
+  const handleSearch = (inputSearch) => {
+    console.log(inputSearch);
+    const filtered = allPages.filter((link, idx) => {
+      return link.title.toLowerCase().includes(inputSearch.toLowerCase())
+    })
+    setSearch(inputSearch);
+    setAllPagesFiltered(filtered);
+  }
 
   return (
     <div className={style.container}>
@@ -75,7 +85,7 @@ const PagesNew = () => {
             className={style["input-search"]}
             value={search}
             placeholder="Cari halaman..."
-            handleChange={(e) => setSearch(e.target.value)}
+            handleChange={(e) => handleSearch(e.target.value)}
           />
           <div className={style.dropdown}>
             <Dropdown
@@ -110,9 +120,15 @@ const PagesNew = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-              {allPages.map((link, idx) => {
-                return <PageCard title={link.title} key={idx} />;
-              })}
+              { search ? 
+                allPagesFiltered.map((link, idx) => {
+                  return <PageCard title={link.title} due_time={link.due_time} storage_type={link.storage_type} key={idx} />;
+                }) 
+              : 
+                allPages.map((link, idx) => {
+                  return <PageCard title={link.title} due_time={link.due_time} storage_type={link.storage_type} key={idx} />;
+                })
+              }
             </div>
           )}
         </>

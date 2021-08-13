@@ -69,10 +69,11 @@
     font-size: 12px;
     color: #787879;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0 10px 0 10px;
     .calendar {
-      flex: 6;
+      // flex-basis: 6;
       display: flex;
       align-items: center;
       img {
@@ -81,7 +82,7 @@
       }
     }
     .views {
-      flex: 5;
+      // flex-basis: 5;
       display: flex;
       align-items: center;
       justify-content: flex-end;

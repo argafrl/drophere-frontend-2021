@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import moment from "moment";
+import 'moment/locale/id'
 import { Menu } from "@bccfilkom/designsystem/build";
-import style from "../../../css/page-item.module.scss";
+import style from "../../../css/page-card.module.scss";
 
-const PageCard = ({ title, date, views }) => {
+const PageCard = ({ title, due_time, storage_type }) => {
+  const wrapperRef = useRef();
+
   const [isClosed, setIsClosed] = useState("");
   const [isClosedBinary, setIsClosedBinary] = useState(true);
 
@@ -16,11 +20,27 @@ const PageCard = ({ title, date, views }) => {
     setIsClosedBinary(true);
   };
 
+  const handleClickOutside = (event) => {
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target)
+    ) {
+      setCloseMenu();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [])
+
   return (
     <div className={style["item"]}>
       <div className={style.body}>
         <div className={style.top}>
-          <img src="/img/icons/dropbox-active.svg" alt="dropbox-active" />
+          <img src={storage_type == 1 ? "/img/icons/drive-active.svg" : "/img/icons/dropbox-active.svg"} alt="dropbox-active" />
           <div className={style.menu}>
             {isClosed === 1 && (
               <Menu opened={isClosedBinary}>
@@ -37,6 +57,7 @@ const PageCard = ({ title, date, views }) => {
             )}
           </div>
           <div
+            ref={wrapperRef} 
             className={style["kebab-menu"]}
             style={{ display: "inline-block" }}
           >
@@ -59,7 +80,7 @@ const PageCard = ({ title, date, views }) => {
       <div className={style.footer}>
         <div className={style.calendar}>
           <img src="/img/icons/calendar.svg" alt="calendar" />
-          <p>21 Jul 2021</p>
+          <p>{moment(due_time).format('L')}</p>
         </div>
         <div className={style.views}>
           <img src="/img/icons/views.svg" alt="views" />
