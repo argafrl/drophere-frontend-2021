@@ -1,21 +1,26 @@
 import React, { Component, useContext } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+
 import Profile from "./Profile";
 import Support from "./Support";
 import Storage from "./Storage";
+
 import style from "../../../css/account-content.module.scss";
 import menuStyle from "../../../css/menu.module.scss";
+
 import Icon from "@material-ui/core/Icon";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Button } from "@bccfilkom/designsystem/build";
+
+import Pages from "./Pages";
 import AddNewPage from "./AddNewPage";
 import EditPage from "./EditPage";
+
 import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
-import Pages from "./Pages";
 
 function MenuItem(props) {
   return (

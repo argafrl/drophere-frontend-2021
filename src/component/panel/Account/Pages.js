@@ -13,7 +13,7 @@ import mainApi from "../../../api/mainApi";
 import PageCard from "./PageCard";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
-const PagesNew = () => {
+const Pages = () => {
   const { userInfo } = useContext(UserContext);
   const {
     allPages,
@@ -24,11 +24,10 @@ const PagesNew = () => {
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 
-  const [allPagesFiltered, setAllPagesFiltered] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("Nama");
+  const [sort, setSort] = useState("Tanggal");
 
   useEffect(() => {
     if (userInfo) {
@@ -54,15 +53,6 @@ const PagesNew = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleSearch = (inputSearch) => {
-    console.log(inputSearch);
-    const filtered = allPages.filter((link, idx) => {
-      return link.title.toLowerCase().includes(inputSearch.toLowerCase());
-    });
-    setSearch(inputSearch);
-    setAllPagesFiltered(filtered);
   };
 
   return (
@@ -96,15 +86,15 @@ const PagesNew = () => {
       )}
 
       <div className={style["heading-wrapper"]}>
-        <div>
-          <h1 className={style.heading}>Halaman Anda</h1>
+        <div className={style.heading}>
+          <h1>Halaman Anda</h1>
         </div>
         <div className={style.actions}>
           <Search
             className={style["input-search"]}
             value={search}
             placeholder="Cari halaman..."
-            handleChange={(e) => handleSearch(e.target.value)}
+            handleChange={(e) => setSearch(e.target.value)}
           />
           <div className={style.dropdown}>
             <Dropdown
@@ -139,8 +129,13 @@ const PagesNew = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-              {search
-                ? allPagesFiltered.map((link, idx) => {
+                { allPages.sort(sort == "Tanggal" ? (a, b) => a.due_time.localeCompare(b.due_time) : (a, b) => a.title.localeCompare(b.title)).filter((page) => {
+                    if(search == ""){
+                      return page
+                    } else if (page.title.toLowerCase().includes(search.toLowerCase())) {
+                      return page
+                    }
+                  }).map((link, idx) => {
                     return (
                       <PageCard
                         title={link.title}
@@ -150,16 +145,7 @@ const PagesNew = () => {
                       />
                     );
                   })
-                : allPages.map((link, idx) => {
-                    return (
-                      <PageCard
-                        title={link.title}
-                        due_time={link.due_time}
-                        storage_type={link.storage_type}
-                        key={idx}
-                      />
-                    );
-                  })}
+                }
             </div>
           )}
         </>
@@ -168,4 +154,4 @@ const PagesNew = () => {
   );
 };
 
-export default PagesNew;
+export default Pages;
