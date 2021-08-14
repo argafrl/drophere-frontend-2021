@@ -1,51 +1,45 @@
-import React from 'react';
-import Axios from 'axios';
-import { useSnackbar } from 'notistack';
+import React from "react";
+import Axios from "axios";
 import { Redirect } from "react-router-dom";
 
-import {
-  endpointURL,
-} from '../../../config';
+import { endpointURL } from "../../../config";
 
-import homeStyle from '../../../css/home.module.scss';
-import loginStyle from '../../../css/login.module.scss';
+import homeStyle from "../../../css/home.module.scss";
+import loginStyle from "../../../css/login.module.scss";
 
-import Footer from '../../common/Footer';
-import Loading from '../../common/Loading';
+import Footer from "../../common/Footer";
+import Loading from "../../common/Loading";
 
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import TextField from '@material-ui/core/TextField';
-import { TokenContext } from '../../../contexts/token';
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import TextField from "@material-ui/core/TextField";
+import { TokenContext } from "../../../contexts/token";
 
-
-const ResetPassword = props => {
-  const { enqueueSnackbar } = useSnackbar();
+const ResetPassword = (props) => {
   const [state, setState] = React.useState({
-    newPassword: '',
-    retypePassword: '',
+    newPassword: "",
+    retypePassword: "",
 
     newPasswordErr: null,
     retypePasswordErr: null,
 
-    error: '',
+    error: "",
     isLoading: false,
     redirectToAccountPage: false,
   });
 
-
   const queries = new URLSearchParams(props.location.search);
 
-  const email = queries.get('email') || '';
-  const token = queries.get('token') || '';
+  const email = queries.get("email") || "";
+  const token = queries.get("token") || "";
 
-  const handleChange = name => {
-    return event => {
+  const handleChange = (name) => {
+    return (event) => {
       setState({ ...state, [name]: event.target.value });
-    }
-  }
+    };
+  };
 
-  const onSubmitHandler = event => {
+  const onSubmitHandler = (event) => {
     event.preventDefault();
 
     const { retypePassword, newPassword } = state;
@@ -58,18 +52,27 @@ const ResetPassword = props => {
 
     // check retype password to match new password
     if (retypePassword !== newPassword) {
-      errorStates = { ...errorStates, retypePasswordErr: new Error('Password tidak cocok') }
+      errorStates = {
+        ...errorStates,
+        retypePasswordErr: new Error("Password tidak cocok"),
+      };
       hasError = true;
     }
 
     // check for empty new password
     if (newPassword.length <= 0) {
-      errorStates = { ...errorStates, newPasswordErr: new Error('Password tidak boleh kosong') }
+      errorStates = {
+        ...errorStates,
+        newPasswordErr: new Error("Password tidak boleh kosong"),
+      };
       hasError = true;
     }
 
     if (retypePassword.length <= 0) {
-      errorStates = { ...errorStates, retypePasswordErr: new Error('Password tidak boleh kosong') }
+      errorStates = {
+        ...errorStates,
+        retypePasswordErr: new Error("Password tidak boleh kosong"),
+      };
       hasError = true;
     }
 
@@ -83,11 +86,10 @@ const ResetPassword = props => {
     }
 
     recoverPassword(newPassword);
-  }
+  };
 
   const recoverPassword = async (newPassword) => {
     try {
-
       const resp = await Axios.post(endpointURL, {
         query: `
         mutation recoverPassword($email:String!, $token:String!, $newPassword:String!){
@@ -100,56 +102,46 @@ const ResetPassword = props => {
           token,
           newPassword,
         },
-        operationName: 'recoverPassword'
-      })
+        operationName: "recoverPassword",
+      });
 
       if (resp.data.errors) {
         throw new Error(resp.data.errors[0].message);
       }
       const recoverPasswordResp = resp.data.data.recoverPassword;
 
-      enqueueSnackbar(
-        "Successfully reset your password",
-        {
-          preventDuplicate: true,
-          variant: "success",
-        }
-      )
-      if (recoverPasswordResp && props.context !== null && props.context !== undefined) {
+      if (
+        recoverPasswordResp &&
+        props.context !== null &&
+        props.context !== undefined
+      ) {
         props.context.setToken(recoverPasswordResp.loginToken);
       }
 
       setState({
         ...state,
-        newPassword: '',
-        retypePassword: '',
+        newPassword: "",
+        retypePassword: "",
         newPasswordErr: null,
         retypePasswordErr: null,
         isLoading: false,
         redirectToAccountPage: true,
-      })
-
-    } catch (error) {
-      enqueueSnackbar(error.message, {
-        preventDuplicate: true,
-        variant: "error"
       });
+    } catch (error) {
       setState({
         ...state,
         isLoading: false,
-      })
+      });
     }
-  }
+  };
 
   if (state.redirectToAccountPage) {
-    return <Redirect to="/account" />
+    return <Redirect to="/account" />;
   }
 
   return (
     <div className={homeStyle.container}>
       <div className={homeStyle.content}>
-
-
         <div className={loginStyle.container}>
           <div className={loginStyle.header}>
             <h1>Atur Password Baru</h1>
@@ -157,17 +149,19 @@ const ResetPassword = props => {
 
           <div className={loginStyle.form}>
             <form onSubmit={onSubmitHandler}>
-              <div className={loginStyle['form-container']}>
+              <div className={loginStyle["form-container"]}>
                 <TextField
                   type="password"
                   label="New Password"
                   disabled={state.isLoading}
                   fullWidth
-                  helperText={state.newPasswordErr ? state.newPasswordErr.message : ''}
+                  helperText={
+                    state.newPasswordErr ? state.newPasswordErr.message : ""
+                  }
                   error={state.newPasswordErr != null}
                   name="new_password"
                   value={state.newPassword}
-                  onChange={handleChange('newPassword')}
+                  onChange={handleChange("newPassword")}
                 />
 
                 <TextField
@@ -176,24 +170,33 @@ const ResetPassword = props => {
                   disabled={state.isLoading}
                   fullWidth
                   name="retype_password"
-                  helperText={state.retypePasswordErr ? state.retypePasswordErr.message : ''}
+                  helperText={
+                    state.retypePasswordErr
+                      ? state.retypePasswordErr.message
+                      : ""
+                  }
                   error={state.retypePasswordErr != null}
                   value={state.retypePassword}
-                  onChange={handleChange('retypePassword')}
+                  onChange={handleChange("retypePassword")}
                 />
 
-                {state.error ? <div className="error">{state.error.message}</div> : ''}
+                {state.error ? (
+                  <div className="error">{state.error.message}</div>
+                ) : (
+                  ""
+                )}
                 <Button
                   fullWidth
                   size="large"
                   variant="contained"
                   color="primary"
-                  type="submit">
+                  type="submit"
+                >
                   Simpan
                   <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon>
                 </Button>
               </div>
-              {state.isLoading ? <Loading /> : ''}
+              {state.isLoading ? <Loading /> : ""}
             </form>
           </div>
         </div>
@@ -201,12 +204,10 @@ const ResetPassword = props => {
       <Footer />
     </div>
   );
-}
+};
 
 export default (props) => (
   <TokenContext.Consumer>
-    {
-      value => <ResetPassword {...props} context={value} />
-    }
+    {(value) => <ResetPassword {...props} context={value} />}
   </TokenContext.Consumer>
 );

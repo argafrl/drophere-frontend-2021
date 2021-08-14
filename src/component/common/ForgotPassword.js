@@ -1,5 +1,4 @@
 import React from "react";
-import { useSnackbar } from "notistack";
 import style from "../../css/forgot-password.module.scss";
 import Loading from "./Loading";
 import { Input, Dialog } from "@bccfilkom/designsystem/build";
@@ -8,7 +7,6 @@ const ForgotPassword = (props) => {
   const open = props.open;
   const onClose = props.onClose;
 
-  const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = React.useState({
     email: "",
     error: "",

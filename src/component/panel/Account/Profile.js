@@ -6,7 +6,6 @@ import { Input, Button } from "@bccfilkom/designsystem/build";
 import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
-import { withSnackbar } from "notistack";
 import { UserContext } from "../../../contexts/UserContext";
 
 class Profile extends Component {
@@ -426,4 +425,4 @@ class Profile extends Component {
   }
 }
 
-export default withSnackbar(Profile);
+export default Profile;
