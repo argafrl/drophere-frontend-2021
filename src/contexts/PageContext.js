@@ -15,6 +15,7 @@ export const defaultValue = {
   uploadSubmission: () => {},
   resetState: () => {},
   clearError: () => {},
+  clearCreateSubmissionSuccess: () => {},
   getAllPages: () => {},
 };
 
@@ -27,7 +28,7 @@ export default class PageStore extends React.Component {
     try {
       this.setState({ isCreatingSubmission: true });
 
-      await mainApi.post("/submissions", data, {
+      await mainApi.post("/submissions/", data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
@@ -79,11 +80,10 @@ export default class PageStore extends React.Component {
   getAllPages = async () => {
     try {
       this.setState({ isFetchingAllPages: true });
-
       const { data } = await mainApi.get("/submissions/");
       console.log(data);
       this.setState({ allPages: data.data });
-      this.setState({ successCreatingSubmission: true });
+      this.setState({ successFetchAllPages: true });
     } catch (error) {
       this.setState({
         error:
@@ -112,6 +112,10 @@ export default class PageStore extends React.Component {
     this.setState({ error: "" });
   };
 
+  clearCreateSubmissionSuccess = () => {
+    this.setState({ successCreatingSubmission: false });
+  };
+
   render() {
     return (
       <PageContext.Provider
@@ -122,6 +126,7 @@ export default class PageStore extends React.Component {
           uploadSubmission: this.uploadSubmission,
           clearError: this.clearError,
           getAllPages: this.getAllPages,
+          clearCreateSubmissionSuccess: this.clearCreateSubmissionSuccess,
         }}
       >
         {this.props.children}

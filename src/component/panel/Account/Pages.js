@@ -10,10 +10,18 @@ import { UserContext } from "../../../contexts/UserContext";
 import { PageContext } from "../../../contexts/PageContext";
 import mainApi from "../../../api/mainApi";
 import PageCard from "./PageCard";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const PagesNew = () => {
   const { userInfo } = useContext(UserContext);
-  const { allPages, getAllPages, isFetchingAllPages } = useContext(PageContext);
+  const {
+    allPages,
+    getAllPages,
+    isFetchingAllPages,
+    successCreatingSubmission,
+    clearCreateSubmissionSuccess,
+  } = useContext(PageContext);
+  const snackbar = useContext(SnackbarContext);
 
   const [allPagesFiltered, setAllPagesFiltered] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
@@ -25,8 +33,12 @@ const PagesNew = () => {
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
     }
+    if (successCreatingSubmission) {
+      snackbar.success("Halaman Berhasil Dibuat");
+      clearCreateSubmissionSuccess();
+    }
     getAllPages();
-  }, [getAllPages, userInfo]);
+  }, [getAllPages, userInfo, snackbar]);
 
   const handleSendEmail = async (e) => {
     try {
