@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
-import 'moment/locale/id'
+import "moment/locale/id";
 import { Menu } from "@bccfilkom/designsystem/build";
 import style from "../../../css/page-card.module.scss";
 
@@ -21,26 +21,30 @@ const PageCard = ({ title, due_time, storage_type }) => {
   };
 
   const handleClickOutside = (event) => {
-    if (
-      wrapperRef.current &&
-      !wrapperRef.current.contains(event.target)
-    ) {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setCloseMenu();
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
 
   return (
     <div className={style["item"]}>
       <div className={style.body}>
         <div className={style.top}>
-          <img src={storage_type == 1 ? "/img/icons/drive-active.svg" : "/img/icons/dropbox-active.svg"} alt="dropbox-active" />
+          <img
+            src={
+              storage_type === 1
+                ? "/img/icons/drive-active.svg"
+                : "/img/icons/dropbox-active.svg"
+            }
+            alt="dropbox-active"
+          />
           <div className={style.menu}>
             {isClosed === 1 && (
               <Menu opened={isClosedBinary}>
@@ -57,7 +61,7 @@ const PageCard = ({ title, due_time, storage_type }) => {
             )}
           </div>
           <div
-            ref={wrapperRef} 
+            ref={wrapperRef}
             className={style["kebab-menu"]}
             style={{ display: "inline-block" }}
           >
@@ -80,7 +84,7 @@ const PageCard = ({ title, due_time, storage_type }) => {
       <div className={style.footer}>
         <div className={style.calendar}>
           <img src="/img/icons/calendar.svg" alt="calendar" />
-          <p>{moment(due_time).format('L')}</p>
+          <p>{moment(due_time).format("L")}</p>
         </div>
         <div className={style.views}>
           <img src="/img/icons/views.svg" alt="views" />

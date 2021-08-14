@@ -63,8 +63,9 @@ class Profile extends Component {
       this.context.fetchUserInfo();
     } else {
       this.setState({
-        ...this.context.userInfo,
         name: this.context.userInfo.full_name,
+        email: this.context.userInfo.email,
+        profile_image: this.context.userInfo.profile_image,
         verifikasi: this.context.userInfo.is_verified,
       });
     }
@@ -73,17 +74,25 @@ class Profile extends Component {
   componentDidUpdate() {
     if (this.context.userInfo) {
       this.setState({
-        ...this.context.userInfo,
         name: this.context.userInfo.full_name,
+        email: this.context.userInfo.email,
+        profile_image: this.context.userInfo.profile_image,
+        verifikasi: this.context.userInfo.is_verified,
       });
     }
   }
 
   shouldComponentUpdate(_, nextState) {
-    if (this.state.name !== nextState.name) {
-      return true;
+    if (
+      this.state.name === nextState.name &&
+      this.state.email === nextState.email &&
+      this.state.currentPassword === nextState.currentPassword &&
+      this.state.openNama === nextState.openNama &&
+      this.state.openPassword === nextState.openPassword
+    ) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   onUpdateProfile = async (e) => {

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import style from "../../../css/account-support.module.scss";
 import { TextArea, Button } from "@bccfilkom/designsystem/build";
 import { SupportContext } from "../../../contexts/SupportContext";

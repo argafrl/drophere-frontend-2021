@@ -13,10 +13,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Button } from "@bccfilkom/designsystem/build";
 import AddNewPage from "./AddNewPage";
 import EditPage from "./EditPage";
-import Authorization from "./Authorization";
 import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
-import PagesNew from "./PagesNew";
+import Pages from "./Pages";
 
 function MenuItem(props) {
   return (
@@ -173,14 +172,10 @@ class Content extends Component {
         <div className={style.content}>
           <Switch>
             <Redirect from="/account" exact to="/account/pages" />
-            <Route path="/account/pages" exact component={PagesNew} />
+            <Route path="/account/pages" exact component={Pages} />
             <Route path="/account/pages/add" exact component={AddNewPage} />
             <Route path="/account/pages/:id/edit" exact component={EditPage} />
             <Route path="/account/profile" exact component={Profile} />
-            <Route
-              path="/account/storage/authorize"
-              component={Authorization}
-            />
             <Route path="/account/storage" exact component={Storage} />
             <Route path="/account/support" exact component={Support} />
             <Redirect from="*" to="/not-found" />
