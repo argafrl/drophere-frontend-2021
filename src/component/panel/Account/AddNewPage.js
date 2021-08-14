@@ -23,6 +23,7 @@ const AddNewPage = () => {
   const [password, setPassword] = useState("");
   const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
+  const [error, setError] = useState("");
   const [fileTypes, setFileTypes] = useState({
     PDF: true,
     Dokumen: true,
@@ -34,13 +35,44 @@ const AddNewPage = () => {
     Audio: true,
   });
 
-  const { createSubmission, isCreatingSubmission, successCreatingSubmission } =
-    useContext(PageContext);
+  const {
+    createSubmission,
+    isCreatingSubmission,
+    successCreatingSubmission,
+    error: errorFromBackend,
+  } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+
+    if (title.length > 10) {
+      setError("Judul tidak boleh melebihi 150 karakter");
+      return;
+    }
+
+    if (description.length > 200) {
+      setError("Deskripsi tidak boleh melebihi 200 karakter");
+      return;
+    }
+
+    if (!characterCheck(link)) {
+      setError("Link tidak valid");
+      return;
+    }
+
+    if (!useDeadline) {
+      setError("Deadline harus ditetapkan");
+      return;
+    }
+
+    if (new Date().getTime() >= new Date(deadline).getTime()) {
+      setError("Deadline harus melebihi waktu saat ini");
+      return;
+    }
+
     const body = {
       title,
       description,
@@ -58,10 +90,18 @@ const AddNewPage = () => {
   };
 
   useEffect(() => {
-    if (successCreatingSubmission) {
-      console.log("sukses bro");
+    if (error) {
+      snackbar.error(error);
+      return;
     }
-  }, [successCreatingSubmission]);
+    if (errorFromBackend) {
+      snackbar.error(errorFromBackend);
+      return;
+    }
+    if (successCreatingSubmission) {
+      history.push("/account/pages");
+    }
+  }, [successCreatingSubmission, errorFromBackend, error]);
 
   const countWords = (str) => {
     return str.split(" ").filter((word) => word != "").length;
@@ -72,7 +112,6 @@ const AddNewPage = () => {
     if (!str) {
       return true;
     }
-    console.log(acceptedCriteria.test(str));
     return acceptedCriteria.test(str);
   };
 
@@ -82,16 +121,22 @@ const AddNewPage = () => {
       <p>
         Halaman ini digunakan sebagai tempat pengumpulan file yang anda butuhkan
       </p>
-      <div className={style["form"]}>
+      <form onSubmit={handleSubmit} className={style["form"]}>
         <div className={style["form__control"]}>
           <label>Judul</label>
-          <Input value={title} handleChange={(e) => setTitle(e.target.value)} />
+          <Input
+            value={title}
+            required
+            handleChange={(e) => setTitle(e.target.value)}
+            action={title.length > 150 ? "warning" : ""}
+          />
         </div>
         <div className={style["form__control"]}>
           <label>Link Halaman</label>
           <div className={style["form__control__link"]}>
             <p>https://drophere.link/ </p>
             <Input
+              required
               value={link}
               handleChange={(e) => setLink(e.target.value)}
               hintText="Karakter meliputi : huruf, nomor, dash dan underscore"
@@ -103,10 +148,11 @@ const AddNewPage = () => {
           <label>Deskripsi </label>
           <div className={style["form__control__description"]}>
             <TextArea
+              required
               value={description}
               handleChange={(e) => setDescription(e.target.value)}
               hintText="Maks : 200 Karakter"
-              isWarning={countWords(description) > 10}
+              isWarning={description.length > 200}
             />
           </div>
         </div>
@@ -325,15 +371,11 @@ const AddNewPage = () => {
           >
             Batalkan
           </Button>
-          <Button
-            type="primary"
-            disabled={isCreatingSubmission}
-            onClick={handleSubmit}
-          >
+          <Button type="primary" disabled={isCreatingSubmission}>
             Buat Halaman
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

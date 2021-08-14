@@ -36,7 +36,11 @@ export default class StorageStore extends React.Component {
   connectGoogleDrive = async (data) => {
     try {
       this.setState({ isConnectingGoogleDrive: true });
-      const res = await mainApi.post("/users/bind_gdrive", data);
+      const res = await mainApi.post("/users/bind_gdrive", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
       return res.data;
     } catch (error) {
       console.log(error);

@@ -5,12 +5,14 @@ import { StorageContext } from "../../../contexts/StorageContext";
 import { UserContext } from "../../../contexts/UserContext";
 import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const ConnectAccount = () => {
   const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
     useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
+  const snackbar = useContext(SnackbarContext);
 
   const [useDrive, setUseDrive] = useState(false);
   const [confirmModalShown, showConfirmModal] = useState(false);
@@ -26,18 +28,20 @@ const ConnectAccount = () => {
     if (state && code && scope) {
       handleOauthUrlResponse({ state, code, scope });
     }
+  }, [search, connectGoogleDrive]);
+
+  useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
-    } else {
-      setUseDrive(userInfo.is_drive_connected);
+      return;
     }
-  }, [search, connectGoogleDrive, fetchUserInfo, userInfo]);
+    setUseDrive(userInfo.is_drive_connected);
+  }, [userInfo, fetchUserInfo]);
 
   const openGoogleConsentScreen = async () => {
     const { is_success, data } = await getOAuthUrl();
     if (is_success) {
       window.location.replace(data);
-    } else {
     }
   };
 
@@ -54,6 +58,8 @@ const ConnectAccount = () => {
     if (data && data.is_success) {
       console.log("success connect to drive");
       setUseDrive(true);
+    } else {
+      snackbar.error("Terjadi kesalahan");
     }
   };
 
