@@ -10,6 +10,7 @@ import Header from "./component/common/Header";
 import SidebarStore from "./contexts/SidebarContext";
 import PageStore from "./contexts/PageContext";
 import StorageStore from "./contexts/StorageContext";
+import "notyf/notyf.min.css";
 
 class AppRouter extends Component {
   render() {

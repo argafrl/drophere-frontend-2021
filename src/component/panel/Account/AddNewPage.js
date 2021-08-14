@@ -10,6 +10,7 @@ import {
 import style from "../../../css/account-add-new-page.module.scss";
 import { PageContext } from "../../../contexts/PageContext";
 import { useHistory } from "react-router";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const AddNewPage = () => {
   const [title, setTitle] = useState("");
@@ -35,7 +36,7 @@ const AddNewPage = () => {
 
   const { createSubmission, isCreatingSubmission, successCreatingSubmission } =
     useContext(PageContext);
-
+  const snackbar = useContext(SnackbarContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
@@ -62,6 +63,19 @@ const AddNewPage = () => {
     }
   }, [successCreatingSubmission]);
 
+  const countWords = (str) => {
+    return str.split(" ").filter((word) => word != "").length;
+  };
+
+  const characterCheck = (str) => {
+    const acceptedCriteria = /^[-A-Za-z0-9_]+$/;
+    if (!str) {
+      return true;
+    }
+    console.log(acceptedCriteria.test(str));
+    return acceptedCriteria.test(str);
+  };
+
   return (
     <div className={style["container"]}>
       <h1>Buat Halaman</h1>
@@ -81,6 +95,7 @@ const AddNewPage = () => {
               value={link}
               handleChange={(e) => setLink(e.target.value)}
               hintText="Karakter meliputi : huruf, nomor, dash dan underscore"
+              action={characterCheck(link) ? "" : "warning"}
             />
           </div>
         </div>
@@ -91,6 +106,7 @@ const AddNewPage = () => {
               value={description}
               handleChange={(e) => setDescription(e.target.value)}
               hintText="Maks : 200 Karakter"
+              isWarning={countWords(description) > 10}
             />
           </div>
         </div>

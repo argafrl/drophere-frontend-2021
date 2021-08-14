@@ -34,7 +34,7 @@ export default class SupportStore extends React.Component {
   };
 
   resetState = () => {
-    this.setState(defaultValue);
+    this.setState({ isPostingFeedback: false, error: "", success: false });
   };
 
   render() {
