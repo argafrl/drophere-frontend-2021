@@ -134,6 +134,7 @@ export class UserStore extends React.Component {
         value={{
           ...this.state,
           fetchUserInfo: this.fetchUserInfo,
+          update: this.update,
           login: this.login,
           logout: this.logout,
           register: this.register,
