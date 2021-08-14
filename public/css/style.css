@@ -57,7 +57,7 @@ main > div {
 /*    DEFAULT    */
 input,
 textarea {
-  min-width: 0!important;
+  min-width: 0 !important;
 }
 
 .content {

@@ -1,39 +1,43 @@
-import { Button } from "@bccfilkom/designsystem/build";
+import { Button, Dialog } from "@bccfilkom/designsystem/build";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { StorageContext } from "../../../contexts/StorageContext";
+import { UserContext } from "../../../contexts/UserContext";
 import style from "../../../css/account-connect.module.scss";
+import { Portal } from "react-portal";
 
 const ConnectAccount = () => {
+  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
+    useContext(StorageContext);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo } =
+    useContext(UserContext);
+
   const [useDrive, setUseDrive] = useState(false);
+  const [confirmModalShown, showConfirmModal] = useState(false);
+
   const { search } = useLocation();
   const history = useHistory();
 
-  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
-    useContext(StorageContext);
-
-  // eslint-disable-next-line
-  useEffect(async () => {
+  useEffect(() => {
     const query = new URLSearchParams(search);
     const state = query.get("state");
     const code = query.get("code");
     const scope = query.get("scope");
     if (state && code && scope) {
-      const data = await connectGoogleDrive({ state, code, scope });
-      if (data && data.is_success) {
-        console.log("success connect to drive");
-        setUseDrive(true);
-      }
+      handleOauthUrlResponse({ state, code, scope });
     }
-    // eslint-disable-next-line
-  }, [search, connectGoogleDrive]);
+    if (!userInfo) {
+      fetchUserInfo();
+    } else {
+      setUseDrive(userInfo.is_drive_connected);
+    }
+  }, [search, connectGoogleDrive, fetchUserInfo, userInfo]);
 
   const openGoogleConsentScreen = async () => {
     const { is_success, data } = await getOAuthUrl();
     if (is_success) {
       window.location.replace(data);
     } else {
-      console.log("object");
     }
   };
 
@@ -41,7 +45,23 @@ const ConnectAccount = () => {
     if (useDrive) {
       history.push("/account");
     } else {
-      console.log("show continue page");
+      showConfirmModal(true);
+    }
+  };
+
+  const handleOauthUrlResponse = async (body) => {
+    const data = await connectGoogleDrive(body);
+    if (data && data.is_success) {
+      console.log("success connect to drive");
+      setUseDrive(true);
+    }
+  };
+
+  const handleConnectDrive = () => {
+    if (useDrive) {
+      setUseDrive(false);
+    } else {
+      openGoogleConsentScreen();
     }
   };
 
@@ -61,16 +81,13 @@ const ConnectAccount = () => {
             <p className={style["card__body__description"]}>
               Tautkan akun ke Dropbox untuk menyimpan file
             </p>
-            {useDrive ? (
-              <Button
-                className={style["button-cancel"]}
-                onClick={() => setUseDrive(false)}
-              >
-                Batalkan{" "}
-              </Button>
-            ) : (
-              <Button onClick={openGoogleConsentScreen}>Tautkan </Button>
-            )}
+            <Button
+              className={useDrive ? style["button-cancel"] : ""}
+              onClick={handleConnectDrive}
+              skeleton={isFetchingUserInfo}
+            >
+              {useDrive ? "Batalkan" : "Tautkan"}
+            </Button>
           </div>
         </div>
         <div className={style["card"]}>
@@ -87,10 +104,34 @@ const ConnectAccount = () => {
         </div>
       </div>
       <div className={style["button-container"]}>
-        <Button type="secondary" onClick={handleNextPage}>
+        <Button
+          type="secondary"
+          disabled={isFetchingUserInfo}
+          onClick={handleNextPage}
+        >
           Lanjutkan
         </Button>
       </div>
+      <Portal>
+        <div class={style["dialog"]}>
+          <Dialog
+            visible={confirmModalShown}
+            onCancel={() => showConfirmModal(false)}
+            primaryButton={{
+              text: "Lanjutkan",
+              onClick: () => history.push("/account"),
+            }}
+            secondaryButton={{
+              text: "Kembali",
+              onClick: () => showConfirmModal(false),
+            }}
+            title="Anda Belum Menautkan Akun"
+          >
+            Anda tetap harus menautkan akun ke cloud storage agar dapat membuat
+            halaman. Yakin untuk melanjutkan?
+          </Dialog>
+        </div>
+      </Portal>
     </div>
   );
 };

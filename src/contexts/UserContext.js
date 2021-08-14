@@ -6,14 +6,17 @@ export const defaultValue = {
   isAuthenticated: !!localStorage.getItem("bccdrophere_token"),
   error: "",
   isLogin: false,
+  isRegister: false,
   isFetchingUserInfo: false,
   isSendingEmailVerification: false,
   successSendEmailVerification: false,
-  fetchUserInfo: () => {},
   login: () => {},
+  register: () => {},
+  fetchUserInfo: () => {},
   sendEmailVerification: () => {},
   update: () => {},
   logout: () => {},
+  clearError: () => {},
 };
 
 export const UserContext = React.createContext(defaultValue);
@@ -35,7 +38,6 @@ export class UserStore extends React.Component {
     }
   };
 
-  //Main Page
   sendEmailVerification = async () => {
     try {
       this.setState({ isSendingEmailVerification: true });
@@ -43,16 +45,14 @@ export class UserStore extends React.Component {
         headers: { Authorization: localStorage.getItem("bccdrophere_token") },
       });
       this.setState({ successSendEmailVerification: true });
-      // console.log(data.data);
     } catch (error) {
       console.log(error);
-      // this.logout();
+      this.logout();
     } finally {
       this.setState({ isSendingEmailVerification: false });
     }
   };
 
-  // Profile
   update = async (profile_image, name, email) => {
     try {
       const bodyFormData = new FormData();
@@ -100,6 +100,34 @@ export class UserStore extends React.Component {
     localStorage.removeItem("bccdrophere_token");
   };
 
+  register = async (name, email, password) => {
+    try {
+      this.setState({ isRegister: true });
+
+      const { data } = await mainApi.post("sign_up", {
+        full_name: name,
+        email: email,
+        password: password,
+      });
+
+      if (data.is_success) {
+        this.login(email, password);
+      }
+    } catch (err) {
+      console.log(err.message);
+      this.setState({
+        error: err.message,
+        isAuthenticated: false,
+      });
+    } finally {
+      this.setState({ isRegister: false });
+    }
+  };
+
+  clearError = () => {
+    this.setState({ error: "" });
+  };
+
   render() {
     return (
       <UserContext.Provider
@@ -108,6 +136,8 @@ export class UserStore extends React.Component {
           fetchUserInfo: this.fetchUserInfo,
           login: this.login,
           logout: this.logout,
+          register: this.register,
+          clearError: this.clearError,
         }}
       >
         {this.props.children}

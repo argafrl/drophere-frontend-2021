@@ -18,11 +18,16 @@ export default class StorageStore extends React.Component {
   getOAuthUrl = async () => {
     try {
       this.setState({ isFetchingOAuthUrl: true });
-      const { data } = await mainApi.get("/users/drive_auth");
+      const { data } = await mainApi.get("/users/drive_auth", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
       return data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       this.setState({ error });
+      return {};
     } finally {
       this.setState({ isFetchingOAuthUrl: false });
     }

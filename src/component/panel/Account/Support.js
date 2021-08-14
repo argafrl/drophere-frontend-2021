@@ -29,7 +29,7 @@ export default function Support() {
       resetState();
       snackbar.success("Masukan Berhasil Dikirim");
     }
-  }, [success, resetState, error]);
+  }, [success, resetState, error, snackbar]);
 
   return (
     <div className={style.container + " opening-transition"}>

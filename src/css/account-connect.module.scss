@@ -101,3 +101,18 @@
     }
   }
 }
+
+.dialog {
+  & > :first-child {
+    & > :first-child {
+      color: #000!important;
+      width: 450px;
+      padding: 1rem;
+      h6 {
+        font-size: 1.5rem;
+        font-weight: 600 !important;
+        padding-bottom: 12px;
+      }
+    }
+  }
+}
