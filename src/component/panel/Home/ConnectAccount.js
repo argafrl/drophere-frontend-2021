@@ -80,17 +80,19 @@ const ConnectAccount = () => {
       <div className={style["card-container"]}>
         <div className={style["card"] + " " + style["card-active"]}>
           <div className={style["card__img"]}>
-            <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+            {" "}
+            <img src="/img/icons/drive-active.svg" alt="drive" />
           </div>
           <div className={style["card__body"]}>
-            <h3 className={style["card__body__title"]}>Dropbox</h3>
+            <h3 className={style["card__body__title"]}>Google Drive</h3>
             <p className={style["card__body__description"]}>
-              Tautkan akun ke Dropbox untuk menyimpan file
+              Tautkan akun ke Google Drive untuk menyimpan file
             </p>
             <Button
               className={useDrive ? style["button-cancel"] : ""}
               onClick={handleConnectDrive}
               skeleton={isFetchingUserInfo}
+              disabled={isFetchingOAuthUrl}
             >
               {useDrive ? "Batalkan" : "Tautkan"}
             </Button>
@@ -98,12 +100,13 @@ const ConnectAccount = () => {
         </div>
         <div className={style["card"]}>
           <div className={style["card__img"]}>
-            <img src="/img/icons/drive-active.svg" alt="drive" />
+            {" "}
+            <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
           </div>
           <div className={style["card__body"]}>
-            <h3 className={style["card__body__title"]}>Google Drive</h3>
+            <h3 className={style["card__body__title"]}> Dropbox</h3>
             <p className={style["card__body__description"]}>
-              Nantikan fitur baru untuk dapat terhubung ke Google Drive
+              Nantikan fitur baru untuk dapat terhubung ke Dropbox
             </p>
             <div className={style["card__body__badge"]}>Coming Soon</div>
           </div>

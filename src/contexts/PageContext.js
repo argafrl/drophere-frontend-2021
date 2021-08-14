@@ -5,9 +5,11 @@ export const defaultValue = {
   createSubmission: () => {},
   error: "",
   allPages: [],
+  submissionInfo: null,
   isCreatingSubmission: false,
   isUploadingSubmission: false,
   isFetchingAllPages: false,
+  isFetchingSubmissionInfo: false,
   successCreatingSubmission: false,
   successUploadSubmission: false,
   successFetchAllPages: false,
@@ -15,8 +17,9 @@ export const defaultValue = {
   uploadSubmission: () => {},
   resetState: () => {},
   clearError: () => {},
-  clearCreateSubmissionSuccess: () => {},
   getAllPages: () => {},
+  getSubmissionInfo: () => {},
+  clearCreateSubmissionSuccess: () => {},
 };
 
 export const PageContext = React.createContext(defaultValue);
@@ -28,11 +31,12 @@ export default class PageStore extends React.Component {
     try {
       this.setState({ isCreatingSubmission: true });
 
-      await mainApi.post("/submissions/", data, {
+      const res = await mainApi.post("/submissions/", data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
+      console.log(res);
 
       this.setState({ successCreatingSubmission: true });
     } catch (error) {
@@ -50,10 +54,10 @@ export default class PageStore extends React.Component {
     }
   };
 
-  uploadSubmission = async (formData) => {
+  uploadSubmission = async (formData, slug) => {
     try {
       this.setState({ isUploadingSubmission: true });
-      await mainApi.post("/submissions/heroku/upload", formData, {
+      await mainApi.post(`/submissions/${slug}/upload`, formData, {
         onUploadProgress: (progressEvent) => {
           let percentCompleted = Math.round(
             (progressEvent.loaded / progressEvent.total) * 100
@@ -74,6 +78,23 @@ export default class PageStore extends React.Component {
       this.setState({ successUploadSubmission: false });
     } finally {
       this.setState({ isUploadingSubmission: false });
+    }
+  };
+
+  getSubmissionInfo = async (slug) => {
+    try {
+      this.setState({ isFetchingSubmissionInfo: true });
+      const { data } = await mainApi.get(`/submissions/${slug}`);
+      this.setState({ submissionInfo: data.data });
+    } catch (error) {
+      this.setState({
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    } finally {
+      this.setState({ isFetchingSubmissionInfo: false });
     }
   };
 
@@ -108,6 +129,15 @@ export default class PageStore extends React.Component {
     });
   };
 
+  resetUploadSubmissionState = () => {
+    this.setState({
+      error: "",
+      isUploadingSubmission: false,
+      successUploadSubmission: false,
+      uploadProgress: 0,
+    });
+  };
+
   clearError = () => {
     this.setState({ error: "" });
   };
@@ -127,6 +157,7 @@ export default class PageStore extends React.Component {
           clearError: this.clearError,
           getAllPages: this.getAllPages,
           clearCreateSubmissionSuccess: this.clearCreateSubmissionSuccess,
+          getSubmissionInfo: this.getSubmissionInfo,
         }}
       >
         {this.props.children}

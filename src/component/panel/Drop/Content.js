@@ -1,16 +1,22 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button } from "@bccfilkom/designsystem/build";
 import { useDropzone } from "react-dropzone";
 import style from "../../../css/drop-content.module.scss";
 import FileItem from "./FileItem";
 import { useParams } from "react-router";
-import Inaccessible from "./Inaccessible";
 import ConfirmSend from "./ConfirmSend";
+import { PageContext } from "../../../contexts/PageContext";
+import Preloader from "../../common/Preloader";
+import moment from "moment";
+import NotFound from "../../common/NotFound";
+import Inaccessible from "./Inaccessible";
 
 const Content = () => {
   const { slug } = useParams();
-  const [confirmModalShown, showConfirmModal] = useState(false);
+  const { getSubmissionInfo, submissionInfo, error, isFetchingSubmissionInfo } =
+    useContext(PageContext);
 
+  const [confirmModalShown, showConfirmModal] = useState(false);
   const [files, setFiles] = useState([]);
 
   const onDrop = (receivedFiles) => {
@@ -64,7 +70,15 @@ const Content = () => {
     [isDragReject, isDragAccept, acceptStyle, baseStyle, rejectStyle]
   );
 
-  if (slug !== "found-link") {
+  useEffect(() => {
+    getSubmissionInfo(slug);
+  }, [slug, getSubmissionInfo]);
+
+  if (error === "entry not found") {
+    return <NotFound />;
+  }
+
+  if (submissionInfo && moment(new Date()).isAfter(submissionInfo.due_time)) {
     return <Inaccessible />;
   }
 
@@ -79,67 +93,79 @@ const Content = () => {
 
   return (
     <div className={style["wrapper"]}>
-      <ConfirmSend
-        open={confirmModalShown}
-        onClose={() => showConfirmModal(false)}
-        files={files}
-        formatBytes={formatBytes}
-        emptyFiles={emptyFiles}
-      />
-      <div className={style["page"]}>
-        <h1>Judul Halaman</h1>
-        <div className={style["page__description"]}>Deskripsi Halaman</div>
-        <div className={style["page__deadline"]}>
-          Halaman ini akan ditutup dalam <strong>2 hari</strong>
-        </div>
-      </div>
-      <div className={style["container"]}>
-        <div className={style["container-inner"]}>
-          <Button type="secondary" onClick={open}>
-            + Pilih File
-          </Button>
-          <div
-            {...getRootProps({
-              style: dropStyle,
-              className: style["drop-container"],
-            })}
-          >
-            <input {...getInputProps()} />
-            {files.length > 0 ? (
-              <div className={style["file-container"]}>
-                {files.map((file, i) => (
-                  <FileItem
-                    key={i}
-                    name={file.name}
-                    size={formatBytes(file.size)}
-                    onRemove={() => handleRemove(file)}
-                  />
-                ))}
+      {isFetchingSubmissionInfo || !submissionInfo ? (
+        <Preloader />
+      ) : (
+        <>
+          <ConfirmSend
+            open={confirmModalShown}
+            onClose={() => showConfirmModal(false)}
+            files={files}
+            formatBytes={formatBytes}
+            emptyFiles={emptyFiles}
+            hasPassword={submissionInfo.has_password}
+          />
+          <div className={style["page"]}>
+            <h1>{submissionInfo.title}</h1>
+            <div className={style["page__description"]}>
+              {submissionInfo.description}
+            </div>
+            <div className={style["page__deadline"]}>
+              Halaman ini akan ditutup dalam{" "}
+              <strong>
+                {moment(submissionInfo.due_time).locale("id").toNow(true)}
+              </strong>
+            </div>
+          </div>
+          <div className={style["container"]}>
+            <div className={style["container-inner"]}>
+              <Button type="secondary" onClick={open}>
+                + Pilih File
+              </Button>
+              <div
+                {...getRootProps({
+                  style: dropStyle,
+                  className: style["drop-container"],
+                })}
+              >
+                <input {...getInputProps()} />
+                {files.length > 0 ? (
+                  <div className={style["file-container"]}>
+                    {files.map((file, i) => (
+                      <FileItem
+                        key={i}
+                        name={file.name}
+                        size={formatBytes(file.size)}
+                        onRemove={() => handleRemove(file)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    <img
+                      src="/img/cloud-upload.png"
+                      alt="cloud"
+                      className={style["cloud-icon"]}
+                    />
+                    <h2>Letakkan file anda disini</h2>
+                    <p>Mendukung format PDF, PNG, RAR</p>
+                  </>
+                )}
               </div>
-            ) : (
-              <>
-                <img
-                  src="/img/cloud-upload.png"
-                  alt="cloud"
-                  className={style["cloud-icon"]}
-                />
-                <h2>Letakkan file anda disini</h2>
-                <p>Mendukung format PDF, PNG, RAR</p>
-              </>
-            )}
+              <div className={style["btn-send"]}>
+                <Button
+                  type="primary"
+                  onClick={() => showConfirmModal(true)}
+                  disabled={files.length === 0}
+                  icon="/img/icons/airplane.svg"
+                >
+                  Kirim File
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className={style["btn-send"]}>
-            <Button
-              type="primary"
-              onClick={() => showConfirmModal(true)}
-              disabled={files.length === 0}
-              icon="/img/icons/airplane.svg"
-            >
-              Kirim File
-            </Button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

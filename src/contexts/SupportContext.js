@@ -18,7 +18,7 @@ export default class SupportStore extends React.Component {
   postFeedback = async (content) => {
     try {
       this.setState({ isPostingFeedback: true });
-      const res = await mainApi.post("/users/feedback", { content });
+      await mainApi.post("/users/feedback", { content });
       this.setState({ success: true });
     } catch (err) {
       this.setState({ success: false });

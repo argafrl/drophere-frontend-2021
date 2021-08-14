@@ -35,8 +35,6 @@ class Profile extends Component {
 
     isUpdateProfileLoading: false,
     isUpdatePasswordLoading: false,
-
-    isPageLoading: false,
   };
 
   handleClickOpenNama = () => {
@@ -58,16 +56,7 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    if (!this.context.userInfo) {
-      this.context.fetchUserInfo();
-    } else {
-      this.setState({
-        name: this.context.userInfo.full_name,
-        email: this.context.userInfo.email,
-        profile_image: this.context.userInfo.profile_image,
-        verifikasi: this.context.userInfo.is_verified,
-      });
-    }
+    this.context.fetchUserInfo();
   }
 
   componentDidUpdate() {

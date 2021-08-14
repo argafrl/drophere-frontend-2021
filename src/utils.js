@@ -19,5 +19,5 @@ export const FILE_TYPES = {
 };
 
 export const countWords = (str) => {
-  return str.split(" ").filter((word) => word != "").length;
+  return str.split(" ").filter((word) => word !== "").length;
 };

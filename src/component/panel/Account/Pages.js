@@ -6,6 +6,7 @@ import {
   Search,
   Dialog,
 } from "@bccfilkom/designsystem/build";
+import Preloader from "../../common/Preloader";
 import { UserContext } from "../../../contexts/UserContext";
 import { PageContext } from "../../../contexts/PageContext";
 import mainApi from "../../../api/mainApi";
@@ -38,7 +39,13 @@ const PagesNew = () => {
       clearCreateSubmissionSuccess();
     }
     getAllPages();
-  }, [getAllPages, userInfo, snackbar]);
+  }, [
+    getAllPages,
+    userInfo,
+    snackbar,
+    clearCreateSubmissionSuccess,
+    successCreatingSubmission,
+  ]);
 
   const handleSendEmail = async (e) => {
     try {
@@ -118,7 +125,7 @@ const PagesNew = () => {
       </div>
 
       {isFetchingAllPages ? (
-        "Loading..."
+        <Preloader />
       ) : (
         <>
           {allPages.length === 0 ? (

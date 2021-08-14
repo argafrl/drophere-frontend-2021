@@ -40,6 +40,7 @@ const AddNewPage = () => {
     isCreatingSubmission,
     successCreatingSubmission,
     error: errorFromBackend,
+    clearError,
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
@@ -47,8 +48,9 @@ const AddNewPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+    clearError("");
 
-    if (title.length > 10) {
+    if (title.length > 150) {
       setError("Judul tidak boleh melebihi 150 karakter");
       return;
     }
@@ -63,7 +65,7 @@ const AddNewPage = () => {
       return;
     }
 
-    if (!useDeadline) {
+    if (!useDeadline || !deadline) {
       setError("Deadline harus ditetapkan");
       return;
     }
@@ -95,17 +97,24 @@ const AddNewPage = () => {
       return;
     }
     if (errorFromBackend) {
-      snackbar.error(errorFromBackend);
+      if (
+        errorFromBackend ===
+        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
+      ) {
+        snackbar.error("Link Telah Digunakan");
+      } else {
+        snackbar.error(errorFromBackend);
+      }
       return;
     }
     if (successCreatingSubmission) {
       history.push("/account/pages");
     }
-  }, [successCreatingSubmission, errorFromBackend, error]);
+  }, [successCreatingSubmission, errorFromBackend, error, history, snackbar]);
 
-  const countWords = (str) => {
-    return str.split(" ").filter((word) => word != "").length;
-  };
+  // const countWords = (str) => {
+  //   return str.split(" ").filter((word) => word != "").length;
+  // };
 
   const characterCheck = (str) => {
     const acceptedCriteria = /^[-A-Za-z0-9_]+$/;

@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
-import { Button } from "@bccfilkom/designsystem/build";
+import { Button, Input } from "@bccfilkom/designsystem/build";
 import style from "../../../css/drop-confirm-send.module.scss";
 import FileCard from "./FileCard";
 import { PageContext } from "../../../contexts/PageContext";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { useParams } from "react-router";
 
 const ConfirmSend = ({
   open,
@@ -11,6 +13,7 @@ const ConfirmSend = ({
   files = [],
   emptyFiles,
   formatBytes,
+  hasPassword,
 }) => {
   const {
     uploadProgress,
@@ -19,25 +22,27 @@ const ConfirmSend = ({
     successUploadSubmission,
     error,
     resetState,
-    clearError,
   } = useContext(PageContext);
+  const snackbar = useContext(SnackbarContext);
+  const { slug } = useParams();
 
   const [submitted, setSubmitted] = useState(false);
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    clearError();
+    resetState();
     setSubmitted(true);
     const formData = new FormData();
     formData.append("file", files[0]);
-    formData.append("password", "123dev");
-    uploadSubmission(formData);
+    formData.append("password", password);
+    uploadSubmission(formData, slug);
   };
 
   useEffect(() => {
     if (successUploadSubmission) {
-      console.log("success upload");
+      snackbar.success("File berhasil diupload");
     }
-  }, [successUploadSubmission]);
+  }, [successUploadSubmission, snackbar]);
 
   return (
     <Dialog open={open} className={style["dialog"]}>
@@ -63,6 +68,18 @@ const ConfirmSend = ({
               />
             ))}
           </div>
+          {hasPassword && !isUploadingSubmission && !successUploadSubmission && (
+            <div className={style["dialog__content__password"]}>
+              <label>Password</label>
+              <Input
+                value={password}
+                required
+                handleChange={(e) => setPassword(e.target.value)}
+                action={error === "invalid password" ? "error" : ""}
+                hintText={error === "invalid password" ? "Password Salah" : ""}
+              />
+            </div>
+          )}
         </DialogContent>
         <DialogActions className={style["dialog__actions"]}>
           {!successUploadSubmission && (

@@ -1,19 +1,18 @@
-import React, { Component, useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import { Card, Button, Input } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 
 const Register = () => {
-  const { error, register, isRegister, clearError, isLogin, isAuthenticated } =
+  const { error, register, isRegister, clearError, isLogin } =
     useContext(UserContext);
-  const history = useHistory();
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  // const [newPassword, setNewPassword] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
