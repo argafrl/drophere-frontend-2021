@@ -3,8 +3,11 @@ import moment from "moment";
 import "moment/locale/id";
 import { Menu } from "@bccfilkom/designsystem/build";
 import style from "../../../css/page-card.module.scss";
+import { Link, Redirect, useHistory, useRouteMatch } from "react-router-dom";
 
-const PageCard = ({ title, due_time, storage_type }) => {
+const PageCard = ({ title, slug, due_time, storage_type, notifikasi }) => {
+  let { url } = useRouteMatch();
+  const history = useHistory();
   const wrapperRef = useRef();
 
   const [isClosed, setIsClosed] = useState("");
@@ -20,10 +23,24 @@ const PageCard = ({ title, due_time, storage_type }) => {
     setIsClosedBinary(true);
   };
 
+  const handleRedirect = () => {
+    history.push(`${url}/${slug}/edit`);
+  };
+
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setCloseMenu();
     }
+  };
+
+  const handleCopyToClipboard = () => {
+    const tempInput = document.createElement('input');
+    tempInput.value = title;
+    document.body.appendChild(tempInput)
+    tempInput.select();
+    document.execCommand("copy");
+    notifikasi(tempInput.value);
+    document.body.removeChild(tempInput);
   };
 
   useEffect(() => {
@@ -34,41 +51,44 @@ const PageCard = ({ title, due_time, storage_type }) => {
   });
 
   return (
-    <div className={style["item"]}>
+    <div className={style["item"]} ref={wrapperRef}>
       <div className={style.body}>
         <div className={style.top}>
-          <img
-            src={
-              storage_type === 1
-                ? "/img/icons/drive-active.svg"
-                : "/img/icons/dropbox-active.svg"
-            }
-            alt="dropbox-active"
-          />
+          <div className={style.storage}>
+            <img
+              src={
+                storage_type === 1
+                  ? "/img/icons/drive-active.svg"
+                  : "/img/icons/dropbox-active.svg"
+              }
+              alt="dropbox-active"
+            />
+          </div>
+          
           <div className={style.menu}>
             {isClosed === 1 && (
               <Menu opened={isClosedBinary}>
                 <Menu.Item
                   name="Edit halaman"
-                  onClick={() => setCloseMenu(true)}
-                />
+                  onClick={() => handleRedirect()}
+                ></Menu.Item>
                 <Menu.Item
                   name="Salin link"
-                  onClick={() => setCloseMenu(true)}
+                  onClick={() => handleCopyToClipboard()}
                 />
                 <Menu.Item name="Hapus" onClick={() => setCloseMenu(true)} />
               </Menu>
             )}
           </div>
           <div
-            ref={wrapperRef}
+            // ref={wrapperRef}
             className={style["kebab-menu"]}
-            style={{ display: "inline-block" }}
+            style={{ display: "flex" }}
           >
             <button
               value={1}
               onClick={() => setOpenMenu(1, !isClosedBinary)}
-            ></button>
+            ><img src="/img/icons/kebab-menu.svg" alt="kebab-menu" /></button>
           </div>
         </div>
         <div className={style.bottom}>

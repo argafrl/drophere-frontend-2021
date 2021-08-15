@@ -28,6 +28,7 @@ const Pages = () => {
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
+  const [notifikasi, setNotifikasi] = useState("")
 
   useEffect(() => {
     if (userInfo) {
@@ -54,6 +55,11 @@ const Pages = () => {
       console.log(error);
     }
   };
+
+  const handleNotifikasi = (e) => {
+    setNotifikasi(e);
+    snackbar.success("Link " + e + " disalin ke clipboard");
+  }
 
   return (
     <div className={style.container}>
@@ -98,7 +104,7 @@ const Pages = () => {
           />
           <div className={style.dropdown}>
             <Dropdown
-              value={`Urut: ${sort}`}
+              value={<div><img src="/img/icons/sort.svg" alt="sort" />{`Urut: ${sort}`}</div> }
               className={style.dropdown}
               id="dropdown"
               placeholder={`Urut: ${sort}`}
@@ -140,7 +146,9 @@ const Pages = () => {
                       <PageCard
                         title={link.title}
                         due_time={link.due_time}
+                        slug={link.slug}
                         storage_type={link.storage_type}
+                        notifikasi={handleNotifikasi}
                         key={idx}
                       />
                     );

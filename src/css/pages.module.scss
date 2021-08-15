@@ -73,6 +73,15 @@
             svg{
               height: 40px;
             }
+            > :first-child{
+              img{
+                margin-right: 5px;
+              }
+            }
+            > :last-child{
+              display: flex;
+              align-items: center;
+            }
           }
           > :last-child {
             position: absolute;
@@ -112,101 +121,100 @@
     grid-template-columns: repeat(auto-fill, minmax(193.5px, 1fr));;
     gap: 24px 24px;
 
-    .item{
-      border: 1px solid #DADCE0;
-      border-radius: 8px;
+    // .item{
+    //   border: 1px solid #DADCE0;
+    //   border-radius: 8px;
 
-      .body{
-        display: flex;
-        flex-direction: column;
-        border-bottom: 1px solid #DADCE0;
-        height: 80%;
-        padding: 10px;
-        .top{
-          display: flex;
-          justify-content: space-between;
-          img{
-            width: 20px;
-          }
-          button{
-            width: 20px;
-            height: 20px;
-            background: url("/img/icons/kebab-menu.svg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            border: none;
-            cursor: pointer;
-          }
-          .menu{
-            display: flex;
-            flex-grow: 1;
-            justify-content: flex-end;
-            > div{
-              border-radius: 2px;
-              max-width: 105px;
-              min-width: 0;
-              box-shadow: 0px 0px 2px rgba(120, 120, 121, 0.3);
-              font-size: 12px;
-              li{
-                padding: 10px 16px;
-                &:hover{
-                  color: #1A74A0;
-                }
-              }
-            }
-          }
-        }
-        .bottom{
-          flex: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          .title{
-            text-align: center;
-            font-weight: 600;
-          }
-          .files{
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            color: #787879;
-            margin-top: 5px;
-            img{
-              margin-right: 5px;
-            }
-          }
-        }
-      }
+    //   .body{
+    //     display: flex;
+    //     flex-direction: column;
+    //     border-bottom: 1px solid #DADCE0;
+    //     height: 80%;
+    //     padding: 10px;
+    //     .top{
+    //       display: flex;
+    //       justify-content: space-between;
+    //       img{
+    //         width: 20px;
+    //       }
+    //       button{
+    //         width: 20px;
+    //         // background: url("/img/icons/kebab-menu.svg");
+    //         background-size: cover;
+    //         background-repeat: no-repeat;
+    //         border: none;
+    //         cursor: pointer;
+    //       }
+    //       .menu{
+    //         display: flex;
+    //         flex-grow: 1;
+    //         justify-content: flex-end;
+    //         > div{
+    //           border-radius: 2px;
+    //           max-width: 105px;
+    //           min-width: 0;
+    //           box-shadow: 0px 0px 2px rgba(120, 120, 121, 0.3);
+    //           font-size: 12px;
+    //           li{
+    //             padding: 10px 16px;
+    //             &:hover{
+    //               color: #1A74A0;
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //     .bottom{
+    //       flex: auto;
+    //       display: flex;
+    //       flex-direction: column;
+    //       align-items: center;
+    //       justify-content: center;
+    //       .title{
+    //         text-align: center;
+    //         font-weight: 600;
+    //       }
+    //       .files{
+    //         display: flex;
+    //         align-items: center;
+    //         font-size: 12px;
+    //         color: #787879;
+    //         margin-top: 5px;
+    //         img{
+    //           margin-right: 5px;
+    //         }
+    //       }
+    //     }
+    //   }
 
-      .footer{
-        height: 20%;
-        font-size: 12px;
-        color: #787879;
-        display: flex;
-        align-items: center;
-        padding: 0 10px 0 10px;
+    //   .footer{
+    //     height: 20%;
+    //     font-size: 12px;
+    //     color: #787879;
+    //     display: flex;
+    //     align-items: center;
+    //     padding: 0 10px 0 10px;
         
-        .calendar{
-          flex: 6;
-          display: flex;
-          align-items: center;
-          img{
-            width: 15%;
-            margin-right: 5px;
-          }
-        }
-        .views{
-          flex: 5;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          img{
-            margin-right: 5px;
-          }
-        }
-      }
-    }
+    //     .calendar{
+    //       flex: 6;
+    //       display: flex;
+    //       align-items: center;
+    //       img{
+    //         width: 15%;
+    //         margin-right: 5px;
+    //       }
+    //     }
+    //     .views{
+    //       flex: 5;
+    //       display: flex;
+    //       align-items: center;
+    //       justify-content: flex-end;
+    //       img{
+    //         margin-right: 5px;
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 
