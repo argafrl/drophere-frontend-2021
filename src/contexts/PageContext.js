@@ -30,6 +30,7 @@ export const defaultValue = {
   getUserSubmissionDetail: () => {},
   clearCreateSubmissionSuccess: () => {},
   clearDeleteSubmissionSuccess: () => {},
+  resetUploadState: () => {},
 };
 
 export const PageContext = React.createContext(defaultValue);
@@ -194,6 +195,15 @@ export default class PageStore extends React.Component {
     }
   };
 
+  resetUploadState = () => {
+    this.setState({
+      error: "",
+      isUploadingSubmission: false,
+      successUploadSubmission: false,
+      uploadProgress: 0,
+    });
+  };
+
   resetState = () => {
     this.setState({
       error: "",
@@ -242,6 +252,7 @@ export default class PageStore extends React.Component {
           updateSubmission: this.updateSubmission,
           deleteSubmission: this.deleteSubmission,
           clearDeleteSubmissionSuccess: this.clearDeleteSubmissionSuccess,
+          resetUploadState: this.resetUploadState,
         }}
       >
         {this.props.children}

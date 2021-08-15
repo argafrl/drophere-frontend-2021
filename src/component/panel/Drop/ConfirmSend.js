@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { Button, Input } from "@bccfilkom/designsystem/build";
 import style from "../../../css/drop-confirm-send.module.scss";
 import FileCard from "./FileCard";
 import { PageContext } from "../../../contexts/PageContext";
-import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { useParams } from "react-router";
 
 const ConfirmSend = ({
@@ -21,16 +20,15 @@ const ConfirmSend = ({
     isUploadingSubmission,
     successUploadSubmission,
     error,
-    resetState,
+    resetUploadState,
   } = useContext(PageContext);
-  const snackbar = useContext(SnackbarContext);
   const { slug } = useParams();
 
   const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    resetState();
+    resetUploadState();
     setSubmitted(true);
     const formData = new FormData();
     formData.append("file", files[0]);
@@ -38,11 +36,13 @@ const ConfirmSend = ({
     uploadSubmission(formData, slug);
   };
 
-  useEffect(() => {
-    if (successUploadSubmission) {
-      snackbar.success("File berhasil diupload");
-    }
-  }, [successUploadSubmission, snackbar]);
+  const closeModal = () => {
+    onClose();
+    setSubmitted(false);
+    emptyFiles();
+    setPassword("");
+    resetUploadState();
+  };
 
   return (
     <Dialog open={open} className={style["dialog"]}>
@@ -86,12 +86,7 @@ const ConfirmSend = ({
             <Button
               className={style["btn-cancel"]}
               type="text"
-              onClick={() => {
-                onClose();
-                setSubmitted(false);
-                emptyFiles();
-                resetState();
-              }}
+              onClick={closeModal}
               disabled={isUploadingSubmission}
             >
               Batalkan
@@ -111,11 +106,7 @@ const ConfirmSend = ({
             <Button
               className={style["btn-send"]}
               type="primary"
-              onClick={() => {
-                onClose();
-                emptyFiles();
-                setSubmitted(false);
-              }}
+              onClick={closeModal}
             >
               Tutup
             </Button>
