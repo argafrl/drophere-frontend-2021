@@ -179,7 +179,7 @@ class Content extends Component {
             <Redirect from="/account" exact to="/account/pages" />
             <Route path="/account/pages" exact component={Pages} />
             <Route path="/account/pages/add" exact component={AddNewPage} />
-            <Route path="/account/pages/:id/edit" exact component={EditPage} />
+            <Route path="/account/pages/:slug/edit" exact component={EditPage} />
             <Route path="/account/profile" exact component={Profile} />
             <Route path="/account/storage" exact component={Storage} />
             <Route path="/account/support" exact component={Support} />

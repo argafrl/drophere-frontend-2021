@@ -2,23 +2,29 @@ import React from "react";
 import mainApi from "../api/mainApi";
 
 export const defaultValue = {
-  createSubmission: () => {},
   error: "",
   allPages: [],
   submissionInfo: null,
+  userSubmissionDetail: null,
   isCreatingSubmission: false,
   isUploadingSubmission: false,
   isFetchingAllPages: false,
   isFetchingSubmissionInfo: false,
+  isFetchingUserSubmissionDetail: false,
+  isUpdatingSubmission: false,
   successCreatingSubmission: false,
   successUploadSubmission: false,
+  successUpdateSubmission: false,
   successFetchAllPages: false,
   uploadProgress: 0,
+  createSubmission: () => {},
   uploadSubmission: () => {},
+  updateSubmission: () => {},
   resetState: () => {},
   clearError: () => {},
   getAllPages: () => {},
   getSubmissionInfo: () => {},
+  getUserSubmissionDetail: () => {},
   clearCreateSubmissionSuccess: () => {},
 };
 
@@ -31,12 +37,11 @@ export default class PageStore extends React.Component {
     try {
       this.setState({ isCreatingSubmission: true });
 
-      const res = await mainApi.post("/submissions/", data, {
+      await mainApi.post("/submissions/", data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
-      console.log(res);
 
       this.setState({ successCreatingSubmission: true });
     } catch (error) {
@@ -118,13 +123,64 @@ export default class PageStore extends React.Component {
     }
   };
 
+  getUserSubmissionDetail = async (slug) => {
+    try {
+      this.setState({ isFetchingUserSubmissionDetail: true });
+      const { data } = await mainApi.get(`/submissions/${slug}/details`);
+      console.log(data);
+      this.setState({ userSubmissionDetail: data.data });
+    } catch (error) {
+      this.setState({
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    } finally {
+      this.setState({ isFetchingUserSubmissionDetail: false });
+    }
+  };
+
+  updateSubmission = async (slug, data) => {
+    try {
+      this.setState({ isUpdatingSubmission: true });
+
+      await mainApi.patch(`/submissions/${slug}/edit`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+
+      this.setState({ successUpdateSubmission: true });
+    } catch (error) {
+      this.setState({
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+      this.setState({ successUpdateSubmission: false });
+    } finally {
+      this.setState({ isUpdatingSubmission: false });
+    }
+  };
+
   resetState = () => {
     this.setState({
       error: "",
+      allPages: [],
+      submissionInfo: null,
+      userSubmissionDetail: null,
       isCreatingSubmission: false,
       isUploadingSubmission: false,
+      isFetchingAllPages: false,
+      isFetchingSubmissionInfo: false,
+      isFetchingUserSubmissionDetail: false,
+      isUpdatingSubmission: false,
       successCreatingSubmission: false,
       successUploadSubmission: false,
+      successUpdateSubmission: false,
+      successFetchAllPages: false,
       uploadProgress: 0,
     });
   };
@@ -158,6 +214,8 @@ export default class PageStore extends React.Component {
           getAllPages: this.getAllPages,
           clearCreateSubmissionSuccess: this.clearCreateSubmissionSuccess,
           getSubmissionInfo: this.getSubmissionInfo,
+          getUserSubmissionDetail: this.getUserSubmissionDetail,
+          updateSubmission: this.updateSubmission,
         }}
       >
         {this.props.children}

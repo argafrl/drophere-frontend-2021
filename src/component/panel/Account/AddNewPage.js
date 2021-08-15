@@ -23,7 +23,6 @@ const AddNewPage = () => {
   const [password, setPassword] = useState("");
   const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
-  const [error, setError] = useState("");
   const [fileTypes, setFileTypes] = useState({
     PDF: true,
     Dokumen: true,
@@ -47,31 +46,30 @@ const AddNewPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    clearError("");
+    clearError();
 
     if (title.length > 150) {
-      setError("Judul tidak boleh melebihi 150 karakter");
+      snackbar.error("Judul tidak boleh melebihi 150 karakter");
       return;
     }
 
     if (description.length > 200) {
-      setError("Deskripsi tidak boleh melebihi 200 karakter");
+      snackbar.error("Deskripsi tidak boleh melebihi 200 karakter");
       return;
     }
 
     if (!characterCheck(link)) {
-      setError("Link tidak valid");
+      snackbar.error("Link tidak valid");
       return;
     }
 
     if (!useDeadline || !deadline) {
-      setError("Deadline harus ditetapkan");
+      snackbar.error("Deadline harus ditetapkan");
       return;
     }
 
     if (new Date().getTime() >= new Date(deadline).getTime()) {
-      setError("Deadline harus melebihi waktu saat ini");
+      snackbar.error("Deadline harus melebihi waktu saat ini");
       return;
     }
 
@@ -92,10 +90,6 @@ const AddNewPage = () => {
   };
 
   useEffect(() => {
-    if (error) {
-      snackbar.error(error);
-      return;
-    }
     if (errorFromBackend) {
       if (
         errorFromBackend ===
@@ -105,16 +99,17 @@ const AddNewPage = () => {
       } else {
         snackbar.error(errorFromBackend);
       }
-      return;
     }
     if (successCreatingSubmission) {
       history.push("/account/pages");
     }
-  }, [successCreatingSubmission, errorFromBackend, error, history, snackbar]);
+  }, [successCreatingSubmission, errorFromBackend, history, snackbar]);
 
-  // const countWords = (str) => {
-  //   return str.split(" ").filter((word) => word != "").length;
-  // };
+  useEffect(() => {
+    return () => {
+      clearError();
+    };
+  }, []);
 
   const characterCheck = (str) => {
     const acceptedCriteria = /^[-A-Za-z0-9_]+$/;

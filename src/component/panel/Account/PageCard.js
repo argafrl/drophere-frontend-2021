@@ -3,9 +3,11 @@ import moment from "moment";
 import "moment/locale/id";
 import { Menu } from "@bccfilkom/designsystem/build";
 import style from "../../../css/page-card.module.scss";
+import { useHistory } from "react-router";
 
-const PageCard = ({ title, due_time, storage_type }) => {
+const PageCard = ({ title, due_time, storage_type, id }) => {
   const wrapperRef = useRef();
+  const history = useHistory();
 
   const [isClosed, setIsClosed] = useState("");
   const [isClosedBinary, setIsClosedBinary] = useState(true);
@@ -50,7 +52,7 @@ const PageCard = ({ title, due_time, storage_type }) => {
               <Menu opened={isClosedBinary}>
                 <Menu.Item
                   name="Edit halaman"
-                  onClick={() => setCloseMenu(true)}
+                  onClick={() => history.push(`/account/pages/${id}/edit`)}
                 />
                 <Menu.Item
                   name="Salin link"

@@ -129,8 +129,8 @@ const Pages = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-                { allPages.sort(sort == "Tanggal" ? (a, b) => a.due_time.localeCompare(b.due_time) : (a, b) => a.title.localeCompare(b.title)).filter((page) => {
-                    if(search == ""){
+                { allPages.sort(sort === "Tanggal" ? (a, b) => a.due_time.localeCompare(b.due_time) : (a, b) => a.title.localeCompare(b.title)).filter((page) => {
+                    if(!search){
                       return page
                     } else if (page.title.toLowerCase().includes(search.toLowerCase())) {
                       return page
@@ -141,6 +141,7 @@ const Pages = () => {
                         title={link.title}
                         due_time={link.due_time}
                         storage_type={link.storage_type}
+                        id = {link.id}
                         key={idx}
                       />
                     );
