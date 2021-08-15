@@ -12,20 +12,24 @@ export const defaultValue = {
   isFetchingSubmissionInfo: false,
   isFetchingUserSubmissionDetail: false,
   isUpdatingSubmission: false,
+  isDeletingSubmission: false,
   successCreatingSubmission: false,
   successUploadSubmission: false,
   successUpdateSubmission: false,
+  successDeleteSubmission: false,
   successFetchAllPages: false,
   uploadProgress: 0,
   createSubmission: () => {},
   uploadSubmission: () => {},
   updateSubmission: () => {},
+  deleteSubmission: () => {},
   resetState: () => {},
   clearError: () => {},
   getAllPages: () => {},
   getSubmissionInfo: () => {},
   getUserSubmissionDetail: () => {},
   clearCreateSubmissionSuccess: () => {},
+  clearDeleteSubmissionSuccess: () => {},
 };
 
 export const PageContext = React.createContext(defaultValue);
@@ -165,6 +169,31 @@ export default class PageStore extends React.Component {
     }
   };
 
+  deleteSubmission = async (slug) => {
+    try {
+      this.setState({ isDeletingSubmission: true });
+
+      await mainApi.delete(`/submissions/${slug}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+
+      this.setState({ successDeleteSubmission: true });
+    } catch (error) {
+      this.setState({
+        error:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+
+      this.setState({ successDeleteSubmission: false });
+    } finally {
+      this.setState({ isDeletingSubmission: false });
+    }
+  };
+
   resetState = () => {
     this.setState({
       error: "",
@@ -193,6 +222,10 @@ export default class PageStore extends React.Component {
     this.setState({ successCreatingSubmission: false });
   };
 
+  clearDeleteSubmissionSuccess = () => {
+    this.setState({ successDeleteSubmission: false });
+  };
+
   render() {
     return (
       <PageContext.Provider
@@ -207,6 +240,8 @@ export default class PageStore extends React.Component {
           getSubmissionInfo: this.getSubmissionInfo,
           getUserSubmissionDetail: this.getUserSubmissionDetail,
           updateSubmission: this.updateSubmission,
+          deleteSubmission: this.deleteSubmission,
+          clearDeleteSubmissionSuccess: this.clearDeleteSubmissionSuccess,
         }}
       >
         {this.props.children}

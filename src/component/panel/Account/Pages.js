@@ -21,6 +21,8 @@ const Pages = () => {
     isFetchingAllPages,
     successCreatingSubmission,
     clearCreateSubmissionSuccess,
+    clearDeleteSubmissionSuccess,
+    successDeleteSubmission,
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 
@@ -29,6 +31,7 @@ const Pages = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
   useEffect(() => {
+    console.log("rerender pages")
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
     }
@@ -36,13 +39,20 @@ const Pages = () => {
       snackbar.success("Halaman Berhasil Dibuat");
       clearCreateSubmissionSuccess();
     }
+    if (successDeleteSubmission) {
+      console.log("render success")
+      snackbar.success("Halaman Berhasil Dihapus");
+      clearDeleteSubmissionSuccess();
+    }
     getAllPages();
   }, [
     getAllPages,
     userInfo,
     snackbar,
     clearCreateSubmissionSuccess,
+    clearDeleteSubmissionSuccess,
     successCreatingSubmission,
+    successDeleteSubmission,
   ]);
 
   const handleSendEmail = async (e) => {

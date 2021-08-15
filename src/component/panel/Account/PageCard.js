@@ -5,11 +5,13 @@ import { Menu } from "@bccfilkom/designsystem/build";
 import style from "../../../css/page-card.module.scss";
 import { useHistory } from "react-router-dom";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { PageContext } from "../../../contexts/PageContext";
 
 const PageCard = ({ title, slug, due_time, storage_type }) => {
   const history = useHistory();
   const wrapperRef = useRef();
   const snackbar = useContext(SnackbarContext);
+  const { deleteSubmission } = useContext(PageContext);
 
   const [isClosed, setIsClosed] = useState("");
   const [isClosedBinary, setIsClosedBinary] = useState(true);
@@ -26,6 +28,11 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
 
   const handleRedirect = () => {
     history.push(`/account/pages/${slug}/edit`);
+  };
+
+  const handleDelete = () => {
+    deleteSubmission(slug);
+    setCloseMenu();
   };
 
   const handleClickOutside = (event) => {
@@ -73,14 +80,11 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
                   name="Salin link"
                   onClick={() => handleCopyToClipboard()}
                 />
-                <Menu.Item name="Hapus" onClick={() => setCloseMenu(true)} />
+                <Menu.Item name="Hapus" onClick={() => handleDelete()} />
               </Menu>
             )}
           </div>
-          <div
-            className={style["kebab-menu"]}
-            style={{ display: "flex" }}
-          >
+          <div className={style["kebab-menu"]} style={{ display: "flex" }}>
             <button value={1} onClick={() => setOpenMenu(1, !isClosedBinary)}>
               <img src="/img/icons/kebab-menu.svg" alt="kebab-menu" />
             </button>
