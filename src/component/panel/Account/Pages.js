@@ -28,7 +28,6 @@ const Pages = () => {
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
-
   useEffect(() => {
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
@@ -98,7 +97,12 @@ const Pages = () => {
           />
           <div className={style.dropdown}>
             <Dropdown
-              value={`Urut: ${sort}`}
+              value={
+                <div>
+                  <img src="/img/icons/sort.svg" alt="sort" />
+                  {`Urut: ${sort}`}
+                </div>
+              }
               className={style.dropdown}
               id="dropdown"
               placeholder={`Urut: ${sort}`}
@@ -129,24 +133,32 @@ const Pages = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-                { allPages.sort(sort === "Tanggal" ? (a, b) => a.due_time.localeCompare(b.due_time) : (a, b) => a.title.localeCompare(b.title)).filter((page) => {
-                    if(!search){
-                      return page
-                    } else if (page.title.toLowerCase().includes(search.toLowerCase())) {
-                      return page
-                    }
-                  }).map((link, idx) => {
-                    return (
-                      <PageCard
-                        title={link.title}
-                        due_time={link.due_time}
-                        storage_type={link.storage_type}
-                        id = {link.id}
-                        key={idx}
-                      />
-                    );
-                  })
-                }
+              {allPages
+                .sort(
+                  sort === "Tanggal"
+                    ? (a, b) => a.due_time.localeCompare(b.due_time)
+                    : (a, b) => a.title.localeCompare(b.title)
+                )
+                .filter((page) => {
+                  if (!search) {
+                    return page;
+                  } else if (
+                    page.title.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return page;
+                  }
+                })
+                .map((link, idx) => {
+                  return (
+                    <PageCard
+                      title={link.title}
+                      due_time={link.due_time}
+                      slug={link.slug}
+                      storage_type={link.storage_type}
+                      key={idx}
+                    />
+                  );
+                })}
             </div>
           )}
         </>

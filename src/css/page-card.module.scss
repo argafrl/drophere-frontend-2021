@@ -6,26 +6,50 @@
     flex-direction: column;
     border-bottom: 1px solid #dadce0;
     height: 80%;
-    padding: 10px;
+    // padding: 10px;
     .top {
+      // padding: 10px;
       display: flex;
       justify-content: space-between;
-      img {
-        width: 20px;
+      .storage,.kebab-menu{
+        width: 40px;
+        height: 40px;
+        img{
+          width: 20px;
+        }
+      }
+      .storage{
+        padding: 10px;
+      }
+      .kebab-menu{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: 0.2s;
+        &:hover{
+          background: #F1F3F4;
+        }
       }
       button {
-        width: 20px;
-        height: 20px;
-        background: url("/img/icons/kebab-menu.svg");
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // background: url("/img/icons/kebab-menu.svg");
         background-size: cover;
         background-repeat: no-repeat;
+        background: none;
         border: none;
         cursor: pointer;
+        
       }
       .menu {
         display: flex;
         flex-grow: 1;
         justify-content: flex-end;
+        margin-top: 10px;
         & > div {
           border-radius: 2px;
           max-width: 105px;
@@ -42,6 +66,7 @@
       }
     }
     .bottom {
+      padding: 0 10px 10px 10px;
       flex: auto;
       display: flex;
       flex-direction: column;
@@ -58,6 +83,7 @@
         color: #787879;
         margin-top: 5px;
         img {
+          width: 20px;
           margin-right: 5px;
         }
       }

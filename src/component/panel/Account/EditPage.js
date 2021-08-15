@@ -126,12 +126,13 @@ const AddNewPage = () => {
       setLink(userSubmissionDetail.slug);
       setStorage(userSubmissionDetail.storage_type);
     }
-  }, [userSubmissionDetail, getUserSubmissionDetail]);
+  }, [userSubmissionDetail, getUserSubmissionDetail,slug]);
 
   useEffect(() => {
     return () => {
       resetState();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const characterCheck = (str) => {

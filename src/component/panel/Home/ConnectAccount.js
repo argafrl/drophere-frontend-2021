@@ -28,6 +28,7 @@ const ConnectAccount = () => {
     if (state && code && scope) {
       handleOauthUrlResponse({ state, code, scope });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, connectGoogleDrive]);
 
   useEffect(() => {

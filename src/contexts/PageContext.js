@@ -185,15 +185,6 @@ export default class PageStore extends React.Component {
     });
   };
 
-  resetUploadSubmissionState = () => {
-    this.setState({
-      error: "",
-      isUploadingSubmission: false,
-      successUploadSubmission: false,
-      uploadProgress: 0,
-    });
-  };
-
   clearError = () => {
     this.setState({ error: "" });
   };

@@ -109,6 +109,7 @@ const AddNewPage = () => {
     return () => {
       clearError();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const characterCheck = (str) => {
