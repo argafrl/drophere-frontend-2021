@@ -4,6 +4,7 @@ import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import { Card, Button, Input } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   const { error, register, isRegister, clearError, isLogin } =
@@ -22,6 +23,11 @@ const Register = () => {
 
   return (
     <div className={style.container}>
+
+      <Helmet>
+          <title>Register</title>
+      </Helmet>
+
       <Card className={style.form}>
         <div className={style.header}>
           <h1>Daftar Sekarang</h1>

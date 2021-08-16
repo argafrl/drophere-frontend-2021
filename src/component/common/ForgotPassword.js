@@ -35,6 +35,7 @@ const ForgotPassword = (props) => {
   const onCancelHandler = (event) => {
     event.preventDefault();
     onClose();
+    clearError();
     document.getElementById("reset-password-form").value = "";
     setTimeout(
       () =>

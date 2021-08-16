@@ -12,6 +12,7 @@ import { PageContext } from "../../../contexts/PageContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { characterCheck } from "../../../helpers";
+import { Helmet } from "react-helmet";
 
 const AddNewPage = () => {
   const [title, setTitle] = useState("");
@@ -86,6 +87,9 @@ const AddNewPage = () => {
 
   return (
     <div className={style["container"]}>
+      <Helmet>
+          <title>Buat Halaman</title>
+      </Helmet>
       <h1>Buat Halaman</h1>
       <p>
         Halaman ini digunakan sebagai tempat pengumpulan file yang anda butuhkan

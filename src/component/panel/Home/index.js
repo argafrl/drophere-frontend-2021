@@ -8,6 +8,7 @@ import ConnectAccount from "./ConnectAccount";
 import PrivateRoute from "../../../routes/PrivateRoute";
 import AuthRoute from "../../../routes/AuthRoute";
 import NotFound from "../../common/NotFound";
+import Contributor from "../../common/Contributor";
 
 const Home = ({ location }) => {
   return (
@@ -30,6 +31,7 @@ const Home = ({ location }) => {
               exact
               component={ConnectAccount}
             />
+            <Route path="/contributor" component={Contributor} />
             <Route path="*" component={NotFound} />
           </Switch>
         </div>

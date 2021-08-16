@@ -1,11 +1,15 @@
 import React from "react";
 import style from "../../../css/storage.module.scss";
 import { Button } from "@bccfilkom/designsystem/build";
+import { Helmet } from "react-helmet";
 
 const Storage = () => {
   return (
     <div>
       <div className={style.container}>
+        <Helmet>
+            <title>Tautan Penyimpanan</title>
+        </Helmet>
         <h1>Tautkan Akun Anda</h1>
         <p>Integrasikan akun anda dengan Cloud Storage</p>
         <div className={style["card-container"]}>

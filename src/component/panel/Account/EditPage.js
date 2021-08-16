@@ -13,6 +13,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
 import { characterCheck } from "../../../helpers";
+import { Helmet } from "react-helmet";
 
 const AddNewPage = () => {
   const {
@@ -95,6 +96,9 @@ const AddNewPage = () => {
 
   return (
     <div className={style["container"]}>
+      <Helmet>
+          <title>Edit Halaman</title>
+      </Helmet>
       {isFetchingUserSubmissionDetail ? (
         <Preloader />
       ) : (

@@ -7,56 +7,48 @@
         .top{
             display: flex;
             justify-content: space-between;
-            column-gap: 35px;
+            column-gap: 80px;
             > * {
                 display: flex;
                 flex-direction: column;
                 h6{
                     font-size: 16px;
-                    margin-top: 10px;
-                    min-height: 30px;
+                    margin-bottom: 10px;
                 }
             }
 
-            .left{
-                flex: 5;
+            .drophere-wrapper{
                 row-gap: 10px;
-                .drophere-logo {
+                img {
                     width: 200px;
                 }
             }
 
-            .right{
-                flex: 5;
+            .bcc-wrapper,.gojek-wrapper{
                 display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                column-gap: 35px;
-                > * {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .item-1{
-                    // flex: 2;
-                    row-gap: 10px;
-                }
-                .item-2,.item-3{
-                    // background-color: red;
-                    // flex: 3;
-                    row-gap: 10px;
-                    align-items: flex-start;
-                    // text-align: right;
-                    img{
-                        height: 45px;
-                    }
+                align-items: flex-start;
+                white-space: nowrap;
+                img{
+                    max-height: 40px;
                 }
             }
+
         }
         .bottom{
             display: flex;
             justify-content: space-between;
             margin-top: 50px;
             align-items: center;
+
+            .link{
+                display: flex;
+                column-gap: 35px;
+                a{
+                    text-decoration: none;
+                    color: #141414;
+                    font-weight: normal;
+                }
+            }
 
             .logo{
                 align-self: center;

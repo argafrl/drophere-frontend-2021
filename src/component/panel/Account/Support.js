@@ -3,6 +3,7 @@ import style from "../../../css/account-support.module.scss";
 import { TextArea, Button } from "@bccfilkom/designsystem/build";
 import { SupportContext } from "../../../contexts/SupportContext";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { Helmet } from "react-helmet";
 
 export default function Support() {
   const [message, setMessage] = useState("");
@@ -21,6 +22,9 @@ export default function Support() {
 
   return (
     <div className={style.container + " opening-transition"}>
+      <Helmet>
+          <title>Masukan</title>
+      </Helmet>
       <h1>Kirim Masukan</h1>
       <p>Masukan anda dapat membantu layanan kami agar lebih maksimal</p>
       <form onSubmit={onSubmitHandler}>

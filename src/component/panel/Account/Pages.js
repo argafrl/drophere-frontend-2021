@@ -12,6 +12,7 @@ import { PageContext } from "../../../contexts/PageContext";
 import mainApi from "../../../api/mainApi";
 import PageCard from "./PageCard";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { Helmet } from "react-helmet";
 
 const Pages = () => {
   const { userInfo } = useContext(UserContext);
@@ -56,8 +57,10 @@ const Pages = () => {
     try {
       await mainApi.get("/users/verify");
       setSendEmail(e);
+      snackbar.success("Email berhasil dikirim");
     } catch (error) {
       console.log(error);
+      snackbar.error("Email gagal dikirim");
     }
   };
 
@@ -78,6 +81,9 @@ const Pages = () => {
 
   return (
     <div className={style.container}>
+      <Helmet>
+          <title>Halaman</title>
+      </Helmet>
       {!sendEmail && (
         <div className={style["verify-alert"]}>
           <h6>Verifikasi Email Anda</h6>

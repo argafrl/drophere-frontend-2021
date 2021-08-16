@@ -43,7 +43,7 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
   };
 
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(slug);
+    navigator.clipboard.writeText(window.location.hostname + "/link/" + slug);
     setCloseMenu();
     snackbar.success("Link " + title + " disalin ke clipboard");
   };

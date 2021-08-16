@@ -1,0 +1,68 @@
+.container{
+  display: inline;
+  .content{
+    width: 80%;
+    margin: 0 auto;
+    padding: 35px 0 70px 0;
+    // padding: 0 10%;
+    .heading{
+      // margin-top: 35px;
+      text-align: center;
+      h1 {
+        font-weight: 600;
+        font-size: 20pt;
+      }
+    
+      p{
+          margin: 0;
+      }
+    }
+  
+    .grid-container{
+      margin-top: 35px;
+      display: grid;
+      grid-auto-rows: 280px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));;
+      gap: 24px 24px;
+      .item{
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+  
+        .avatar{
+          img{
+            width: 100px;
+          }
+        }
+        .nama{
+          margin-top: 10px;
+          font-size: 18px;
+          font-weight: 600;
+          color: #3E3E3E;
+        }
+        .role{
+          color:#787879;
+          font-size: 14px;
+        }
+        .linkedin{
+          margin-top: 20px;
+          display: flex;
+          align-items: center;
+          column-gap: 10px;
+          font-size: 14px;
+          font-style: italic;
+          color:#787879;
+        }
+      }
+    }
+  
+    .btn-wrapper{
+      display: flex;
+      margin: 35px 0;
+      justify-content: center;
+    }
+  }
+}

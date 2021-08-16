@@ -6,6 +6,7 @@ import ForgotPassword from "../../common/ForgotPassword";
 import { Card, Button, Input } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Portal } from "react-portal";
+import { Helmet } from "react-helmet";
 
 class Login extends Component {
   static contextType = UserContext;
@@ -45,6 +46,11 @@ class Login extends Component {
   render() {
     return (
       <div className={style.container}>
+
+        <Helmet>
+            <title>Login</title>
+        </Helmet>
+
         <Card className={style.form}>
           <div className={style.header}>
             <h1>Masuk</h1>
@@ -121,6 +127,7 @@ class Login extends Component {
           </Portal>
         </Card>
       </div>
+      
     );
   }
 }

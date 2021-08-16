@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import style from "../../../css/account-profile.module.scss";
 import Loading from "../../common/Loading";
@@ -9,12 +9,16 @@ import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
 
-import { useContext } from "react";
 import { UserContext } from "../../../contexts/UserContext";
+
+import { Helmet } from "react-helmet";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const ProfileNew = () => {
 
-  const { fetchUserInfo, userInfo, isFetchingUserInfo, update, isUpdating } = useContext(UserContext);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, update, isUpdating, successUpdating, errorUpdating } = useContext(UserContext);
+
+  const snackbar = useContext(SnackbarContext);
 
   const [openNama, setOpenNama] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
@@ -51,9 +55,16 @@ const ProfileNew = () => {
     setVerifikasi(e);
   };
 
+  const handleProfileChange = (e) => {
+    // console.log(e.target.files[0]);
+    setProfileImage(e.target.files[0]);
+    console.log(profileImage);
+  }
+
   const onUpdateProfile = async (e) => {
     e.preventDefault();
-    update(profileImage, name, email)
+    console.log(profileImage)
+    update(profileImage, name, email);
   };
 
   // const handleChange = (name) => (event) => {
@@ -137,9 +148,20 @@ const ProfileNew = () => {
       setEmail(userInfo.email);
       setProfileImage(userInfo.profile_image);
       setVerifikasi(userInfo.is_verified)
+    } else {
+      fetchUserInfo();
+    }
+    if (successUpdating){
+      snackbar.success("Profil berhasil diperbarui");
+      clearUserInfo();
+    }
+    else if (errorUpdating){
+      snackbar.error(errorUpdating)
     }
   },[
     userInfo,
+    successUpdating,
+    errorUpdating
   ])
 
   useEffect(() => {
@@ -148,6 +170,9 @@ const ProfileNew = () => {
 
   return (
     <div className={style.container}>
+      <Helmet>
+          <title>Profil</title>
+      </Helmet>
       <h1>Profil</h1>
       <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
       {!isFetchingUserInfo ? (
@@ -165,14 +190,14 @@ const ProfileNew = () => {
                 <div className={style.middle}>
                   <Avatar
                     alt="Travis Howard"
-                    src={profileImage}
+                    // src={profileImage}
                     className={style.avatar}
                   />
                   <div className={style["btn-ubah"]}>
                     <input
                       type="file"
-                      value={profileImage}
-                      onChange={(e) => setProfileImage(e.target.value)}
+                      // value={profileImage}
+                      onChange={(e) => setProfileImage(e.target.files[0])}
                       name="avatar"
                       id="btn-avatar"
                       accept="image/*"

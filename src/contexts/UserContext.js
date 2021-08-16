@@ -14,6 +14,8 @@ export const defaultValue = {
   isSendingEmailVerification: false,
   successSendEmailVerification: false,
   isUpdating: false,
+  successUpdating: false,
+  errorUpdating: "",
   login: () => {},
   register: () => {},
   fetchUserInfo: () => {},
@@ -40,6 +42,12 @@ export class UserStore extends React.Component {
       this.setState({ isFetchingUserInfo: false });
     }
   };
+
+  clearUserInfo = () => {
+    this.setState({
+      userInfo: null,
+    })
+  }
 
   sendEmailVerification = async () => {
     try {
@@ -92,11 +100,20 @@ export class UserStore extends React.Component {
       bodyFormData.append("full_name", name);
       bodyFormData.append("email", email);
 
-      await mainApi.patch("/users/profile", bodyFormData);
+      const { data } = await mainApi.patch("/users/profile", bodyFormData, {
+        headers: {'Content-Type': "multipart/form-data",}
+      });
+      this.setState({
+        successUpdating: data.is_success,
+        errorUpdating: "",
+      });
     } catch (err) {
-      console.log(err);
+      this.setState({
+        successUpdating: false,
+        errorUpdating: err.message,
+      });
     } finally {
-      this.setState({ isUpdating: false });
+      this.setState({ isUpdating: false, successUpdating: false, });
     }
   };
 
@@ -163,6 +180,7 @@ export class UserStore extends React.Component {
         value={{
           ...this.state,
           fetchUserInfo: this.fetchUserInfo,
+          clearUserInfo: this.clearUserInfo,
           sendForgotPassword: this.sendForgotPassword,
           resetSendForgotPassword: this.resetSendForgotPassword,
           sendEmailVerification: this.sendEmailVerification,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import Home from "./component/panel/Home";
 import Account from "./component/panel/Account";
 import Drop from "./component/panel/Drop";
@@ -15,9 +16,20 @@ import ScrollToTop from "./ScrollToTop";
 
 class AppRouter extends Component {
   render() {
-    return (
-      <BrowserRouter>
+
+    function PageSwitch() {
+      let location = useLocation();
+
+      return(
         <SidebarStore>
+          <Helmet titleTemplate="%s – Drophere" defaultTitle="Drophere">
+            <meta name="description" content="Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive" />
+            <meta
+              name="keywords"
+              content="BCC, Basic Computing Community, Application, Drop it to me, dropittome, Fakultas Ilmu Komputer, Universitas Brawijaa, UB, FILKOM"
+            />
+            <meta name="authors" content="BCC Fakultas Ilmu Komputer UB" />
+          </Helmet>
           <UserStore>
             <ScrollToTop />
             <Header />
@@ -35,6 +47,12 @@ class AppRouter extends Component {
             </PageStore>
           </UserStore>
         </SidebarStore>
+      );
+    }
+
+    return (
+      <BrowserRouter>
+        <PageSwitch />
       </BrowserRouter>
     );
   }
