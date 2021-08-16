@@ -8,11 +8,16 @@ export const defaultValue = {
   isLogin: false,
   isRegister: false,
   isFetchingUserInfo: false,
+  errorSendForgotPassword: "",
+  successSendForgotPassword: false,
+  isSendingForgotPassword: false,
   isSendingEmailVerification: false,
   successSendEmailVerification: false,
+  isUpdating: false,
   login: () => {},
   register: () => {},
   fetchUserInfo: () => {},
+  sendForgotPassword: () => {},
   sendEmailVerification: () => {},
   update: () => {},
   logout: () => {},
@@ -53,10 +58,40 @@ export class UserStore extends React.Component {
     }
   };
 
-  update = async (profile_image, name, email) => {
+  sendForgotPassword = async (email) => {
     try {
+      this.setState({ isSendingForgotPassword: true });
+
+      const { data } = await mainApi.get("/forgot-password", { 
+      params: {
+        email: email,
+      },
+      headers: {
+        Authorization: localStorage.getItem("bccdrophere_token")
+      }});
+      this.setState({ successSendForgotPassword: data.is_success, errorSendForgotPassword: "" });
+    } catch (err) {
+      this.setState({
+        errorSendForgotPassword: err.message,
+        successSendEmailVerification: false,
+      });
+    } finally {
+      this.setState({ isSendingForgotPassword: false });
+    }
+  };
+
+  resetSendForgotPassword = () => {
+    this.setState({
+      successSendForgotPassword: false,
+    })
+  }
+
+  update = async (profileImage, name, email) => {
+    try {
+      this.setState({ isUpdating: true });
+      
       const bodyFormData = new FormData();
-      bodyFormData.append("profile_image", profile_image);
+      bodyFormData.append("profile_image", profileImage);
       bodyFormData.append("full_name", name);
       bodyFormData.append("email", email);
 
@@ -68,6 +103,8 @@ export class UserStore extends React.Component {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      this.setState({ isUpdating: false });
     }
   };
 
@@ -125,7 +162,7 @@ export class UserStore extends React.Component {
   };
 
   clearError = () => {
-    this.setState({ error: "" });
+    this.setState({ error: "", errorSendForgotPassword: "" });
   };
 
   render() {
@@ -134,6 +171,9 @@ export class UserStore extends React.Component {
         value={{
           ...this.state,
           fetchUserInfo: this.fetchUserInfo,
+          sendForgotPassword: this.sendForgotPassword,
+          resetSendForgotPassword: this.resetSendForgotPassword,
+          sendEmailVerification: this.sendEmailVerification,
           update: this.update,
           login: this.login,
           logout: this.logout,

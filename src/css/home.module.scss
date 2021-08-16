@@ -9,7 +9,8 @@
 
   .content {
     // padding: 0px 50px;
-    min-height: 500px;
+    // min-height: 500px;
+    min-height: 85vh;
     display: flex;
     flex-wrap: wrap;
     flex: 1;
@@ -29,7 +30,7 @@
     }
 
     .auth {
-      padding-top: 50px;
+      // padding-top: 50px;
 
       @media only screen and (max-width: 799px) {
         padding-top: 30px;

@@ -89,6 +89,8 @@
 
         .form-unedit{
             display: flex;
+            flex-wrap: wrap;
+            row-gap: 10px;
             align-items: center;
             flex-direction: row;
             justify-items: space-between;
@@ -98,16 +100,23 @@
             // column-gap: 30px;
 
             .left{
-                flex-basis: 27%;
+                // flex-basis: 20%;
+                // flex-grow: 2;
+                flex-basis: 200px;
                 margin-right: 10px;
             }
             .middle{
-                flex: 4;
+                // flex: 4;
+                flex: 1;
+                // flex-grow: 4;
                 display: flex;
                 flex-wrap: wrap;
                 row-gap: 10px;
                 column-gap: 15px;
                 align-items: center;
+                p{
+                    font-weight: 600;
+                }
                 .avatar{
                     // margin-right: 15px;
                     width:100px;
@@ -141,6 +150,9 @@
                     border-radius: 15px;
                     padding: 3px 10px;
                     font-size: 12px;
+                    p{
+                        font-weight: normal;
+                    }
                     span{
                         cursor: pointer;
                         color: #3598DB;

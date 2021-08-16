@@ -1,6 +1,66 @@
 .item {
   border: 1px solid #dadce0;
   border-radius: 8px;
+    > :first-child {
+      @media screen and (max-width: 768px) {
+          padding: 0 35px;
+      }
+      > :first-child {
+          // background-color: blue;
+          h6{
+              padding: 0;
+              height: 45px;
+
+          }
+
+          > :nth-child(2){
+              margin: 0;
+              padding: 0 35px;
+              .content{
+                  // padding: 28px 40px 0 40px !important;
+                  padding: 0;
+                  h1 {
+                      // font-family: 'inter';
+                      font-size: 20pt;
+                      font-weight: 600;
+                      line-height: 10px;
+                      margin-bottom: 12px;
+                      color: #252525;
+                  }
+              
+                  p {
+                      font-weight: 400;
+                      font-size: 12pt;
+                      margin: 20px 0 5px 0;
+                      color: #252525;
+                  }
+              
+                  .input-wrapper{
+                      min-width: 0;
+                      p {
+                          margin-top: 20px;
+                      }
+                      input{
+                          min-width: 0;
+                      }
+                  }
+              }
+          }
+
+          > :nth-child(3) {
+              padding: 24px 35px 35px 0;
+              
+              > :first-child{
+                background: #e84c3d;
+                border-color: #e84c3d;
+                transform: translate3d(0,0,0);
+                &:hover{
+                  background-color: rgb(233, 103, 91);
+                }
+              }
+          }
+      }
+  }
   .body {
     display: flex;
     flex-direction: column;

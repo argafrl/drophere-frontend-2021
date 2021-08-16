@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import style from "../../css/forgot-password.module.scss";
 import Loading from "./Loading";
 import { Input, Dialog } from "@bccfilkom/designsystem/build";
+import { UserContext } from "../../contexts/UserContext";
+import { SnackbarContext } from "../../contexts/SnackbarContext";
+import { useEffect } from "react";
 
 const ForgotPassword = (props) => {
   const open = props.open;
@@ -14,6 +17,10 @@ const ForgotPassword = (props) => {
     success: false,
   });
 
+  const { sendForgotPassword, successSendForgotPassword, errorSendForgotPassword, isSendingForgotPassword, clearError, resetSendForgotPassword } =
+    useContext(UserContext);
+  const snackbar = useContext(SnackbarContext);
+
   const handleChange = (name) => {
     return (event) => {
       setState({ ...state, [name]: event.target.value });
@@ -22,7 +29,7 @@ const ForgotPassword = (props) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    setState({ ...state, isLoading: true });
+    sendForgotPassword(state.email);
   };
 
   const onCancelHandler = (event) => {
@@ -31,17 +38,16 @@ const ForgotPassword = (props) => {
     document.getElementById("reset-password-form").value = "";
     setTimeout(
       () =>
-        setState({
-          ...state,
-          success: false,
-        }),
+        resetSendForgotPassword(),
       1000
     );
-    // setState({
-    //     ...state,
-    //     success: false,
-    // })
   };
+
+  useEffect(() => {
+    if (errorSendForgotPassword){
+      snackbar.error(errorSendForgotPassword)
+    }
+  },[errorSendForgotPassword, snackbar])
 
   return (
     <div className={style["forgot-password"]}>
@@ -51,22 +57,22 @@ const ForgotPassword = (props) => {
           visible={open}
           onCancel={onClose}
           primaryButton={{
-            text: state.success ? "Ok, Mengerti" : "Konfirmasi",
-            onClick: state.success ? onCancelHandler : () => {},
+            text: successSendForgotPassword ? "Ok, Mengerti" : "Konfirmasi",
+            onClick: successSendForgotPassword ? onCancelHandler : () => {},
           }}
-          secondaryButton={{
+          secondaryButton={!successSendForgotPassword ? {
             text: "Batalkan",
             onClick: onCancelHandler,
-          }}
+          } : "" }
         >
           <div className={style.content}>
             <div id="alert-dialog-description">
-              {state.success ? (
+              { successSendForgotPassword ? (
                 <div className={style["content-container"]}>
                   <h1>Link Berhasil Terkirim!</h1>
                   <p>
                     Kami telah mengirim link ke{" "}
-                    <span style={{ color: "#2196F3" }}>{state.email}</span>{" "}
+                    <span style={{ color: "#2196F3" }}>{state.email}</span>{". "}
                     Silahkan periksa email anda untuk instruksi lebih lanjut.
                   </p>
                 </div>

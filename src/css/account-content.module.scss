@@ -5,7 +5,7 @@
     position: relative;
     flex: 1 1 auto;
     width: 100%;
-    min-height: 445px;
+    min-height: 85vh;
     margin-left: 32px;
     &-full {
       display: flex;
@@ -23,8 +23,8 @@
 
 .menu {
   position: sticky;
-  margin-top: 0px;
-  margin-left: 20px;
+  margin-top: -20px;
+  // margin-left: 20px;
   top: 50px;
   flex: 0 0 250px;
 }

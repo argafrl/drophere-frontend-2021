@@ -30,6 +30,9 @@ const Pages = () => {
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
+
+  let invalidSearch = 0;
+
   useEffect(() => {
     console.log("rerender pages")
     if (userInfo) {
@@ -63,6 +66,22 @@ const Pages = () => {
       console.log(error);
     }
   };
+
+  const filteredPages = allPages.sort(
+    sort === "Tanggal"
+      ? (a, b) => a.due_time.localeCompare(b.due_time)
+      : (a, b) => a.title.localeCompare(b.title)
+  ).filter((page) => {
+    // return page.title.includes(search);
+    if (!search) {
+      return page;
+    } else if (
+      page.title.toLowerCase().includes(search.toLowerCase())
+    ) {
+      return page;
+    }
+  });
+
 
   return (
     <div className={style.container}>
@@ -143,22 +162,7 @@ const Pages = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-              {allPages
-                .sort(
-                  sort === "Tanggal"
-                    ? (a, b) => a.due_time.localeCompare(b.due_time)
-                    : (a, b) => a.title.localeCompare(b.title)
-                )
-                .filter((page) => {
-                  if (!search) {
-                    return page;
-                  } else if (
-                    page.title.toLowerCase().includes(search.toLowerCase())
-                  ) {
-                    return page;
-                  }
-                })
-                .map((link, idx) => {
+              { filteredPages.length > 0 ? filteredPages.map((link, idx) => {
                   return (
                     <PageCard
                       title={link.title}
@@ -168,7 +172,15 @@ const Pages = () => {
                       key={idx}
                     />
                   );
-                })}
+                })
+              : <div className={style["not-found"]}>
+                  <img
+                  src="/img/no-page.png"
+                  alt="Drophere Logo"
+                  />
+                  <p>Halaman tidak ditemukan</p>
+                </div>
+              }
             </div>
           )}
         </>

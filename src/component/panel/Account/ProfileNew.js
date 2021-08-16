@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import style from "../../../css/account-profile.module.scss";
+import Loading from "../../common/Loading";
+import Preloader from "../../common/Preloader";
+
+import { Input, Button } from "@bccfilkom/designsystem/build";
+import Icon from "@material-ui/core/Icon";
+import Avatar from "@material-ui/core/Avatar";
+import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
+
+import { useContext } from "react";
+import { UserContext } from "../../../contexts/UserContext";
 
 const ProfileNew = () => {
 
-  const [openName, setOpenName] = useState(false);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, update, isUpdating } = useContext(UserContext);
+
+  const [openNama, setOpenNama] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
   const [verifikasi, setVerifikasi] = useState(false);
   
@@ -22,14 +36,121 @@ const ProfileNew = () => {
   const [isUpdateProfileError, setIsUpdateProfileError] = useState(null);
   const [isUpdatedPasswordError, setIsUpdatedPasswordError] = useState(null);
 
-  const [isUpdateeProfileLoading, setIsUpdateeProfileLoading] = useState(false);
+  const [isUpdateProfileLoading, setIsUpdateProfileLoading] = useState(false);
   const [isUpdatePasswordLoading, setIsUpdatePasswordLoading] = useState(false);
+
+  const handleClickOpenNama = () => {
+    setOpenNama(!openNama);
+  };
+
+  const handleClickOpenPassword = () => {
+    setOpenPassword(!openPassword);
+  };
+
+  const handleVerifikasi = (e) => {
+    setVerifikasi(e);
+  };
+
+  const onUpdateProfile = async (e) => {
+    e.preventDefault();
+    update(profileImage, name, email)
+  };
+
+  // const handleChange = (name) => (event) => {
+  //   setState({ [name]: event.target.value });
+  // };
+
+  const onSave = async (e) => {
+    e.preventDefault();
+
+    if (name.length <= 0) {
+      setNameErr(new Error("Nama tidak boleh kosong"))
+      return;
+    }
+
+    setNameErr(null);
+    setIsUpdateProfileLoading(true);
+    setIsUpdateProfileError(null);
+  };
+
+  const onUpdatePassword = async (e) => {
+    e.preventDefault();
+
+    let hasError = false;
+    let errorStates = {
+      currentPasswordErr: null,
+      newPasswordErr: null,
+      retypePasswordErr: null,
+    };
+
+    // check current password
+    if (currentPassword.length <= 0) {
+      errorStates = {
+        ...errorStates,
+        currentPasswordErr: new Error("Password tidak boleh kosong"),
+      };
+      hasError = true;
+    }
+
+    // check retype password to match new password
+    if (retypePassword !== newPassword) {
+      errorStates = {
+        ...errorStates,
+        retypePasswordErr: new Error("Password tidak cocok"),
+      };
+      hasError = true;
+    }
+
+    // check for empty new password
+    if (newPassword.length <= 0) {
+      errorStates = {
+        ...errorStates,
+        newPasswordErr: new Error("Password tidak boleh kosong"),
+      };
+      hasError = true;
+    }
+
+    if (retypePassword.length <= 0) {
+      errorStates = {
+        ...errorStates,
+        retypePasswordErr: new Error("Password tidak boleh kosong"),
+      };
+      hasError = true;
+    }
+
+    // this.setState({
+    //   ...errorStates,
+    //   isUpdatePasswordLoading: !hasError,
+    //   isUpdatePasswordError: null,
+    // });
+    setIsUpdateProfileLoading(!hasError);
+    setIsUpdatedPasswordError(null);
+    if (hasError) {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    // fetchUserInfo();
+    if (userInfo) {
+      setName(userInfo.full_name);
+      setEmail(userInfo.email);
+      setProfileImage(userInfo.profile_image);
+      setVerifikasi(userInfo.is_verified)
+    }
+  },[
+    userInfo,
+  ])
+
+  useEffect(() => {
+    fetchUserInfo();
+  },[])
 
   return (
     <div className={style.container}>
       <h1>Profil</h1>
       <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
-      {!this.context.isFetchingUserInfo ? (
+      {!isFetchingUserInfo ? (
         <div className="opening-transition">
           <div className={style["form-wrapper"]}>
             <div
@@ -44,12 +165,14 @@ const ProfileNew = () => {
                 <div className={style.middle}>
                   <Avatar
                     alt="Travis Howard"
-                    src={this.state.profile_image}
+                    src={profileImage}
                     className={style.avatar}
                   />
                   <div className={style["btn-ubah"]}>
                     <input
                       type="file"
+                      value={profileImage}
+                      onChange={(e) => setProfileImage(e.target.value)}
                       name="avatar"
                       id="btn-avatar"
                       accept="image/*"
@@ -66,7 +189,7 @@ const ProfileNew = () => {
                 <div className={style.right}>
                   <button
                     type="button"
-                    onClick={this.handleClickOpen}
+                    // onClick={handleClickOpen}
                     className={style["btn-text"]}
                   >
                     <Icon>delete</Icon>Hapus
@@ -75,9 +198,9 @@ const ProfileNew = () => {
               </div>
             </div>
             <div className={style["form-container"]}>
-              {this.state.openNama ? (
+              {openNama ? (
                 <form
-                  onSubmit={this.onUpdateProfile}
+                  onSubmit={onUpdateProfile}
                   className={style["form-edit"]}
                 >
                   <div className={style["form-text"]}>
@@ -85,15 +208,15 @@ const ProfileNew = () => {
                   </div>
                   <div className={style["input-wrapper"]}>
                     <Input
-                      handleChange={this.handleChange("name")}
-                      value={this.state.name}
+                      handleChange={(e) => setName(e.target.value)}
+                      value={name}
                       className={style["input"]}
                       placeholder="Nama Lengkap"
                     />
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={this.handleClickOpenNama}
+                        onClick={handleClickOpenNama}
                         className={style["btn-batal"]}
                       >
                         Batalkan
@@ -109,7 +232,7 @@ const ProfileNew = () => {
                     </div>
                   </div>
 
-                  {this.state.isUpdateProfileLoading ? <Loading /> : ""}
+                  {isUpdateProfileLoading ? <Loading /> : ""}
                 </form>
               ) : (
                 <div className={style["form-unedit"]}>
@@ -117,12 +240,12 @@ const ProfileNew = () => {
                     <p>Nama</p>
                   </div>
                   <div className={style.middle}>
-                    <p>{this.state.name}</p>
+                    <p>{name}</p>
                   </div>
                   <div className={style.right}>
                     <button
                       type="button"
-                      onClick={this.handleClickOpenNama}
+                      onClick={handleClickOpenNama}
                       className={style["btn-text"]}
                     >
                       <Icon>edit</Icon>Edit
@@ -138,22 +261,22 @@ const ProfileNew = () => {
                 </div>
 
                 <div className={style.middle}>
-                  <p style={{ color: "#05A1D1" }}>{this.state.email}</p>
-                  {this.state.email && (
+                  <p>{email}</p>
+                  {email && (
                     <div
                       className={style.verifikasi}
                       style={
-                        this.state.verifikasi
+                        verifikasi
                           ? { backgroundColor: "#40C02B" }
                           : { backgroundColor: "#F4B12F" }
                       }
                     >
-                      {this.state.verifikasi ? (
+                      {verifikasi ? (
                         <p style={{ color: "white" }}>Terverifikasi</p>
                       ) : (
                         <p>
                           Belum terverifikasi.{" "}
-                          <span onClick={this.handleVerifikasi}>
+                          <span onClick={handleVerifikasi}>
                             Kirim ulang
                           </span>
                         </p>
@@ -165,9 +288,9 @@ const ProfileNew = () => {
             </div>
 
             <div className={style["form-container"]}>
-              {this.state.openPassword ? (
+              {openPassword ? (
                 <form
-                  onSubmit={this.onUpdatePassword}
+                  onSubmit={onUpdatePassword}
                   className={style["form-edit"]}
                 >
                   <div
@@ -180,53 +303,53 @@ const ProfileNew = () => {
                     <Input
                       type="password"
                       placeholder="Password lama"
-                      disabled={this.state.isUpdatePasswordLoading}
+                      disabled={isUpdatePasswordLoading}
                       hintText={
-                        this.state.currentPasswordErr
-                          ? this.state.currentPasswordErr.message
+                        currentPasswordErr
+                          ? currentPasswordErr.message
                           : ""
                       }
-                      error={this.state.currentPasswordErr != null}
+                      error={currentPasswordErr != null}
                       name="current_password"
-                      value={this.state.currentPassword}
-                      onChange={this.handleChange("currentPassword")}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
                     />
                     <Input
                       type="password"
                       placeholder="Password Baru"
-                      disabled={this.state.isUpdatePasswordLoading}
+                      disabled={isUpdatePasswordLoading}
                       // fullWidth
                       hintText={
-                        this.state.newPasswordErr
-                          ? this.state.newPasswordErr.message
+                        newPasswordErr
+                          ? newPasswordErr.message
                           : ""
                       }
-                      error={this.state.newPasswordErr != null}
+                      error={newPasswordErr != null}
                       name="new_password"
-                      value={this.state.newPassword}
-                      onChange={this.handleChange("newPassword")}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
                     />
 
                     <Input
                       type="password"
                       placeholder="Ulangi Password"
-                      disabled={this.state.isUpdatePasswordLoading}
+                      disabled={isUpdatePasswordLoading}
                       // fullWidth
                       name="retype_password"
                       hintText={
-                        this.state.retypePasswordErr
-                          ? this.state.retypePasswordErr.message
+                        retypePasswordErr
+                          ? retypePasswordErr.message
                           : ""
                       }
-                      error={this.state.retypePasswordErr != null}
-                      value={this.state.retypePassword}
-                      onChange={this.handleChange("retypePassword")}
+                      error={retypePasswordErr != null}
+                      value={retypePassword}
+                      onChange={(e) => setRetypePassword(e.target.value)}
                     />
 
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={this.handleClickOpenPassword}
+                        onClick={handleClickOpenPassword}
                         className={style["btn-batal"]}
                       >
                         Batalkan
@@ -242,7 +365,7 @@ const ProfileNew = () => {
                     </div>
                   </div>
 
-                  {this.state.isUpdatePasswordLoading ? <Loading /> : ""}
+                  {isUpdatePasswordLoading ? <Loading /> : ""}
                 </form>
               ) : (
                 <div className={style["form-unedit"]}>
@@ -254,7 +377,7 @@ const ProfileNew = () => {
                     <div className={style["btn-ubah"]}>
                       <Button
                         type="primary"
-                        onClick={this.handleClickOpenPassword}
+                        onClick={handleClickOpenPassword}
                       >
                         <Icon>edit</Icon>Ubah Password
                       </Button>

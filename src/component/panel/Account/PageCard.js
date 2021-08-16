@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from "moment";
 import "moment/locale/id";
-import { Menu } from "@bccfilkom/designsystem/build";
+import { Dialog, Menu } from "@bccfilkom/designsystem/build";
 import style from "../../../css/page-card.module.scss";
 import { useHistory } from "react-router-dom";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
@@ -15,6 +15,7 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
 
   const [isClosed, setIsClosed] = useState("");
   const [isClosedBinary, setIsClosedBinary] = useState(true);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const setOpenMenu = (closing, binary) => {
     setIsClosed(closing);
@@ -56,6 +57,30 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
 
   return (
     <div className={style["item"]} ref={wrapperRef}>
+      <Dialog
+        className={style.dialog}
+        // title="Title"
+        visible={openDialog}
+        onCancel={() => setOpenDialog(false)}
+        primaryButton={{
+          text: "Hapus",
+          onClick: () => handleDelete(),
+        }}
+        secondaryButton={{
+          text: "Batal",
+          onClick: () => setOpenDialog(false),
+        }}
+      >
+        <div className={style.content}>
+          <div className={style["content-container"]}>
+            <h1>Hapus Halaman</h1>
+            <p>
+              Apakah anda yakin ingin menghapus halaman <span style={{ fontWeight: "600" }}>{title}</span>{"? "}
+              Halaman yang dihapus tidak akan dapat diakses kembali.
+            </p>
+          </div>
+        </div>
+      </Dialog>
       <div className={style.body}>
         <div className={style.top}>
           <div className={style.storage}>
@@ -80,7 +105,8 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
                   name="Salin link"
                   onClick={() => handleCopyToClipboard()}
                 />
-                <Menu.Item name="Hapus" onClick={() => handleDelete()} />
+                <Menu.Item name="Hapus" onClick={() => setOpenDialog(true)} />
+                
               </Menu>
             )}
           </div>
