@@ -11,6 +11,7 @@ import SidebarStore from "./contexts/SidebarContext";
 import PageStore from "./contexts/PageContext";
 import StorageStore from "./contexts/StorageContext";
 import "notyf/notyf.min.css";
+import ScrollToTop from "./ScrollToTop";
 
 class AppRouter extends Component {
   render() {
@@ -18,6 +19,7 @@ class AppRouter extends Component {
       <BrowserRouter>
         <SidebarStore>
           <UserStore>
+            <ScrollToTop />
             <Header />
             <PageStore>
               <StorageStore>

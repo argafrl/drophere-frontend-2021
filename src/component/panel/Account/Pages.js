@@ -34,7 +34,7 @@ const Pages = () => {
   let invalidSearch = 0;
 
   useEffect(() => {
-    console.log("rerender pages")
+    console.log("rerender pages");
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
     }
@@ -42,20 +42,14 @@ const Pages = () => {
       snackbar.success("Halaman Berhasil Dibuat");
       clearCreateSubmissionSuccess();
     }
-    if (successDeleteSubmission) {
-      console.log("render success")
-      snackbar.success("Halaman Berhasil Dihapus");
-      clearDeleteSubmissionSuccess();
-    }
+
     getAllPages();
   }, [
     getAllPages,
     userInfo,
     snackbar,
     clearCreateSubmissionSuccess,
-    clearDeleteSubmissionSuccess,
     successCreatingSubmission,
-    successDeleteSubmission,
   ]);
 
   const handleSendEmail = async (e) => {
@@ -67,21 +61,20 @@ const Pages = () => {
     }
   };
 
-  const filteredPages = allPages.sort(
-    sort === "Tanggal"
-      ? (a, b) => a.due_time.localeCompare(b.due_time)
-      : (a, b) => a.title.localeCompare(b.title)
-  ).filter((page) => {
-    // return page.title.includes(search);
-    if (!search) {
-      return page;
-    } else if (
-      page.title.toLowerCase().includes(search.toLowerCase())
-    ) {
-      return page;
-    }
-  });
-
+  const filteredPages = allPages
+    .sort(
+      sort === "Tanggal"
+        ? (a, b) => a.due_time.localeCompare(b.due_time)
+        : (a, b) => a.title.localeCompare(b.title)
+    )
+    .filter((page) => {
+      // return page.title.includes(search);
+      if (!search) {
+        return page;
+      } else if (page.title.toLowerCase().includes(search.toLowerCase())) {
+        return page;
+      }
+    });
 
   return (
     <div className={style.container}>
@@ -162,7 +155,8 @@ const Pages = () => {
             </div>
           ) : (
             <div className={style["grid-container"]}>
-              { filteredPages.length > 0 ? filteredPages.map((link, idx) => {
+              {filteredPages.length > 0 ? (
+                filteredPages.map((link, idx) => {
                   return (
                     <PageCard
                       title={link.title}
@@ -173,14 +167,12 @@ const Pages = () => {
                     />
                   );
                 })
-              : <div className={style["not-found"]}>
-                  <img
-                  src="/img/no-page.png"
-                  alt="Drophere Logo"
-                  />
+              ) : (
+                <div className={style["not-found"]}>
+                  <img src="/img/no-page.png" alt="Drophere Logo" />
                   <p>Halaman tidak ditemukan</p>
                 </div>
-              }
+              )}
             </div>
           )}
         </>

@@ -32,9 +32,7 @@ export class UserStore extends React.Component {
   fetchUserInfo = async () => {
     try {
       this.setState({ isFetchingUserInfo: true });
-      const { data } = await mainApi.get("/users/profile", {
-        headers: { Authorization: localStorage.getItem("bccdrophere_token") },
-      });
+      const { data } = await mainApi.get("/users/profile");
       this.setState({ userInfo: data.data });
     } catch (error) {
       console.log(error);
@@ -46,9 +44,7 @@ export class UserStore extends React.Component {
   sendEmailVerification = async () => {
     try {
       this.setState({ isSendingEmailVerification: true });
-      await mainApi.get("/users/verify", {
-        headers: { Authorization: localStorage.getItem("bccdrophere_token") },
-      });
+      await mainApi.get("/users/verify");
       this.setState({ successSendEmailVerification: true });
     } catch (error) {
       console.log(error);
@@ -62,14 +58,15 @@ export class UserStore extends React.Component {
     try {
       this.setState({ isSendingForgotPassword: true });
 
-      const { data } = await mainApi.get("/forgot-password", { 
-      params: {
-        email: email,
-      },
-      headers: {
-        Authorization: localStorage.getItem("bccdrophere_token")
-      }});
-      this.setState({ successSendForgotPassword: data.is_success, errorSendForgotPassword: "" });
+      const { data } = await mainApi.get("/forgot-password", {
+        params: {
+          email: email,
+        },
+      });
+      this.setState({
+        successSendForgotPassword: data.is_success,
+        errorSendForgotPassword: "",
+      });
     } catch (err) {
       this.setState({
         errorSendForgotPassword: err.message,
@@ -83,24 +80,19 @@ export class UserStore extends React.Component {
   resetSendForgotPassword = () => {
     this.setState({
       successSendForgotPassword: false,
-    })
-  }
+    });
+  };
 
   update = async (profileImage, name, email) => {
     try {
       this.setState({ isUpdating: true });
-      
+
       const bodyFormData = new FormData();
       bodyFormData.append("profile_image", profileImage);
       bodyFormData.append("full_name", name);
       bodyFormData.append("email", email);
 
-      await mainApi.patch("/users/profile", bodyFormData, {
-        headers: {
-          Authorization: localStorage.getItem("bccdrophere_token"),
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await mainApi.patch("/users/profile", bodyFormData);
     } catch (err) {
       console.log(err);
     } finally {
@@ -141,7 +133,7 @@ export class UserStore extends React.Component {
     try {
       this.setState({ isRegister: true });
 
-      const { data } = await mainApi.post("sign_up", {
+      const { data } = await mainApi.post("/sign_up", {
         full_name: name,
         email: email,
         password: password,

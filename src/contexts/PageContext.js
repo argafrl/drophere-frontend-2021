@@ -1,8 +1,11 @@
 import React from "react";
+import { withRouter } from "react-router";
 import mainApi from "../api/mainApi";
+import { getErrorMessage } from "../helpers";
+import { SnackbarContext } from "./SnackbarContext";
 
 export const defaultValue = {
-  error: "",
+  errorUploadingSubmission: "",
   allPages: [],
   submissionInfo: null,
   userSubmissionDetail: null,
@@ -13,10 +16,7 @@ export const defaultValue = {
   isFetchingUserSubmissionDetail: false,
   isUpdatingSubmission: false,
   isDeletingSubmission: false,
-  successCreatingSubmission: false,
   successUploadSubmission: false,
-  successUpdateSubmission: false,
-  successDeleteSubmission: false,
   successFetchAllPages: false,
   uploadProgress: 0,
   createSubmission: () => {},
@@ -24,19 +24,18 @@ export const defaultValue = {
   updateSubmission: () => {},
   deleteSubmission: () => {},
   resetState: () => {},
-  clearError: () => {},
   getAllPages: () => {},
   getSubmissionInfo: () => {},
   getUserSubmissionDetail: () => {},
-  clearCreateSubmissionSuccess: () => {},
-  clearDeleteSubmissionSuccess: () => {},
   resetUploadState: () => {},
 };
 
 export const PageContext = React.createContext(defaultValue);
 
-export default class PageStore extends React.Component {
+class PageStore extends React.Component {
   state = defaultValue;
+
+  static contextType = SnackbarContext;
 
   createSubmission = async (data) => {
     try {
@@ -48,19 +47,42 @@ export default class PageStore extends React.Component {
         },
       });
 
-      this.setState({ successCreatingSubmission: true });
+      this.context.success("Halaman Berhasil Dibuat");
+      this.props.history.push("/account/pages");
     } catch (error) {
-      console.log(error.response);
-      console.log(error.message);
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-      this.setState({ successCreatingSubmission: false });
+      if (
+        getErrorMessage(error) ===
+        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
+      ) {
+        this.context.error("Link Telah Digunakan");
+      } else {
+        this.context.error(getErrorMessage(error));
+      }
     } finally {
       this.setState({ isCreatingSubmission: false });
+    }
+  };
+
+  updateSubmission = async (slug, data) => {
+    try {
+      this.setState({ isUpdatingSubmission: true });
+
+      await mainApi.patch(`/submissions/${slug}/edit`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+
+      this.context.success("Halaman Berhasil Diperbarui");
+      this.getUserSubmissionDetail(slug);
+    } catch (error) {
+      if (getErrorMessage(error) === "entry not found") {
+        this.props.history.push("/not-found");
+      } else {
+        this.context.error(getErrorMessage(error));
+      }
+    } finally {
+      this.setState({ isUpdatingSubmission: false });
     }
   };
 
@@ -79,15 +101,22 @@ export default class PageStore extends React.Component {
       });
       this.setState({ successUploadSubmission: true });
     } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
+      this.context.error(getErrorMessage(error));
       this.setState({ successUploadSubmission: false });
     } finally {
       this.setState({ isUploadingSubmission: false });
+    }
+  };
+
+  getAllPages = async () => {
+    try {
+      this.setState({ isFetchingAllPages: true });
+      const { data } = await mainApi.get("/submissions/");
+      this.setState({ allPages: data.data });
+    } catch (error) {
+      this.context.error(getErrorMessage(error));
+    } finally {
+      this.setState({ isFetchingAllPages: false });
     }
   };
 
@@ -97,34 +126,9 @@ export default class PageStore extends React.Component {
       const { data } = await mainApi.get(`/submissions/${slug}`);
       this.setState({ submissionInfo: data.data });
     } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
+      this.setState({ error: getErrorMessage(error) });
     } finally {
       this.setState({ isFetchingSubmissionInfo: false });
-    }
-  };
-
-  getAllPages = async () => {
-    try {
-      this.setState({ isFetchingAllPages: true });
-      const { data } = await mainApi.get("/submissions/");
-      console.log(data);
-      this.setState({ allPages: data.data });
-      this.setState({ successFetchAllPages: true });
-    } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-      this.setState({ successFetchAllPages: false });
-    } finally {
-      this.setState({ isFetchingAllPages: false });
     }
   };
 
@@ -132,41 +136,15 @@ export default class PageStore extends React.Component {
     try {
       this.setState({ isFetchingUserSubmissionDetail: true });
       const { data } = await mainApi.get(`/submissions/${slug}/details`);
-      console.log(data);
       this.setState({ userSubmissionDetail: data.data });
     } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
+      if (getErrorMessage(error) === "entry not found") {
+        this.props.history.push("/not-found");
+      } else {
+        this.context.error(getErrorMessage(error));
+      }
     } finally {
       this.setState({ isFetchingUserSubmissionDetail: false });
-    }
-  };
-
-  updateSubmission = async (slug, data) => {
-    try {
-      this.setState({ isUpdatingSubmission: true });
-
-      await mainApi.patch(`/submissions/${slug}/edit`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
-        },
-      });
-
-      this.setState({ successUpdateSubmission: true });
-    } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-      this.setState({ successUpdateSubmission: false });
-    } finally {
-      this.setState({ isUpdatingSubmission: false });
     }
   };
 
@@ -179,17 +157,10 @@ export default class PageStore extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
-
-      this.setState({ successDeleteSubmission: true });
+      this.context.success("Halaman Berhasil Dihapus");
+      this.getAllPages();
     } catch (error) {
-      this.setState({
-        error:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-
-      this.setState({ successDeleteSubmission: false });
+      this.context.error(getErrorMessage(error));
     } finally {
       this.setState({ isDeletingSubmission: false });
     }
@@ -224,18 +195,6 @@ export default class PageStore extends React.Component {
     });
   };
 
-  clearError = () => {
-    this.setState({ error: "" });
-  };
-
-  clearCreateSubmissionSuccess = () => {
-    this.setState({ successCreatingSubmission: false });
-  };
-
-  clearDeleteSubmissionSuccess = () => {
-    this.setState({ successDeleteSubmission: false });
-  };
-
   render() {
     return (
       <PageContext.Provider
@@ -244,14 +203,11 @@ export default class PageStore extends React.Component {
           createSubmission: this.createSubmission,
           resetState: this.resetState,
           uploadSubmission: this.uploadSubmission,
-          clearError: this.clearError,
           getAllPages: this.getAllPages,
-          clearCreateSubmissionSuccess: this.clearCreateSubmissionSuccess,
           getSubmissionInfo: this.getSubmissionInfo,
           getUserSubmissionDetail: this.getUserSubmissionDetail,
           updateSubmission: this.updateSubmission,
           deleteSubmission: this.deleteSubmission,
-          clearDeleteSubmissionSuccess: this.clearDeleteSubmissionSuccess,
           resetUploadState: this.resetUploadState,
         }}
       >
@@ -260,3 +216,5 @@ export default class PageStore extends React.Component {
     );
   }
 }
+
+export default withRouter(PageStore);

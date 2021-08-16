@@ -15,7 +15,7 @@ const Storage = () => {
               <h3 className={style["card__body__title"]}>Google Drive</h3>
               <p className={style["card__body__description"]}>
                 Nantikan fitur baru untuk dapat terhubung ke Google Drive
-              </p>{" "}
+              </p>
               {true ? (
                 <Button className={style["button-cancel"]}>Batalkan </Button>
               ) : (

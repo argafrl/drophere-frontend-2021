@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   TextArea,
   Input,
@@ -11,6 +11,7 @@ import style from "../../../css/account-add-new-page.module.scss";
 import { PageContext } from "../../../contexts/PageContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { characterCheck } from "../../../helpers";
 
 const AddNewPage = () => {
   const [title, setTitle] = useState("");
@@ -34,19 +35,13 @@ const AddNewPage = () => {
     Audio: true,
   });
 
-  const {
-    createSubmission,
-    isCreatingSubmission,
-    successCreatingSubmission,
-    error: errorFromBackend,
-    clearError,
-  } = useContext(PageContext);
+  const { createSubmission, isCreatingSubmission } = useContext(PageContext);
+
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    clearError();
 
     if (title.length > 150) {
       snackbar.error("Judul tidak boleh melebihi 150 karakter");
@@ -87,37 +82,6 @@ const AddNewPage = () => {
         .filter((key) => body[key])
         .reduce((acc, key) => ({ ...acc, [key]: body[key] }), {})
     );
-  };
-
-  useEffect(() => {
-    if (errorFromBackend) {
-      if (
-        errorFromBackend ===
-        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
-      ) {
-        snackbar.error("Link Telah Digunakan");
-      } else {
-        snackbar.error(errorFromBackend);
-      }
-    }
-    if (successCreatingSubmission) {
-      history.push("/account/pages");
-    }
-  }, [successCreatingSubmission, errorFromBackend, history, snackbar]);
-
-  useEffect(() => {
-    return () => {
-      clearError();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const characterCheck = (str) => {
-    const acceptedCriteria = /^[-A-Za-z0-9_]+$/;
-    if (!str) {
-      return true;
-    }
-    return acceptedCriteria.test(str);
   };
 
   return (

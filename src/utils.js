@@ -17,7 +17,3 @@ export const FILE_TYPES = {
   ppt: { color: "#C33F1D", backgroundColor: "#FFA588" },
   pptx: { color: "#C33F1D", backgroundColor: "#FFA588" },
 };
-
-export const countWords = (str) => {
-  return str.split(" ").filter((word) => word !== "").length;
-};

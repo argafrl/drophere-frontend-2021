@@ -12,25 +12,21 @@ import { PageContext } from "../../../contexts/PageContext";
 import { Redirect, useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
+import { characterCheck } from "../../../helpers";
 
 const AddNewPage = () => {
   const {
     updateSubmission,
     isUpdatingSubmission,
     isFetchingUserSubmissionDetail,
-    successUpdateSubmission,
-    error: errorFromBackend,
     userSubmissionDetail,
     getUserSubmissionDetail,
-    clearError,
-    resetState,
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
   const { slug } = useParams();
 
   const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
   const [multipleFiles, setMultipleFiles] = useState(false);
   const [specificFileTypes, setSpecificFileTypes] = useState(false);
@@ -52,8 +48,6 @@ const AddNewPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    clearError();
-
     if (title.length > 150) {
       snackbar.error("Judul tidak boleh melebihi 150 karakter");
       return;
@@ -61,11 +55,6 @@ const AddNewPage = () => {
 
     if (description.length > 200) {
       snackbar.error("Deskripsi tidak boleh melebihi 200 karakter");
-      return;
-    }
-
-    if (!characterCheck(link)) {
-      snackbar.error("Link tidak valid");
       return;
     }
 
@@ -82,36 +71,13 @@ const AddNewPage = () => {
     const body = {
       title,
       description,
-      slug: link,
       password,
       due_time: deadline,
       storage_type: 1,
     };
 
-    updateSubmission(
-      slug,
-      Object.keys(body)
-        .filter((key) => body[key])
-        .reduce((acc, key) => ({ ...acc, [key]: body[key] }), {})
-    );
+    updateSubmission(slug, body);
   };
-
-  useEffect(() => {
-    if (errorFromBackend) {
-      if (
-        errorFromBackend ===
-        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
-      ) {
-        snackbar.error("Link Telah Digunakan");
-      } else {
-        snackbar.error(errorFromBackend);
-      }
-    }
-
-    if (successUpdateSubmission) {
-      snackbar.success("Halaman Berhasil Diubah");
-    }
-  }, [successUpdateSubmission, errorFromBackend, history, snackbar]);
 
   useEffect(() => {
     if (!userSubmissionDetail) {
@@ -123,29 +89,9 @@ const AddNewPage = () => {
       setDescription(userSubmissionDetail.description);
       setUseDeadline(!!userSubmissionDetail.due_time);
       setDeadline(userSubmissionDetail.due_time);
-      setLink(userSubmissionDetail.slug);
       setStorage(userSubmissionDetail.storage_type);
     }
-  }, [userSubmissionDetail, getUserSubmissionDetail,slug]);
-
-  useEffect(() => {
-    return () => {
-      resetState();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
-
-  const characterCheck = (str) => {
-    const acceptedCriteria = /^[-A-Za-z0-9_]+$/;
-    if (!str) {
-      return true;
-    }
-    return acceptedCriteria.test(str);
-  };
-
-  if (errorFromBackend === "entry not found") {
-    return <Redirect to="/not-found" />;
-  }
+  }, [userSubmissionDetail, getUserSubmissionDetail, slug]);
 
   return (
     <div className={style["container"]}>
@@ -153,7 +99,6 @@ const AddNewPage = () => {
         <Preloader />
       ) : (
         <>
-          {" "}
           <h1>Edit Halaman</h1>
           <p>
             Halaman ini digunakan sebagai tempat pengumpulan file yang anda
@@ -168,19 +113,6 @@ const AddNewPage = () => {
                 handleChange={(e) => setTitle(e.target.value)}
                 action={title.length > 150 ? "warning" : ""}
               />
-            </div>
-            <div className={style["form__control"]}>
-              <label>Link Halaman</label>
-              <div className={style["form__control__link"]}>
-                <p>https://drophere.link/ </p>
-                <Input
-                  required
-                  value={link}
-                  handleChange={(e) => setLink(e.target.value)}
-                  hintText="Karakter meliputi : huruf, nomor, dash dan underscore"
-                  action={characterCheck(link) ? "" : "warning"}
-                />
-              </div>
             </div>
             <div className={style["form__control"]}>
               <label>Deskripsi </label>

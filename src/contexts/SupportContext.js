@@ -1,39 +1,29 @@
 import React from "react";
 import mainApi from "../api/mainApi";
+import { getErrorMessage } from "../helpers";
+import { SnackbarContext, withSnackbar } from "./SnackbarContext";
 
 export const defaultValue = {
   isPostingFeedback: false,
-  error: "",
-  success: false,
   postFeedback: () => {},
-  clearError: () => {},
-  resetState: () => {},
 };
 
 export const SupportContext = React.createContext(defaultValue);
 
-export default class SupportStore extends React.Component {
+class SupportStore extends React.Component {
   state = defaultValue;
+  static contextType = SnackbarContext;
 
   postFeedback = async (content) => {
     try {
       this.setState({ isPostingFeedback: true });
       await mainApi.post("/users/feedback", { content });
-      this.setState({ success: true });
-    } catch (err) {
-      this.setState({ success: false });
-      this.setState({ error: err.message });
+      this.context.success("Feedback Berhasil Dikirim");
+    } catch (error) {
+      this.context.error(getErrorMessage(error));
     } finally {
       this.setState({ isPostingFeedback: false });
     }
-  };
-
-  clearError = () => {
-    this.setState({ error: "" });
-  };
-
-  resetState = () => {
-    this.setState({ isPostingFeedback: false, error: "", success: false });
   };
 
   render() {
@@ -42,8 +32,6 @@ export default class SupportStore extends React.Component {
         value={{
           ...this.state,
           postFeedback: this.postFeedback,
-          clearError: this.clearError,
-          resetState: this.resetState,
         }}
       >
         {this.props.children}
@@ -51,3 +39,5 @@ export default class SupportStore extends React.Component {
     );
   }
 }
+
+export default withSnackbar(SupportStore);

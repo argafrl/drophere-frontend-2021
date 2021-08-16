@@ -8,7 +8,7 @@ import { Portal } from "react-portal";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const ConnectAccount = () => {
-  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl } =
+  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl, oAuthUrl } =
     useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
@@ -26,7 +26,7 @@ const ConnectAccount = () => {
     const code = query.get("code");
     const scope = query.get("scope");
     if (state && code && scope) {
-      handleOauthUrlResponse({ state, code, scope });
+      connectGoogleDrive({ state, code, scope });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, connectGoogleDrive]);
@@ -39,28 +39,17 @@ const ConnectAccount = () => {
     setUseDrive(userInfo.is_drive_connected);
   }, [userInfo, fetchUserInfo]);
 
-  const openGoogleConsentScreen = async () => {
-    const { is_success, data } = await getOAuthUrl();
-    if (is_success) {
-      window.location.replace(data);
+  useEffect(() => {
+    if (oAuthUrl) {
+      window.location.replace(oAuthUrl);
     }
-  };
+  }, [oAuthUrl]);
 
   const handleNextPage = () => {
     if (useDrive) {
-      history.push("/account");
+      history.replace("/account");
     } else {
       showConfirmModal(true);
-    }
-  };
-
-  const handleOauthUrlResponse = async (body) => {
-    const data = await connectGoogleDrive(body);
-    if (data && data.is_success) {
-      console.log("success connect to drive");
-      setUseDrive(true);
-    } else {
-      snackbar.error("Terjadi kesalahan");
     }
   };
 
@@ -68,7 +57,7 @@ const ConnectAccount = () => {
     if (useDrive) {
       setUseDrive(false);
     } else {
-      openGoogleConsentScreen();
+      getOAuthUrl();
     }
   };
 
@@ -101,7 +90,6 @@ const ConnectAccount = () => {
         </div>
         <div className={style["card"]}>
           <div className={style["card__img"]}>
-            {" "}
             <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
           </div>
           <div className={style["card__body"]}>
@@ -129,7 +117,7 @@ const ConnectAccount = () => {
             onCancel={() => showConfirmModal(false)}
             primaryButton={{
               text: "Lanjutkan",
-              onClick: () => history.push("/account"),
+              onClick: () => history.replace("/account"),
             }}
             secondaryButton={{
               text: "Kembali",

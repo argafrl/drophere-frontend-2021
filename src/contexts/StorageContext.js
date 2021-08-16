@@ -1,19 +1,23 @@
 import React from "react";
 import mainApi from "../api/mainApi";
+import { getErrorMessage } from "../helpers";
+import { SnackbarContext } from "./SnackbarContext";
 
 export const defaultValue = {
-  error: "",
-  resetState: () => {},
   isFetchingOAuthUrl: false,
-  getOAuthUrl: () => {},
   isConnectingGoogleDrive: false,
+  oAuthUrl: "",
+  resetState: () => {},
+  getOAuthUrl: () => {},
   connectGoogleDrive: () => {},
 };
 
 export const StorageContext = React.createContext(defaultValue);
 
-export default class StorageStore extends React.Component {
+class StorageStore extends React.Component {
   state = defaultValue;
+
+  static contextType = SnackbarContext;
 
   getOAuthUrl = async () => {
     try {
@@ -23,11 +27,9 @@ export default class StorageStore extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
-      return data;
+      this.setState({ oAuthUrl: data.data });
     } catch (error) {
-      console.log(error.response);
-      this.setState({ error });
-      return {};
+      this.context.error(getErrorMessage(error));
     } finally {
       this.setState({ isFetchingOAuthUrl: false });
     }
@@ -41,12 +43,8 @@ export default class StorageStore extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
-      return res.data;
     } catch (error) {
-      console.log(error);
-      console.log(error.message);
-      console.log(error.response);
-      this.setState({ error });
+      this.context.error("Terjadi Kesalahan");
     } finally {
       this.setState({ isConnectingGoogleDrive: false });
     }
@@ -71,3 +69,5 @@ export default class StorageStore extends React.Component {
     );
   }
 }
+
+export default StorageStore;
