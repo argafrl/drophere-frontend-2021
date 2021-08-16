@@ -30,7 +30,7 @@ class AppRouter extends Component {
                     <Route path="/" component={Home} />{" "}
                   </Switch>
                 </main>
-                <Footer />
+                {/* <Footer /> */}
               </StorageStore>
             </PageStore>
           </UserStore>
