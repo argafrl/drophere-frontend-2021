@@ -54,7 +54,6 @@ function MenuItem(props) {
   );
 }
 
-//
 const Menu = (props) => {
   const history = useHistory();
   const { closeSidebar } = useContext(SidebarContext);
@@ -182,7 +181,11 @@ class Content extends Component {
               <Redirect from="/account" exact to="/account/pages" />
               <Route path="/account/pages" exact component={Pages} />
               <Route path="/account/pages/add" exact component={AddNewPage} />
-              <Route path="/account/pages/:slug/edit" exact component={EditPage} />
+              <Route
+                path="/account/pages/:slug/edit"
+                exact
+                component={EditPage}
+              />
               <Route path="/account/profile" exact component={ProfileNew} />
               <Route path="/account/storage" exact component={Storage} />
               <Route path="/account/support" exact component={Support} />

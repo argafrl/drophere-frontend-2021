@@ -1,21 +1,29 @@
+@import "./global/index";
+@import "./utils/index";
+
 .container {
   h1 {
     font-weight: 600;
     margin-bottom: 8px;
-    font-size: 20pt;
+    font-size: rem(24);
   }
+
   p {
-    margin: 0 0 20px 0px;
+    margin-bottom: rem(20);
   }
+
   form {
+    
     div {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: rem(20);
+    
       textarea {
         width: 100%;
         resize: none;
       }
     }
+
     button {
       margin-left: auto;
     }

@@ -9,10 +9,9 @@ import {
 } from "@bccfilkom/designsystem/build";
 import style from "../../../css/account-add-new-page.module.scss";
 import { PageContext } from "../../../contexts/PageContext";
-import { Redirect, useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
-import { characterCheck } from "../../../helpers";
 import { Helmet } from "react-helmet";
 
 const AddNewPage = () => {
@@ -97,7 +96,7 @@ const AddNewPage = () => {
   return (
     <div className={style["container"]}>
       <Helmet>
-          <title>Edit Halaman</title>
+        <title>Edit Halaman</title>
       </Helmet>
       {isFetchingUserSubmissionDetail ? (
         <Preloader />

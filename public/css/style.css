@@ -9,7 +9,6 @@ html,
 body,
 textarea {
   font-family: "Inter", "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-  font-size: 12pt;
   line-height: 1.5;
   font-weight: normal;
   color: #141414;
@@ -17,6 +16,12 @@ textarea {
 
 body {
   background-color: #ffffff;
+}
+
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 80%;
+  }
 }
 
 #app {
@@ -127,10 +132,6 @@ h2 {
 .btn-container-right {
   display: flex;
   justify-content: flex-end;
-}
-
-h1.title {
-  margin: auto;
 }
 
 /* ====== ANIMATION ====== */

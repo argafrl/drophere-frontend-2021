@@ -17,7 +17,7 @@
     gap: rem(32);
     margin-bottom: rem(24);
 
-    @include breakpoint(md) {
+    @include breakpoint(sm) {
       flex-direction: column;
     }
 
@@ -31,12 +31,13 @@
       column-gap: rem(32);
 
       @include breakpoint(lg) {
-        justify-content: flex-end;
         flex-direction: column-reverse;
       }
 
       @include breakpoint(md) {
         flex-direction: row;
+        max-width: 100%;
+        justify-content: space-between;
       }
 
       &__img {
