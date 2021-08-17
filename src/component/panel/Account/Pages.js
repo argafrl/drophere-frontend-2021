@@ -20,8 +20,6 @@ const Pages = () => {
     allPages,
     getAllPages,
     isFetchingAllPages,
-    successCreatingSubmission,
-    clearCreateSubmissionSuccess,
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 

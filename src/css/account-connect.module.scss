@@ -10,6 +10,7 @@
     text-align: center;
 
     h1 {
+      font-size: rem(30);
       font-weight: 600;
     }
 
@@ -22,6 +23,10 @@
     display: flex;
     gap: rem(32);
     margin-bottom: rem(24);
+
+    @include breakpoint(sm) {
+      flex-direction: column;
+    }
 
     .card {
       width: rem(250);
@@ -77,16 +82,19 @@
 
         button {
           border: 0.5px solid transparent;
+
           &.button-cancel {
             border: 0.5px solid #e84c3d;
             background-color: white;
             color: #e84c3d;
+
             &:hover {
               background-color: #e84c3d;
               color: white;
               transition: all 0.5s ease;
             }
           }
+
           margin-top: auto;
           margin-right: auto;
           font-size: rem(12);
@@ -97,6 +105,11 @@
 
   .button-container {
     width: 100%;
+
+    @include breakpoint(sm) {
+      width: 80%;
+    }
+
     button {
       width: 100%;
     }
