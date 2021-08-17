@@ -22,6 +22,7 @@ import EditPage from "./EditPage";
 import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
 import ProfileNew from "./ProfileNew";
+import AccountFooter from "./AccountFooter";
 
 function MenuItem(props) {
   return (
@@ -162,31 +163,34 @@ class Content extends Component {
 
   render() {
     return (
-      <div ref={this.elementRef} className={style.container + " wrapper"}>
-        <div
-          className={style.menu}
-          id="mymenu"
-          style={{ left: this.context.isSidebarOpen ? "0%" : "-100%" }}
-        >
-          <Menu
-            data={this.menus}
-            selectedIndex={this.getSelectedMenuIndex()}
-            onClick={this.onClickHandler}
-          />
-        </div>
+      <div className={style.body}>
+        <div ref={this.elementRef} className={style.container + " wrapper"}>
+          <div
+            className={style.menu}
+            id="mymenu"
+            style={{ left: this.context.isSidebarOpen ? "0%" : "-100%" }}
+          >
+            <Menu
+              data={this.menus}
+              selectedIndex={this.getSelectedMenuIndex()}
+              onClick={this.onClickHandler}
+            />
+          </div>
 
-        <div className={style.content}>
-          <Switch>
-            <Redirect from="/account" exact to="/account/pages" />
-            <Route path="/account/pages" exact component={Pages} />
-            <Route path="/account/pages/add" exact component={AddNewPage} />
-            <Route path="/account/pages/:slug/edit" exact component={EditPage} />
-            <Route path="/account/profile" exact component={ProfileNew} />
-            <Route path="/account/storage" exact component={Storage} />
-            <Route path="/account/support" exact component={Support} />
-            <Redirect from="*" to="/not-found" />
-          </Switch>
+          <div className={style.content}>
+            <Switch>
+              <Redirect from="/account" exact to="/account/pages" />
+              <Route path="/account/pages" exact component={Pages} />
+              <Route path="/account/pages/add" exact component={AddNewPage} />
+              <Route path="/account/pages/:slug/edit" exact component={EditPage} />
+              <Route path="/account/profile" exact component={ProfileNew} />
+              <Route path="/account/storage" exact component={Storage} />
+              <Route path="/account/support" exact component={Support} />
+              <Redirect from="*" to="/not-found" />
+            </Switch>
+          </div>
         </div>
+        <AccountFooter />
       </div>
     );
   }

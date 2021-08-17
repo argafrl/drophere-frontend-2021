@@ -9,6 +9,7 @@ import PrivateRoute from "../../../routes/PrivateRoute";
 import AuthRoute from "../../../routes/AuthRoute";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
+import Footer from "../../common/Footer";
 
 const Home = ({ location }) => {
   return (
@@ -35,6 +36,7 @@ const Home = ({ location }) => {
             <Route path="*" component={NotFound} />
           </Switch>
         </div>
+        <Footer />
       </div>
     </div>
   );

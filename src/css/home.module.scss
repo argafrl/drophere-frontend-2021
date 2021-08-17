@@ -10,7 +10,7 @@
   .content {
     // padding: 0px 50px;
     // min-height: 500px;
-    min-height: 85vh;
+    // min-height: 85vh;
     display: flex;
     flex-wrap: wrap;
     flex: 1;
@@ -21,6 +21,9 @@
       display: flex;
       justify-content: center;
       flex: 1;
+      min-height: 85vh;
+      // margin-top: -30px;
+      margin-bottom: 10vh;
     }
 
     .header{

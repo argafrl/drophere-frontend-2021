@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@bccfilkom/designsystem/build";
+import { Button, Dialog } from "@bccfilkom/designsystem/build";
 import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
 const Header = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   const {
     userInfo,
     fetchUserInfo,
@@ -55,12 +57,39 @@ const Header = () => {
                 </p>
               </div>
               <Button
+                className={style['btn-logout']}
                 type="secondary"
                 icon="/img/icons/logout.svg"
-                onClick={logout}
+                onClick={() => setOpenDialog(true)}
               >
-                Logout
+                Keluar
               </Button>
+             
+              <div className={style.dialog}>
+                <Dialog
+                  visible={openDialog}
+                  onCancel={() => setOpenDialog(false)}
+                  primaryButton={{
+                    text: "Keluar",
+                    onClick: () => {
+                      logout();
+                      setOpenDialog(false);
+                    },
+                  }}
+                  secondaryButton={{
+                    text: "Batalkan",
+                    onClick: () => setOpenDialog(false),
+                  }}
+                >
+                  <div className={style.content}>
+                    <div className={style["content-container"]}>
+                      <h1>Keluar Akun</h1>
+                      <p>Apakah anda yakin akan keluar?</p>
+                    </div>
+                  </div>
+                </Dialog>
+              </div>
+              
             </div>
           )}
         </>

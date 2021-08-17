@@ -1,8 +1,6 @@
-.container{
-  display: inline;
-  .content{
+  .container{
     width: 80%;
-    margin: 0 auto;
+    // margin: 0 auto;
     padding: 35px 0 70px 0;
     // padding: 0 10%;
     .heading{
@@ -49,12 +47,22 @@
         }
         .linkedin{
           margin-top: 20px;
-          display: flex;
-          align-items: center;
-          column-gap: 10px;
-          font-size: 14px;
-          font-style: italic;
-          color:#787879;
+          a{
+            display: flex;
+            align-items: center;
+            column-gap: 5px;
+            font-size: 14px;
+            font-style: italic;
+            color:#787879;
+            img{
+              content: url('/img/linkedin-grey.svg');
+            }
+            &:hover{
+              img{
+                content: url('/img/linkedin-blue.svg');
+              }
+            }
+          }
         }
       }
     }
@@ -65,4 +73,3 @@
       justify-content: center;
     }
   }
-}
