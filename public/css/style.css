@@ -63,6 +63,8 @@ main > div {
 input,
 textarea {
   min-width: 0 !important;
+  font-size: 1rem !important;
+  width: 100%;
 }
 
 .content {

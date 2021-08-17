@@ -21,7 +21,7 @@
     padding: rem(40);
 
     @include breakpoint(md) {
-      padding: 0 rem(30);
+      padding: rem(30);
     }
 
     .header {

@@ -22,7 +22,7 @@ class AppRouter extends Component {
 
       return(
         <SidebarStore>
-          <Helmet titleTemplate="%s – Drophere" defaultTitle="Drophere">
+          <Helmet titleTemplate="Drophere • %s" defaultTitle="Drophere">
             <meta name="description" content="Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive" />
             <meta
               name="keywords"

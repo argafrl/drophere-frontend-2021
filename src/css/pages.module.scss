@@ -23,7 +23,7 @@
     background-color: #fff9dd;
     padding: rem(20) rem(30);
     border-radius: rem(8);
-    
+
     h6 {
       font-size: rem(18);
       font-weight: 500;
@@ -48,14 +48,19 @@
     position: relative;
 
     .heading {
-      flex: 1;
+      flex: 1 1 auto;
     }
 
     .actions {
+      flex: 0 1 auto;
+
+      @include breakpoint(sm) {
+        flex: 1 1 auto;
+      }
+
       display: flex;
-      flex-grow: 36%;
       align-items: flex-start;
-      justify-content: flex-start;
+      justify-content: space-between;
 
       svg {
         path {
@@ -68,8 +73,11 @@
         background-color: #f1f3f4;
         border-radius: rem(8);
         border: none;
-        min-width: 0;
         padding: rem(16) rem(16) rem(16) rem(48);
+      }
+
+      .search{
+        flex: 1 1 auto;
       }
 
       .dropdown {

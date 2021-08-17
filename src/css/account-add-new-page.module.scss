@@ -18,6 +18,10 @@
     border-radius: rem(8);
     margin-bottom: rem(32);
 
+    @include breakpoint(sm) {
+      padding: rem(28) rem(20);
+    }
+
     & > * {
       color: #3e3e3e;
       font-weight: 300;
@@ -30,7 +34,7 @@
 
       label {
         color: #252525;
-        font-size: 16px;
+        font-size: rem(16);
         font-weight: 400;
         margin-bottom: rem(8);
       }
@@ -58,16 +62,26 @@
         display: flex;
         flex-direction: row;
         column-gap: rem(16);
-        p {
-          margin-top: rem(16);
-          font-size: 14px;
-          flex: 0 1 auto;
+
+        @include breakpoint(sm) {
+          flex-direction: column;
         }
+
+        p {
+          font-size: rem(14);
+          margin-top: rem(16);
+          flex: 0 1 auto;
+          
+          @include breakpoint(sm) {
+            margin-top: 0;
+          }
+        }
+
         div {
           flex-grow: 1;
+
           input {
             width: 100%;
-            min-width: 0;
           }
         }
       }
@@ -75,13 +89,21 @@
       &__switcher {
         div {
           display: flex;
-          flex-wrap: wrap;
           align-items: center;
           margin-bottom: 0.5rem;
           column-gap: 0.5rem;
 
           label {
             margin-bottom: 0;
+            display: flex;
+
+            &:first-child {
+              flex: 0 0 auto;
+            }
+
+            &:last-child {
+              flex: 1 1 auto;
+            }
           }
         }
       }
@@ -116,7 +138,7 @@
         &__item {
           border: 1px solid #e4e5e7;
           background: none;
-          border-radius: 8px;
+          border-radius: rem(8);
           width: rem(150);
           height: rem(150);
           flex-direction: column;
@@ -130,8 +152,8 @@
             left: rem(8);
 
             span::after {
-              width: 24px;
-              height: 24px;
+              width: rem(24);
+              height: rem(24);
               border: 3.5px solid transparent;
             }
           }

@@ -22,8 +22,6 @@ const Pages = () => {
     isFetchingAllPages,
     successCreatingSubmission,
     clearCreateSubmissionSuccess,
-    clearDeleteSubmissionSuccess,
-    successDeleteSubmission,
   } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 
@@ -32,26 +30,12 @@ const Pages = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
 
-  let invalidSearch = 0;
-
   useEffect(() => {
-    console.log("rerender pages");
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
     }
-    if (successCreatingSubmission) {
-      snackbar.success("Halaman Berhasil Dibuat");
-      clearCreateSubmissionSuccess();
-    }
-
     getAllPages();
-  }, [
-    getAllPages,
-    userInfo,
-    snackbar,
-    clearCreateSubmissionSuccess,
-    successCreatingSubmission,
-  ]);
+  }, [getAllPages, userInfo]);
 
   const handleSendEmail = async (e) => {
     try {
@@ -82,7 +66,7 @@ const Pages = () => {
   return (
     <div className={style.container}>
       <Helmet>
-          <title>Halaman</title>
+        <title>Halaman</title>
       </Helmet>
       {!sendEmail && (
         <div className={style["verify-alert"]}>
@@ -117,12 +101,14 @@ const Pages = () => {
           <h1>Halaman Anda</h1>
         </div>
         <div className={style.actions}>
-          <Search
-            className={style["input-search"]}
-            value={search}
-            placeholder="Cari halaman..."
-            handleChange={(e) => setSearch(e.target.value)}
-          />
+          <div className={style.search}>
+            <Search
+              className={style["input-search"]}
+              value={search}
+              placeholder="Cari halaman..."
+              handleChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
           <div className={style.dropdown}>
             <Dropdown
               value={
