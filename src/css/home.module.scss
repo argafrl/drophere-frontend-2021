@@ -1,20 +1,15 @@
-.container {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
+@import "./utils/index";
 
-  @media only screen and (max-width: 799px) {
-    height: auto;
-  }
+.container {
+  max-width: 95%;
+  margin: auto;
+  overflow-x: hidden;
 
   .content {
-    // padding: 0px 50px;
-    // min-height: 500px;
-    // min-height: 85vh;
     display: flex;
     flex-wrap: wrap;
     flex: 1;
-    // align-items: center;
+    margin-bottom: rem(80);
 
     .header,
     .auth {
@@ -22,25 +17,21 @@
       justify-content: center;
       flex: 1;
       min-height: 85vh;
-      // margin-top: -30px;
-      margin-bottom: 10vh;
     }
 
-    .header{
-      @media only screen and (max-width: 768px) {
+    .header {
+      @include breakpoint(md) {
         display: none;
       }
     }
 
     .auth {
-      // padding-top: 50px;
-
-      @media only screen and (max-width: 799px) {
-        padding-top: 30px;
+      @include breakpoint(md) {
+        padding-top: rem(30);
       }
 
-      @media only screen and (max-width: 640px) {
-        padding-top: 0px;
+      @include breakpoint(sm) {
+        padding-top: 0;
       }
     }
   }

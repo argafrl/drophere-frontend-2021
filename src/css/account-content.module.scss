@@ -1,3 +1,6 @@
+@import "./global/index";
+@import "./utils/index";
+
 .container {
   display: flex;
   flex-direction: row;
@@ -6,7 +9,7 @@
     flex: 1 1 auto;
     width: 100%;
     min-height: 85vh;
-    margin-left: 32px;
+    margin-left: rem(32);
     &-full {
       display: flex;
       max-width: 100%;
@@ -23,30 +26,29 @@
 
 .menu {
   position: sticky;
-  margin-top: -20px;
-  // margin-left: 20px;
-  top: 50px;
-  flex: 0 0 250px;
+  margin-top: rem(-20);
+  top: rem(50);
+  flex: 0 0 rem(250);
 }
 
 @media screen and (max-width: 768px) {
   .menu {
     position: fixed;
-    padding-top: 32px;
+    padding-top: rem(32);
     background: white;
     z-index: 10;
     top: 0;
     height: 100%;
-    margin-left: 0px;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-left: 0;
+    padding-left: rem(20);
+    padding-right: rem(20);
     left: -100%;
     transition: 0.5s ease;
   }
 
   .container {
     .content {
-      margin-left: 0px;
+      margin-left: 0;
     }
   }
 }

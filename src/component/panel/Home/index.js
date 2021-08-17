@@ -36,7 +36,7 @@ const Home = ({ location }) => {
             <Route path="*" component={NotFound} />
           </Switch>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );

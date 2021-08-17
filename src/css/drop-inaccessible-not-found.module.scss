@@ -1,25 +1,26 @@
-.container{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 2rem;
-    text-align: center;
+@import "./global/index";
+@import "./utils/index";
 
-    img{
-        width: 100%;
-        max-width: 400px;
-        margin-bottom: 1.5rem;
-    }
+.container {
+  flex-grow: 1;
+  flex-direction: column;
+  @include center-flex;
+  padding: 0 rem(32);
+  text-align: center;
 
-    h2{
-        font-weight: 600;
-        margin-bottom: 0.8rem;
-    }
+  img {
+    width: 100%;
+    max-width: rem(400);
+    margin-bottom: rem(24);
+  }
 
-    p{
-        margin-bottom: 2rem;
-        font-size: 14px;
-    }
+  h2 {
+    font-weight: 600;
+    margin-bottom: rem(12.8);
+  }
+
+  p {
+    margin-bottom: rem(32);
+    font-size: rem(14);
+  }
 }

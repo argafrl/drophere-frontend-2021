@@ -1,45 +1,63 @@
+@import "./global/index";
+@import "./utils/index";
+
 .container {
   h1 {
     font-weight: 600;
-    font-size: 20pt;
+    font-size: rem(24);
   }
 
   p {
     margin: 0;
-    margin-bottom: 2rem;
+    margin-bottom: rem(32);
   }
 
   .card-container {
     display: flex;
-    gap: 32px;
-    margin-bottom: 24px;
+    gap: rem(32);
+    margin-bottom: rem(24);
+
+    @include breakpoint(md) {
+      flex-direction: column;
+    }
 
     .card {
-      max-width: 480px;
+      max-width: rem(480);
       border: 2px solid #e4e5e7;
-      padding: 2rem 2rem;
-      border-radius: 8px;
+      padding: rem(32);
+      border-radius: rem(8);
       display: flex;
       flex-direction: row;
-      column-gap: 2rem;
+      column-gap: rem(32);
+
+      @include breakpoint(lg) {
+        justify-content: flex-end;
+        flex-direction: column-reverse;
+      }
+
+      @include breakpoint(md) {
+        flex-direction: row;
+      }
 
       &__img {
         img {
-          height: 72px;
-          width: 72px;
+          height: rem(72);
+          width: rem(72);
         }
-        margin-bottom: 12px;
+
+        margin-bottom: rem(12);
       }
 
       &__body {
-        // flex: 1 0 auto;
         display: flex;
         flex-direction: column;
+
         &__title {
           &-disabled {
             color: #a0a0a0;
           }
-          margin-bottom: 8px;
+
+          margin-bottom: rem(8);
         }
 
         &__badge {
@@ -48,15 +66,15 @@
           margin-right: auto;
           color: #f4b12f;
           border: 1px solid #f4b12f;
-          padding: 10px 24px;
-          border-radius: 5px;
-          font-size: 12px;
+          padding: rem(10) rem(24);
+          border-radius: rem(5);
+          font-size: rem(12);
           cursor: pointer;
         }
 
         &__description {
           font-weight: 400;
-          margin-bottom: 1.5rem;
+          margin-bottom: rem(24);
 
           &-disabled {
             color: #e4e5e7;
@@ -65,42 +83,23 @@
 
         button {
           border: 0.5px solid transparent;
+
           &.button-cancel {
             border: 0.5px solid #e84c3d;
             background-color: white;
             color: #e84c3d;
+
             &:hover {
               background-color: #e84c3d;
               color: white;
               transition: all 0.5s ease;
             }
           }
+
           margin-top: auto;
           margin-right: auto;
-          font-size: 12px;
+          font-size: rem(12);
         }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .container {
-    .card-container {
-      .card {
-        justify-content: flex-end;
-        flex-direction: column-reverse;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .container {
-    .card-container {
-      flex-direction: column;
-      .card {
-        flex-direction: row;
       }
     }
   }

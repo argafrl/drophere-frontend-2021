@@ -1,84 +1,85 @@
+@import "./global/index";
+@import "./utils/index";
+
 .container {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  // padding: 0 20px;
-
-  @media only screen and (max-width: 768px) {
-    padding: 0 30px;
+  @include center-flex;
+  @include breakpoint(md) {
+    padding: 0 rem(30);
   }
 
   a {
     text-decoration: underline;
-    color: #2196f3;
+    color: $blue-primary;
     font-weight: 400;
-  }
 
-  a:hover {
-    color: #00bcd4;
+    &:hover {
+      color: $blue-secondary;
+    }
   }
 
   .form {
     max-width: 400px;
-    min-width: 0;
     width: 100%;
-    padding: 40px;
+    padding: rem(40);
 
     .header {
       text-align: left;
 
       h1 {
-        font-size: 20pt;
+        font-size: rem(27);
         font-weight: 600;
-        line-height: 10px;
+        line-height: rem(10);
       }
 
       p {
         font-weight: 400;
-        font-size: 13pt;
-        margin: 12px 0 20px 0;
+        font-size: rem(17);
+        margin: rem(12) 0 rem(20) 0;
         color: #ababab;
       }
     }
 
     .form-container {
-      > * {
-        margin-top: 20px;
+      & > * {
+        margin-top: rem(20);
         width: 100%;
       }
 
-      .button-daftar {
-        margin-top: 30px;
-        font-size: 14pt;
-      }
+      .button {
+        &-daftar,
+        &-masuk {
+          font-size: rem(18);
+        }
 
-      .button-masuk {
-        margin-top: 10px;
-        font-size: 14pt;
+        &-daftar {
+          margin-top: 30px;
+        }
+
+        &-masuk {
+          margin-top: 10px;
+        }
       }
 
       .lupa-password {
-        margin: 20px 0 0 0;
         text-align: right;
         text-decoration: underline;
-        color: #2196f3;
+        color: $blue-primary;
         font-weight: 400;
-        background: transparent;
         border: none;
-        font-size: 13pt;
+        background: transparent;
+        font-size: rem(16);
         &:hover {
           cursor: pointer;
-          color: #00bcd4;
+          color: $blue-secondary;
         }
       }
 
       .dialog {
         h1 {
-          font-size: 20pt;
+          font-size: rem(24);
           font-weight: 600;
-          line-height: 10px;
+          line-height: rem(10);
         }
       }
     }
@@ -88,22 +89,22 @@
 .input-wrapper {
   margin-bottom: 1rem;
 
-  > * {
+  & > * {
     width: 100%;
   }
 
-  > :last-child{
-    > svg:first-child{
+  & > :last-child {
+    & > svg:first-child {
       display: none;
     }
   }
 
   input {
-    padding: 16px;
-    border-radius: 6px;
+    padding: rem(16);
+    border-radius: rem(6);
     min-width: 0;
     width: 100%;
   }
 
-  margin-top: 0px !important;
+  margin-top: 0 !important;
 }

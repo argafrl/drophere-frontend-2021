@@ -1,3 +1,6 @@
+@import "./global/index";
+@import "./utils/index";
+
 .progress {
   display: flex;
   flex-direction: row;
@@ -6,13 +9,13 @@
 
   &-wrapper {
     width: 100%;
-    max-width: 220px;
+    max-width: rem(220);
   }
 
   &__bar {
-    height: 8px;
+    height: rem(8);
     background: #41a4d5;
-    border-radius: 8px;
+    border-radius: rem(8);
     transition: width 0.2s ease;
   }
 
@@ -27,11 +30,11 @@
   flex-direction: row;
 
   &__icon {
-    width: 42px;
-    height: 42px;
-    font-size: 12px;
+    width: rem(42);
+    height: rem(42);
+    font-size: rem(12);
     text-transform: uppercase;
-    margin-right: 12px;
+    margin-right: rem(12);
     display: flex;
     align-items: center;
     justify-content: center;
