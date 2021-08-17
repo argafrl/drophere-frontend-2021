@@ -67,9 +67,28 @@
                 // width: 100%;
                 
                 input{
+                    width: 100%;
                     min-width: 0;
                     border-radius: 8px;
+                    // margin: 5px 0 5px 0;
+                    // margin-bottom: 10px;
+                }
+
+                .input-container{
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 10px;
+                    width: 100%;
                     margin-bottom: 10px;
+                    > * {
+                        > svg:first-child{
+                            display: none;
+                        }
+                    }
+                    input{
+                        padding: 16px;
+                        width: 100%;
+                    }
                 }
                     
                 > :first-child{

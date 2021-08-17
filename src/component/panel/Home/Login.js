@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import ForgotPassword from "../../common/ForgotPassword";
-import { Card, Button, Input } from "@bccfilkom/designsystem/build";
+import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Portal } from "react-portal";
 import { Helmet } from "react-helmet";
@@ -17,6 +17,7 @@ class Login extends Component {
     error: null,
     isLoading: false,
     open: false,
+    isShow: false,
   };
 
   handleChange = (name) => (event) => {
@@ -34,6 +35,12 @@ class Login extends Component {
       open: false,
     });
   };
+
+  handleIsShow = () => {
+    this.setState({
+      isShow: !this.state.isShow
+    })
+  }
 
   static id = "loginLoading";
 
@@ -84,7 +91,7 @@ class Login extends Component {
 
               <div className={style["input-wrapper"]}>
                 <p>Password</p>
-                <Input
+                {/* <Input
                   className={style["input"]}
                   type="password"
                   placeholder="Masukkan Password"
@@ -104,6 +111,28 @@ class Login extends Component {
                       ? "error"
                       : ""
                   }
+                /> */}
+                <Password
+                className={style["input"]}
+                placeholder="Masukkan Password"
+                required
+                visibilityEye={this.state.isShow}
+                value={this.state.password}
+                handleChange={this.handleChange("password")}
+                handleShow={() => this.handleIsShow()}
+                style={{ borderRadius: "6px" }}
+                hintText={
+                  this.context.error ===
+                  "crypto/bcrypt: hashedPassword is not the hash of the given password"
+                    ? "Password yang anda masukkan salah"
+                    : ""
+                }
+                action={
+                  this.context.error ===
+                  "crypto/bcrypt: hashedPassword is not the hash of the given password"
+                    ? "error"
+                    : ""
+                }
                 />
               </div>
               <button

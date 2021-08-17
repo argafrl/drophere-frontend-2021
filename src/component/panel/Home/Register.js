@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
-import { Card, Button, Input } from "@bccfilkom/designsystem/build";
+import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
 
@@ -13,6 +13,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [isShow, setIsShow] = useState(false)
   // const [newPassword, setNewPassword] = useState("");
 
   const handleSignup = async (e) => {
@@ -77,13 +78,24 @@ const Register = () => {
             </div>
             <div className={style["input-wrapper"]}>
               <p>Password</p>
-              <Input
+              {/* <Input
                 className={style["input"]}
                 type="password"
                 placeholder="Masukkan Password"
                 required
                 value={password}
                 handleChange={(e) => setPassword(e.target.value)}
+                style={{ borderRadius: "6px" }}
+              /> */}
+              <Password
+                className={style["input"]}
+                type="password"
+                placeholder="Masukkan Password"
+                required
+                value={password}
+                visibilityEye={isShow}
+                handleChange={(e) => setPassword(e.target.value)}
+                handleShow={() => setIsShow(!isShow)}
                 style={{ borderRadius: "6px" }}
               />
             </div>

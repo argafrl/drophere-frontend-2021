@@ -4,7 +4,7 @@ import style from "../../../css/account-profile.module.scss";
 import Loading from "../../common/Loading";
 import Preloader from "../../common/Preloader";
 
-import { Input, Button } from "@bccfilkom/designsystem/build";
+import { Input, Button, Password } from "@bccfilkom/designsystem/build";
 import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
@@ -28,6 +28,9 @@ const ProfileNew = () => {
   const [email, setEmail] = useState("");
   const [profileImage, setProfileImage] = useState("");
 
+  const [isShowCurrent, setIsShowCurrent] = useState(false)
+  const [isShowNew, setIsShowNew] = useState(false)
+  const [isShowRetype, setIsShowRetype] = useState(false)
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
@@ -232,12 +235,14 @@ const ProfileNew = () => {
                     <p>Nama</p>
                   </div>
                   <div className={style["input-wrapper"]}>
-                    <Input
-                      handleChange={(e) => setName(e.target.value)}
-                      value={name}
-                      className={style["input"]}
-                      placeholder="Nama Lengkap"
-                    />
+                    <div className={style["input-container"]}>
+                      <Input
+                        handleChange={(e) => setName(e.target.value)}
+                        value={name}
+                        className={style["input"]}
+                        placeholder="Nama Lengkap"
+                      />
+                    </div>
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
@@ -325,7 +330,8 @@ const ProfileNew = () => {
                     <p>Password</p>
                   </div>
                   <div className={style["input-wrapper"]}>
-                    <Input
+                    <div className={style["input-container"]}>
+                    <Password
                       type="password"
                       placeholder="Password lama"
                       disabled={isUpdatePasswordLoading}
@@ -337,13 +343,15 @@ const ProfileNew = () => {
                       error={currentPasswordErr != null}
                       name="current_password"
                       value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      handleChange={(e) => setCurrentPassword(e.target.value)}
+                      visibilityEye={isShowCurrent}
+                      handleShow={() => setIsShowCurrent(!isShowCurrent)}
                     />
-                    <Input
+                    
+                    <Password
                       type="password"
                       placeholder="Password Baru"
                       disabled={isUpdatePasswordLoading}
-                      // fullWidth
                       hintText={
                         newPasswordErr
                           ? newPasswordErr.message
@@ -352,14 +360,15 @@ const ProfileNew = () => {
                       error={newPasswordErr != null}
                       name="new_password"
                       value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
+                      handleChange={(e) => setNewPassword(e.target.value)}
+                      visibilityEye={isShowNew}
+                      handleShow={() => setIsShowNew(!isShowNew)}
                     />
 
-                    <Input
+                    <Password
                       type="password"
                       placeholder="Ulangi Password"
                       disabled={isUpdatePasswordLoading}
-                      // fullWidth
                       name="retype_password"
                       hintText={
                         retypePasswordErr
@@ -368,8 +377,11 @@ const ProfileNew = () => {
                       }
                       error={retypePasswordErr != null}
                       value={retypePassword}
-                      onChange={(e) => setRetypePassword(e.target.value)}
+                      handleChange={(e) => setRetypePassword(e.target.value)}
+                      visibilityEye={isShowRetype}
+                      handleShow={() => setIsShowRetype(!isShowRetype)}
                     />
+                    </div>
 
                     <div className={style["button-wrapper"]}>
                       <Button
