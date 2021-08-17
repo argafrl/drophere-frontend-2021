@@ -1,3 +1,7 @@
 @function rem($pixels, $context: 16) {
   @return ($pixels/$context) * 1rem;
 }
+
+@function vh($amount) {
+  @return calc(var(--vh, 1vh) * #{$amount});
+}

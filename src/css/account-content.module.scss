@@ -8,7 +8,7 @@
     position: relative;
     flex: 1 1 auto;
     width: 100%;
-    min-height: 85vh;
+    min-height: vh(85);
     margin-left: rem(32);
     &-full {
       display: flex;
@@ -26,7 +26,6 @@
 
 .menu {
   position: sticky;
-  margin-top: rem(-20);
   top: rem(50);
   flex: 0 0 rem(250);
 }
@@ -38,7 +37,8 @@
     background: white;
     z-index: 10;
     top: 0;
-    height: 100%;
+    margin-top: 0;
+    height: vh(100);
     margin-left: 0;
     padding-left: rem(20);
     padding-right: rem(20);

@@ -37,7 +37,8 @@ export class UserStore extends React.Component {
       const { data } = await mainApi.get("/users/profile");
       this.setState({ userInfo: data.data });
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });
     }
@@ -46,8 +47,8 @@ export class UserStore extends React.Component {
   clearUserInfo = () => {
     this.setState({
       userInfo: null,
-    })
-  }
+    });
+  };
 
   sendEmailVerification = async () => {
     try {
@@ -101,7 +102,7 @@ export class UserStore extends React.Component {
       bodyFormData.append("email", email);
 
       const { data } = await mainApi.patch("/users/profile", bodyFormData, {
-        headers: {'Content-Type': "multipart/form-data",}
+        headers: { "Content-Type": "multipart/form-data" },
       });
       this.setState({
         successUpdating: data.is_success,
@@ -113,7 +114,7 @@ export class UserStore extends React.Component {
         errorUpdating: err.message,
       });
     } finally {
-      this.setState({ isUpdating: false, successUpdating: false, });
+      this.setState({ isUpdating: false, successUpdating: false });
     }
   };
 
