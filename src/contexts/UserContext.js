@@ -1,5 +1,6 @@
 import React from "react";
 import mainApi from "../api/mainApi";
+import { getErrorMessage } from "../helpers";
 
 export const defaultValue = {
   userInfo: null,
@@ -34,10 +35,15 @@ export class UserStore extends React.Component {
   fetchUserInfo = async () => {
     try {
       this.setState({ isFetchingUserInfo: true });
-      const { data } = await mainApi.get("/users/profile");
-      this.setState({ userInfo: data.data });
+      const { data: resProfile } = await mainApi.get("/users/profile");
+      const { data: resDriveStatus } = await mainApi.get(
+        "/users/profile/gdrive_connected"
+      );
+      this.setState({
+        userInfo: { ...resProfile.data, ...resDriveStatus.data },
+      });
     } catch (error) {
-      console.log(error)
+      console.log(getErrorMessage(error));
       this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import style from "../../../css/home.module.scss";
 import Header from "./Header";
@@ -10,8 +10,14 @@ import AuthRoute from "../../../routes/AuthRoute";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
 import Footer from "../../common/Footer";
+import mainApi from "../../../api/mainApi";
 
 const Home = ({ location }) => {
+  useMemo(() => {
+    mainApi.defaults.headers.common["Authorization"] =
+      localStorage.getItem("bccdrophere_token");
+  }, []);
+
   return (
     <div className={style.container}>
       <div className={style.content}>

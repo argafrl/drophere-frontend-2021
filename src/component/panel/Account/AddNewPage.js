@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   TextArea,
   Input,
@@ -9,6 +9,7 @@ import {
 } from "@bccfilkom/designsystem/build";
 import style from "../../../css/account-add-new-page.module.scss";
 import { PageContext } from "../../../contexts/PageContext";
+import { UserContext } from "../../../contexts/UserContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { characterCheck, countWords } from "../../../helpers";
@@ -37,6 +38,7 @@ const AddNewPage = () => {
   });
 
   const { createSubmission, isCreatingSubmission } = useContext(PageContext);
+  const { userInfo } = useContext(UserContext);
 
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
@@ -85,6 +87,13 @@ const AddNewPage = () => {
     );
   };
 
+  useEffect(() => {
+    if (userInfo && !userInfo.is_gdrive_connected) {
+      snackbar.error("Connect ke Google Drive terlebih dahulu");
+      history.push("/account/storage");
+    }
+  }, [userInfo]);
+
   return (
     <div className={style["container"]}>
       <Helmet>
@@ -125,7 +134,9 @@ const AddNewPage = () => {
               required
               value={description}
               handleChange={(e) => setDescription(e.target.value)}
-              hintText={`Jumlah Kata : ${countWords(description)} kata, Maksimum: 200 Kata`}
+              hintText={`Jumlah Kata : ${countWords(
+                description
+              )} kata, Maksimum: 200 Kata`}
               isWarning={countWords(description) > 200}
             />
           </div>

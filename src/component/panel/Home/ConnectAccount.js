@@ -34,9 +34,9 @@ const ConnectAccount = () => {
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
-      return;
+    } else {
+      setUseDrive(userInfo.is_gdrive_connected);
     }
-    setUseDrive(userInfo.is_drive_connected);
   }, [userInfo, fetchUserInfo]);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const ConnectAccount = () => {
               className={useDrive ? style["button-cancel"] : ""}
               onClick={handleConnectDrive}
               skeleton={isFetchingUserInfo}
-              disabled={isFetchingOAuthUrl}
+              disabled={useDrive}
             >
               {useDrive ? "Batalkan" : "Tautkan"}
             </Button>

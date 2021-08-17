@@ -33,12 +33,11 @@
 @media screen and (max-width: 768px) {
   .menu {
     position: fixed;
-    padding-top: rem(32);
     background: white;
     z-index: 10;
     top: 0;
-    margin-top: 0;
     height: vh(100);
+    margin-top: 0;
     margin-left: 0;
     padding-left: rem(20);
     padding-right: rem(20);

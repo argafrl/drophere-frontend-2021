@@ -16,14 +16,16 @@ import ScrollToTop from "./ScrollToTop";
 
 class AppRouter extends Component {
   render() {
-
     function PageSwitch() {
       let location = useLocation();
 
-      return(
+      return (
         <SidebarStore>
           <Helmet titleTemplate="Drophere • %s" defaultTitle="Drophere">
-            <meta name="description" content="Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive" />
+            <meta
+              name="description"
+              content="Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive"
+            />
             <meta
               name="keywords"
               content="BCC, Basic Computing Community, Application, Drop it to me, dropittome, Fakultas Ilmu Komputer, Universitas Brawijaa, UB, FILKOM"
