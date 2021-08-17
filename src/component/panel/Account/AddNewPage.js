@@ -11,7 +11,7 @@ import style from "../../../css/account-add-new-page.module.scss";
 import { PageContext } from "../../../contexts/PageContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-import { characterCheck } from "../../../helpers";
+import { characterCheck, countWords } from "../../../helpers";
 import { Helmet } from "react-helmet";
 
 const AddNewPage = () => {
@@ -49,8 +49,8 @@ const AddNewPage = () => {
       return;
     }
 
-    if (description.length > 200) {
-      snackbar.error("Deskripsi tidak boleh melebihi 200 karakter");
+    if (countWords(description) > 200) {
+      snackbar.error("Deskripsi tidak boleh melebihi 200 kata");
       return;
     }
 
@@ -88,7 +88,7 @@ const AddNewPage = () => {
   return (
     <div className={style["container"]}>
       <Helmet>
-          <title>Buat Halaman</title>
+        <title>Buat Halaman</title>
       </Helmet>
       <h1>Buat Halaman</h1>
       <p>
@@ -101,6 +101,7 @@ const AddNewPage = () => {
             value={title}
             required
             handleChange={(e) => setTitle(e.target.value)}
+            hintText={`Jumlah Karakter : ${title.length} karakter, Maksimum: 150 Karakter`}
             action={title.length > 150 ? "warning" : ""}
           />
         </div>
@@ -124,8 +125,8 @@ const AddNewPage = () => {
               required
               value={description}
               handleChange={(e) => setDescription(e.target.value)}
-              hintText="Maks : 200 Karakter"
-              isWarning={description.length > 200}
+              hintText={`Jumlah Kata : ${countWords(description)} kata, Maksimum: 200 Kata`}
+              isWarning={countWords(description) > 200}
             />
           </div>
         </div>

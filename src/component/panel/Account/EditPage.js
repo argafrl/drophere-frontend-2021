@@ -13,6 +13,7 @@ import { useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
 import { Helmet } from "react-helmet";
+import { countWords } from "../../../helpers";
 
 const AddNewPage = () => {
   const {
@@ -53,8 +54,8 @@ const AddNewPage = () => {
       return;
     }
 
-    if (description.length > 200) {
-      snackbar.error("Deskripsi tidak boleh melebihi 200 karakter");
+    if (countWords(description) > 200) {
+      snackbar.error("Deskripsi tidak boleh melebihi 200 kata");
       return;
     }
 
@@ -114,6 +115,7 @@ const AddNewPage = () => {
                 value={title}
                 required
                 handleChange={(e) => setTitle(e.target.value)}
+                hintText={`Jumlah Karakter : ${title.length} karakter, Maksimum: 150 Karakter`}
                 action={title.length > 150 ? "warning" : ""}
               />
             </div>
@@ -124,8 +126,10 @@ const AddNewPage = () => {
                   required
                   value={description}
                   handleChange={(e) => setDescription(e.target.value)}
-                  hintText="Maks : 200 Karakter"
-                  isWarning={description.length > 200}
+                  hintText={`Jumlah Kata : ${countWords(
+                    description
+                  )} kata, Maksimum: 200 Kata`}
+                  isWarning={countWords(description) > 200}
                 />
               </div>
             </div>
