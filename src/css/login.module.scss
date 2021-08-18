@@ -93,10 +93,8 @@
     width: 100%;
   }
 
-  & > :last-child {
-    & > svg:first-child {
-      display: none;
-    }
+  svg:first-child {
+    display: none;
   }
 
   input {

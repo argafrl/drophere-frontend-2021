@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { PageContext } from "../../../contexts/PageContext";
 
-const PageCard = ({ title, slug, due_time, storage_type }) => {
+const PageCard = ({ title, slug, due_time, storage_type, files, views }) => {
   const history = useHistory();
   const wrapperRef = useRef();
   const snackbar = useContext(SnackbarContext);
@@ -75,7 +75,9 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
           <div className={style["content-container"]}>
             <h1>Hapus Halaman</h1>
             <p>
-              Apakah anda yakin ingin menghapus halaman <span style={{ fontWeight: "600" }}>{title}</span>{"? "}
+              Apakah anda yakin ingin menghapus halaman{" "}
+              <span style={{ fontWeight: "600" }}>{title}</span>
+              {"? "}
               Halaman yang dihapus tidak akan dapat diakses kembali.
             </p>
           </div>
@@ -106,7 +108,6 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
                   onClick={() => handleCopyToClipboard()}
                 />
                 <Menu.Item name="Hapus" onClick={() => setOpenDialog(true)} />
-                
               </Menu>
             )}
           </div>
@@ -122,7 +123,7 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
           </div>
           <div className={style.files}>
             <img src="/img/icons/folder.svg" alt="folder" />
-            <p>25 files</p>
+            <p>{files} files</p>
           </div>
         </div>
       </div>
@@ -133,7 +134,7 @@ const PageCard = ({ title, slug, due_time, storage_type }) => {
         </div>
         <div className={style.views}>
           <img src="/img/icons/views.svg" alt="views" />
-          <p>40 Views</p>
+          <p>{views} Views</p>
         </div>
       </div>
     </div>

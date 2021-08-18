@@ -16,11 +16,7 @@ import { Helmet } from "react-helmet";
 
 const Pages = () => {
   const { userInfo } = useContext(UserContext);
-  const {
-    allPages,
-    getAllPages,
-    isFetchingAllPages,
-  } = useContext(PageContext);
+  const { allPages, getAllPages, isFetchingAllPages } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 
   const [openAlert, setOpenAlert] = useState(false);
@@ -153,6 +149,8 @@ const Pages = () => {
                       due_time={link.due_time}
                       slug={link.slug}
                       storage_type={link.storage_type}
+                      files={link.gdrive_submissions[0].uploaded_files.length}
+                      views={link.gdrive_submissions[0].views.length}
                       key={idx}
                     />
                   );
