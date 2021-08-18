@@ -39,7 +39,7 @@ export default ({ right }) => {
                 Developed by
               </h6>
               <a href="http://bcc.filkom.ub.ac.id/" target="_blank" rel="noopener noreferrer">
-                <img src="/img/bcc-logo.svg" alt="BCC Logo"/>
+                <img src="/img/BCC-logo.svg" alt="BCC Logo"/>
               </a>
             </div>
             <div className={style['gojek-wrapper']}>
