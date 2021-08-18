@@ -45,8 +45,9 @@ const Home = ({ location }) => {
             <Route path="*" component={NotFound} />
           </Switch>
         </div>
-        {/* <Footer /> */}
+        
       </div>
+      <Footer />
     </div>
   );
 };

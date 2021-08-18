@@ -33,21 +33,23 @@ export default ({ right }) => {
               terintegrasi dengan cloud storage Dropbox dan Google Drive
             </p>
           </div>
-          <div className={style['bcc-wrapper']}>
-            <h6>
-              Developed by
-            </h6>
-            <a href="http://bcc.filkom.ub.ac.id/" target="_blank" rel="noopener noreferrer">
-              <img src="/img/bcc-logo.svg" alt="BCC Logo"/>
-            </a>
-          </div>
-          <div className={style['gojek-wrapper']}>
-            <h6>
-              Official Learning Partner
-            </h6>
-            <a href="https://www.gojek.com/en-id/" target="_blank" rel="noopener noreferrer">
-              <img src="/img/gojek-logo.svg" alt="Gojek Logo"/>
-            </a>
+          <div className={style['bcc-gojek-wrapper']}>
+            <div className={style['bcc-wrapper']}>
+              <h6>
+                Developed by
+              </h6>
+              <a href="http://bcc.filkom.ub.ac.id/" target="_blank" rel="noopener noreferrer">
+                <img src="/img/bcc-logo.svg" alt="BCC Logo"/>
+              </a>
+            </div>
+            <div className={style['gojek-wrapper']}>
+              <h6>
+                Official Learning Partner
+              </h6>
+              <a href="https://www.gojek.com/en-id/" target="_blank" rel="noopener noreferrer">
+                <img src="/img/gojek-logo.svg" alt="Gojek Logo"/>
+              </a>
+            </div>
           </div>
         </div>
 
