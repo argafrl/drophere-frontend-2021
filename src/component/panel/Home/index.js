@@ -1,17 +1,25 @@
 import React, { useEffect, useMemo } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+
+import mainApi from "../../../api/mainApi";
+
 import style from "../../../css/home.module.scss";
+
+import AuthRoute from "../../../routes/AuthRoute";
+import PrivateRoute from "../../../routes/PrivateRoute";
+
 import Header from "./Header";
 import Login from "./Login";
 import Register from "./Register";
+import ResetPasswordNew from "./ResetPasswordNew";
 import ConnectAccount from "./ConnectAccount";
-import PrivateRoute from "../../../routes/PrivateRoute";
-import AuthRoute from "../../../routes/AuthRoute";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
+import Verify from "../../common/Verify";
 import Footer from "../../common/Footer";
-import mainApi from "../../../api/mainApi";
-import ResetPasswordNew from "./ResetPasswordNew";
+
+
+
 
 const Home = ({ location }) => {
   useMemo(() => {
@@ -42,6 +50,7 @@ const Home = ({ location }) => {
               component={ConnectAccount}
             />
             <Route path="/contributor" component={Contributor} />
+            <Route path="/verify" component={Verify} />
             <Route path="*" component={NotFound} />
           </Switch>
         </div>

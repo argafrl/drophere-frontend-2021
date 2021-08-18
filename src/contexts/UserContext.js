@@ -121,10 +121,12 @@ export class UserStore extends React.Component {
         errorUpdatingForgotPassword: "",
       })
     } catch (err) {
+      console.log(err.response.data.message);
       this.setState({
         successUpdatingForgotPassword: false,
-        errorUpdatingForgotPassword: err.message,
+        errorUpdatingForgotPassword: err.response.data.message,
       });
+      
     } finally {
       this.setState({ isUpdatingForgotPassword: false, successUpdatingForgotPassword: false });
     }
@@ -199,9 +201,9 @@ export class UserStore extends React.Component {
         this.login(email, password);
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err.response.data.message);
       this.setState({
-        error: err.message,
+        error: err.response.data.message,
         isAuthenticated: false,
       });
     } finally {
@@ -210,7 +212,7 @@ export class UserStore extends React.Component {
   };
 
   clearError = () => {
-    this.setState({ error: "", errorSendForgotPassword: "" });
+    this.setState({ error: "", errorSendForgotPassword: "", errorUpdating: "", errorUpdatingForgotPassword: "" });
   };
 
   render() {
