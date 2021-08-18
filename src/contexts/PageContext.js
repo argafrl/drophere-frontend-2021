@@ -17,7 +17,6 @@ export const defaultValue = {
   isUpdatingSubmission: false,
   isDeletingSubmission: false,
   successUploadSubmission: false,
-  successFetchAllPages: false,
   uploadProgress: 0,
   createSubmission: () => {},
   uploadSubmission: () => {},
@@ -187,10 +186,7 @@ class PageStore extends React.Component {
       isFetchingSubmissionInfo: false,
       isFetchingUserSubmissionDetail: false,
       isUpdatingSubmission: false,
-      successCreatingSubmission: false,
       successUploadSubmission: false,
-      successUpdateSubmission: false,
-      successFetchAllPages: false,
       uploadProgress: 0,
     });
   };

@@ -1,13 +1,15 @@
 import React, { useContext, useState } from "react";
 import style from "../../../css/account-support.module.scss";
 import { TextArea, Button } from "@bccfilkom/designsystem/build";
-import { SupportContext } from "../../../contexts/SupportContext";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
 export default function Support() {
   const [message, setMessage] = useState("");
-  const { isPostingFeedback, postFeedback } = useContext(SupportContext);
+  const [isPostingFeedback, setIsPostingFeedback] = useState(false);
+
   const snackbar = useContext(SnackbarContext);
 
   const onSubmitHandler = (e) => {
@@ -17,13 +19,25 @@ export default function Support() {
       return;
     }
     postFeedback(message);
-    setMessage("")
+  };
+
+  const postFeedback = async (content) => {
+    try {
+      setIsPostingFeedback(true);
+      await mainApi.post("/users/feedback", { content });
+      snackbar.success("Feedback Berhasil Dikirim");
+      setMessage("");
+    } catch (error) {
+      snackbar.error(getErrorMessage(error));
+    } finally {
+      setIsPostingFeedback(false);
+    }
   };
 
   return (
     <div className={style.container + " opening-transition"}>
       <Helmet>
-          <title>Masukan</title>
+        <title>Masukan</title>
       </Helmet>
       <h1>Kirim Masukan</h1>
       <p>Masukan anda dapat membantu layanan kami agar lebih maksimal</p>

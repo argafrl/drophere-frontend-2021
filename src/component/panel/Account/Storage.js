@@ -3,16 +3,24 @@ import style from "../../../css/storage.module.scss";
 import { Button } from "@bccfilkom/designsystem/build";
 import { Helmet } from "react-helmet";
 import { UserContext } from "../../../contexts/UserContext";
+import { useHistory } from "react-router";
 
 const Storage = () => {
   const [useDrive, setUseDrive] = useState(false);
   const { userInfo, isFetchingUserInfo } = useContext(UserContext);
+  const history = useHistory();
 
   useEffect(() => {
     if (userInfo) {
       setUseDrive(userInfo.is_gdrive_connected);
     }
   }, [userInfo]);
+
+  const handleConnectDrive = () => {
+    if (!useDrive) {
+      history.push('/connect-account')
+    }
+  };
 
   return (
     <div>
@@ -29,17 +37,14 @@ const Storage = () => {
               <p className={style["card__body__description"]}>
                 Nantikan fitur baru untuk dapat terhubung ke Google Drive
               </p>
-              {useDrive ? (
-                <Button
-                  className={style["button-cancel"]}
-                  skeleton={isFetchingUserInfo}
-                  disabled={useDrive}
-                >
-                  Batalkan{" "}
-                </Button>
-              ) : (
-                <Button skeleton={isFetchingUserInfo}>Tautkan Akun</Button>
-              )}
+              <Button
+                className={useDrive ? style["button-cancel"] : ""}
+                onClick={handleConnectDrive}
+                skeleton={isFetchingUserInfo}
+                disabled={useDrive}
+              >
+                {useDrive ? "Batalkan" : "Tautkan"}
+              </Button>
             </div>
             <div className={style["card__img"]}>
               <img src="/img/icons/drive-active.svg" alt="drive" />

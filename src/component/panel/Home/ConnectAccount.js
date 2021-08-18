@@ -32,9 +32,7 @@ const ConnectAccount = () => {
   }, [search, connectGoogleDrive]);
 
   useEffect(() => {
-    if (!userInfo) {
-      fetchUserInfo();
-    } else {
+    if (userInfo) {
       setUseDrive(userInfo.is_gdrive_connected);
     }
   }, [userInfo, fetchUserInfo]);

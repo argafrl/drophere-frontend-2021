@@ -4,18 +4,25 @@
 .container {
   display: flex;
   flex-direction: row;
+  
   .content {
     position: relative;
     flex: 1 1 auto;
     width: 100%;
     min-height: vh(85);
     margin-left: rem(32);
+    
     &-full {
       display: flex;
       max-width: 100%;
       justify-content: center;
     }
+
+    @include breakpoint(md) {
+      margin-left: 0;
+    }
   }
+  
   .buat-halaman {
     width: 100%;
     margin-bottom: 12px;
@@ -28,10 +35,9 @@
   position: sticky;
   top: rem(50);
   flex: 0 0 rem(250);
-}
 
-@media screen and (max-width: 768px) {
-  .menu {
+  @include breakpoint(md) {
+    padding-top: rem(24);
     position: fixed;
     background: white;
     z-index: 10;
@@ -43,11 +49,5 @@
     padding-right: rem(20);
     left: -100%;
     transition: 0.5s ease;
-  }
-
-  .container {
-    .content {
-      margin-left: 0;
-    }
   }
 }
