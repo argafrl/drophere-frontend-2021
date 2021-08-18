@@ -108,72 +108,93 @@
       row-gap: 10px;
       align-items: center;
       flex-direction: row;
-      justify-items: space-between;
       justify-content: space-between;
       padding: 10px;
 
-      // column-gap: 30px;
+      @media only screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+        row-gap: 0;
+      }
 
       .left {
         // flex-basis: 20%;
         // flex-grow: 2;
         flex-basis: 200px;
         margin-right: 10px;
+        @media only screen and (max-width: 768px) {
+          flex-basis: 0;
+          p{
+            margin-bottom: 10px;
+          }
+        }
       }
       .middle {
-        // flex: 4;
-        flex: 1;
-        // flex-grow: 4;
-        display: flex;
-        flex-wrap: wrap;
-        row-gap: 10px;
-        column-gap: 15px;
-        align-items: center;
-        p {
-          font-weight: 600;
-        }
-        .avatar {
-          // margin-right: 15px;
-          width: 100px;
-          height: 100px;
-        }
-        .btn-avatar-wrapper {
-          font-size: 14px;
+          flex: 1;
           display: flex;
+          flex-direction: row;
           align-items: center;
-          justify-content: center;
-          min-width: 100px;
-          // padding: 0 10px;
-          // height: 35px;
-          background-color: #3498db;
-          color: white;
-          border-radius: 6px;
-          cursor: pointer;
-          label {
-            height: 35px;
-            padding: 0 10px;
+          justify-content: space-between;
+          .item-1{
+            flex: 1;
+            flex-basis: 400px;
+            
             display: flex;
+            flex-wrap: wrap;
+            row-gap: 5px;
+            column-gap: 15px;
             align-items: center;
-            cursor: pointer;
-            svg {
-              margin-right: 3px;
+            p {
+              font-weight: 600;
+            }
+            .avatar {
+              // margin-right: 15px;
+              width: 100px;
+              height: 100px;
+    
+              @media only screen and (max-width: 799px) {
+                width: rem(90);
+                height: rem(90);
+              }
+              svg{
+                  width: 75%;
+                  height: 75%;
+              }
+            }
+            .btn-avatar-wrapper {
+              font-size: 14px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #3498db;
+              color: white;
+              border-radius: 6px;
+              cursor: pointer;
+              label {
+                height: 35px;
+                padding: 0 10px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                svg {
+                  margin-right: 3px;
+                }
+              }
+            }           
+          }
+          .verifikasi {
+            border-radius: 15px;
+            padding: 3px 10px;
+            font-size: 12px;
+            p {
+              font-weight: normal;
+            }
+            span {
+              cursor: pointer;
+              color: #3598db;
+              text-decoration: underline;
             }
           }
-        }
-
-        .verifikasi {
-          border-radius: 15px;
-          padding: 3px 10px;
-          font-size: 12px;
-          p {
-            font-weight: normal;
-          }
-          span {
-            cursor: pointer;
-            color: #3598db;
-            text-decoration: underline;
-          }
-        }
       }
 
       .btn-text {
@@ -184,7 +205,7 @@
         font-weight: 400;
         background: transparent;
         border: none;
-        font-size: 14px;
+        font-size: rem(14);
         &:hover {
           cursor: pointer;
           color: #00bcd4;
@@ -224,7 +245,7 @@
       // min-width: 100px;
       button {
         padding: 0 10px;
-        height: 35px;
+        height: 24px;
         // min-width: 100px;
         font-weight: normal;
         svg,

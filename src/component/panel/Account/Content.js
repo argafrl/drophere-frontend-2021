@@ -21,7 +21,6 @@ import EditPage from "./EditPage";
 
 import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
-import ProfileNew from "./ProfileNew";
 import AccountFooter from "./AccountFooter";
 
 function MenuItem(props) {
@@ -186,7 +185,7 @@ class Content extends Component {
                 exact
                 component={EditPage}
               />
-              <Route path="/account/profile" exact component={ProfileNew} />
+              <Route path="/account/profile" exact component={Profile} />
               <Route path="/account/storage" exact component={Storage} />
               <Route path="/account/support" exact component={Support} />
               <Redirect from="*" to="/not-found" />

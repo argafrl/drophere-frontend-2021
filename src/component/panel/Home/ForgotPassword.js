@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-import style from "../../css/forgot-password.module.scss";
-import Loading from "./Loading";
+import React, { useContext, useEffect } from "react";
+import style from "../../../css/forgot-password.module.scss";
+import Loading from "../../common/Loading";
 import { Input, Dialog } from "@bccfilkom/designsystem/build";
-import { UserContext } from "../../contexts/UserContext";
-import { SnackbarContext } from "../../contexts/SnackbarContext";
-import { useEffect } from "react";
+import { UserContext } from "../../../contexts/UserContext";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const ForgotPassword = (props) => {
   const open = props.open;
@@ -98,8 +97,6 @@ const ForgotPassword = (props) => {
                         width: "100%",
                         marginBottom: "5px",
                       }}
-                      // hintText={state.error}
-                      // action={state.error}
                     />
                   </div>
                 </div>
@@ -112,32 +109,6 @@ const ForgotPassword = (props) => {
             ) : (
               ""
             )}
-            {/* {state.success ? (
-                <div className={style["actions-wrapper"]}>
-                  <Button onClick={onCancelHandler} type="primary" autoFocus>
-                    Ok, Mengerti
-                  </Button>
-                </div>
-              ) : (
-                <div className={style["actions-wrapper"]}>
-                  <Button onClick={onCancelHandler} type="text">
-                    Batalkan
-                  </Button>
-                  <Button
-                    className={style["button-confirm"]}
-                    type="primary"
-                    autoFocus
-                  >
-                    Konfirmasi
-                  </Button>
-                </div>
-              )} */}
-            {/* <Button onClick={onCancelHandler} type="text">
-                          Batalkan
-                      </Button>
-                      <Button type="primary" autoFocus>
-                          Konfirmasi
-                      </Button> */}
           </div>
           {state.isLoading ? <Loading /> : ""}
         </Dialog>

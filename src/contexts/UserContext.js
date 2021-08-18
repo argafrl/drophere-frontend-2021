@@ -17,6 +17,9 @@ export const defaultValue = {
   isUpdating: false,
   successUpdating: false,
   errorUpdating: "",
+  successUpdatingForgotPassword: false,
+  isUpdatingForgotPassword: false,
+  errorUpdatingForgotPassword: "",
   login: () => {},
   register: () => {},
   fetchUserInfo: () => {},
@@ -25,6 +28,7 @@ export const defaultValue = {
   update: () => {},
   logout: () => {},
   clearError: () => {},
+  updateForgotPassword: () => {},
 };
 
 export const UserContext = React.createContext(defaultValue);
@@ -97,6 +101,34 @@ export class UserStore extends React.Component {
       successSendForgotPassword: false,
     });
   };
+
+  updateForgotPassword = async (email, token, password) => {
+    try{
+      this.setState({ isUpdatingForgotPassword: true });
+
+      const { data } = await mainApi.post("/forgot-password", {
+        params: {
+          email: email
+        },
+        data: {
+          token: token,
+          password: password,
+        }
+      });
+
+      this.setState({
+        successUpdatingForgotPassword: data.is_success,
+        errorUpdatingForgotPassword: "",
+      })
+    } catch (err) {
+      this.setState({
+        successUpdatingForgotPassword: false,
+        errorUpdatingForgotPassword: err.message,
+      });
+    } finally {
+      this.setState({ isUpdatingForgotPassword: false, successUpdatingForgotPassword: false });
+    }
+  }
 
   update = async (profileImage, name, email) => {
     try {

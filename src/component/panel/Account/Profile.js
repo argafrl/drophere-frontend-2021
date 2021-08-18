@@ -1,117 +1,94 @@
-import React, { Component } from "react";
+import React, { useEffect, useState, useContext } from "react";
+
 import style from "../../../css/account-profile.module.scss";
 import Loading from "../../common/Loading";
 import Preloader from "../../common/Preloader";
-import { Input, Button } from "@bccfilkom/designsystem/build";
+
+import { Input, Button, Password } from "@bccfilkom/designsystem/build";
 import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
+
 import { UserContext } from "../../../contexts/UserContext";
 
-class Profile extends Component {
-  static contextType = UserContext;
+import { Helmet } from "react-helmet";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
-  state = {
-    openNama: false,
-    openPassword: false,
+const Profile = () => {
 
-    verifikasi: false,
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, update, isUpdating, successUpdating, errorUpdating } = useContext(UserContext);
 
-    name: "",
-    email: "",
-    profile_image: "",
+  const snackbar = useContext(SnackbarContext);
 
-    currentPassword: "",
-    newPassword: "",
-    retypePassword: "",
+  const [openNama, setOpenNama] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
+  const [verifikasi, setVerifikasi] = useState(false);
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profileImage, setProfileImage] = useState("");
 
-    nameErr: null,
-    currentPasswordErr: null,
-    newPasswordErr: null,
-    retypePasswordErr: null,
+  const [isShowCurrent, setIsShowCurrent] = useState(false)
+  const [isShowNew, setIsShowNew] = useState(false)
+  const [isShowRetype, setIsShowRetype] = useState(false)
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
 
-    isUpdateProfileError: null,
-    isUpdatePasswordError: null,
+  const [nameErr, setNameErr] = useState(null);
+  const [currentPasswordErr, setCurrentPasswordErr] = useState(null);
+  const [newPasswordErr, setNewPasswordErr] = useState(null);
+  const [retypePasswordErr, setRetypePasswordErr] = useState(null);
 
-    isUpdateProfileLoading: false,
-    isUpdatePasswordLoading: false,
+  const [isUpdateProfileError, setIsUpdateProfileError] = useState(null);
+  const [isUpdatedPasswordError, setIsUpdatedPasswordError] = useState(null);
+
+  const [isUpdateProfileLoading, setIsUpdateProfileLoading] = useState(false);
+  const [isUpdatePasswordLoading, setIsUpdatePasswordLoading] = useState(false);
+
+  const handleClickOpenNama = () => {
+    setOpenNama(!openNama);
   };
 
-  handleClickOpenNama = () => {
-    this.setState({
-      openNama: !this.state.openNama,
-    });
+  const handleClickOpenPassword = () => {
+    setOpenPassword(!openPassword);
   };
 
-  handleClickOpenPassword = () => {
-    this.setState({
-      openPassword: !this.state.openPassword,
-    });
+  const handleVerifikasi = (e) => {
+    setVerifikasi(e);
   };
 
-  handleVerifikasi = (e) => {
-    this.setState({
-      verifikasi: e,
-    });
-  };
-
-  componentDidMount() {
-    this.context.fetchUserInfo();
+  const handleProfileChange = (e) => {
+    // console.log(e.target.files[0]);
+    setProfileImage(e.target.files[0]);
+    console.log(profileImage);
   }
 
-  componentDidUpdate() {
-    if (this.context.userInfo) {
-      this.setState({
-        name: this.context.userInfo.full_name,
-        email: this.context.userInfo.email,
-        profile_image: this.context.userInfo.profile_image,
-        verifikasi: this.context.userInfo.is_verified,
-      });
-    }
-  }
-
-  shouldComponentUpdate(_, nextState) {
-    if (
-      this.state.name === nextState.name &&
-      this.state.email === nextState.email &&
-      this.state.currentPassword === nextState.currentPassword &&
-      this.state.openNama === nextState.openNama &&
-      this.state.openPassword === nextState.openPassword
-    ) {
-      return false;
-    }
-    return true;
-  }
-
-  onUpdateProfile = async (e) => {
+  const onUpdateProfile = async (e) => {
     e.preventDefault();
+    console.log(profileImage)
+    update(profileImage, name, email);
   };
 
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
-  };
+  // const handleChange = (name) => (event) => {
+  //   setState({ [name]: event.target.value });
+  // };
 
-  onSave = async (e) => {
+  const onSave = async (e) => {
     e.preventDefault();
-
-    const { name } = this.state;
 
     if (name.length <= 0) {
-      this.setState({ nameErr: new Error("Nama tidak boleh kosong") });
+      setNameErr(new Error("Nama tidak boleh kosong"))
       return;
     }
 
-    this.setState({
-      nameErr: null,
-      isUpdateProfileLoading: true,
-      isUpdateProfileError: null,
-    });
+    setNameErr(null);
+    setIsUpdateProfileLoading(true);
+    setIsUpdateProfileError(null);
   };
 
-  onUpdatePassword = async (e) => {
+  const onUpdatePassword = async (e) => {
     e.preventDefault();
-
-    const { currentPassword, retypePassword, newPassword } = this.state;
 
     let hasError = false;
     let errorStates = {
@@ -155,42 +132,79 @@ class Profile extends Component {
       hasError = true;
     }
 
-    this.setState({
-      ...errorStates,
-      isUpdatePasswordLoading: !hasError,
-      isUpdatePasswordError: null,
-    });
+    // this.setState({
+    //   ...errorStates,
+    //   isUpdatePasswordLoading: !hasError,
+    //   isUpdatePasswordError: null,
+    // });
+    setIsUpdateProfileLoading(!hasError);
+    setIsUpdatedPasswordError(null);
     if (hasError) {
       return;
     }
   };
 
-  render() {
-    return (
-      <div className={style.container}>
-        <h1>Profil</h1>
-        <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
-        {!this.context.isFetchingUserInfo ? (
-          <div className="opening-transition">
-            <div className={style["form-wrapper"]}>
-              <div
-                className={style["form-container"]}
-                style={{ borderTop: "none" }}
-              >
-                <div className={style["form-unedit"]}>
-                  <div className={style.left}>
-                    <p>Foto</p>
-                  </div>
+  useEffect(() => {
+    // fetchUserInfo();
+    if (userInfo) {
+      setName(userInfo.full_name);
+      setEmail(userInfo.email);
+      setProfileImage(userInfo.profile_image);
+      setVerifikasi(userInfo.is_verified)
+    } else {
+      fetchUserInfo();
+    }
+    if (successUpdating){
+      snackbar.success("Profil berhasil diperbarui");
+      clearUserInfo();
+    }
+    else if (errorUpdating){
+      snackbar.error(errorUpdating)
+    }
+  },[
+    userInfo,
+    successUpdating,
+    errorUpdating
+  ])
 
-                  <div className={style.middle}>
+  useEffect(() => {
+    fetchUserInfo();
+  },[])
+
+  return (
+    <div className={style.container}>
+      <Helmet>
+          <title>Profil</title>
+      </Helmet>
+      <h1>Profil</h1>
+      <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
+      {!isFetchingUserInfo ? (
+        <div className="opening-transition">
+          <div className={style["form-wrapper"]}>
+            
+            {/* Input Foto */}
+            <div
+              className={style["form-container"]}
+              style={{ borderTop: "none" }}
+            >
+              <div className={style["form-unedit"]}>
+
+                <div className={style.left}>
+                  <p>Foto</p>
+                </div>
+
+                <div className={style.middle}>
+                  <div className={style["item-1"]}>
                     <Avatar
                       alt="Travis Howard"
-                      src={this.state.profile_image}
+                      // src={profileImage}
                       className={style.avatar}
                     />
                     <div className={style["btn-ubah"]}>
                       <input
                         type="file"
+                        // value={profileImage}
+                        onChange={(e) => setProfileImage(e.target.files[0])}
                         name="avatar"
                         id="btn-avatar"
                         accept="image/*"
@@ -204,214 +218,231 @@ class Profile extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className={style.right}>
+
+                  <div className={style["item-2"]}>
                     <button
                       type="button"
-                      onClick={this.handleClickOpen}
+                      // onClick={handleClickOpen}
                       className={style["btn-text"]}
                     >
                       <Icon>delete</Icon>Hapus
                     </button>
                   </div>
+                  
                 </div>
               </div>
-              <div className={style["form-container"]}>
-                {this.state.openNama ? (
-                  <form
-                    onSubmit={this.onUpdateProfile}
-                    className={style["form-edit"]}
-                  >
-                    <div className={style["form-text"]}>
-                      <p>Nama</p>
-                    </div>
-                    <div className={style["input-wrapper"]}>
+            </div>
+            
+            {/* Input Nama */}
+            <div className={style["form-container"]}>
+              {openNama ? (
+                <form
+                  onSubmit={onUpdateProfile}
+                  className={style["form-edit"]}
+                >
+                  <div className={style["form-text"]}>
+                    <p>Nama</p>
+                  </div>
+                  <div className={style["input-wrapper"]}>
+                    <div className={style["input-container"]}>
                       <Input
-                        handleChange={this.handleChange("name")}
-                        value={this.state.name}
+                        handleChange={(e) => setName(e.target.value)}
+                        value={name}
                         className={style["input"]}
                         placeholder="Nama Lengkap"
                       />
-                      <div className={style["button-wrapper"]}>
-                        <Button
-                          type="secondary"
-                          onClick={this.handleClickOpenNama}
-                          className={style["btn-batal"]}
-                        >
-                          Batalkan
-                        </Button>
-                        <Button
-                          size="large"
-                          variant="outlined"
-                          color="primary"
-                          type="submit"
-                        >
-                          Simpan
-                        </Button>
-                      </div>
                     </div>
+                    <div className={style["button-wrapper"]}>
+                      <Button
+                        type="secondary"
+                        onClick={handleClickOpenNama}
+                        className={style["btn-batal"]}
+                      >
+                        Batalkan
+                      </Button>
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        color="primary"
+                        type="submit"
+                      >
+                        Simpan
+                      </Button>
+                    </div>
+                  </div>
 
-                    {this.state.isUpdateProfileLoading ? <Loading /> : ""}
-                  </form>
-                ) : (
-                  <div className={style["form-unedit"]}>
-                    <div className={style.left}>
-                      <p>Nama</p>
+                  {isUpdateProfileLoading ? <Loading /> : ""}
+                </form>
+              ) : (
+                <div className={style["form-unedit"]}>
+                  <div className={style.left}>
+                    <p>Nama</p>
+                  </div>
+                  <div className={style.middle}>
+                    <div className={style["item-1"]}>
+                      <p>{name}</p>
                     </div>
-                    <div className={style.middle}>
-                      <p>{this.state.name}</p>
-                    </div>
-                    <div className={style.right}>
+                    <div className={style["item-2"]}>
                       <button
                         type="button"
-                        onClick={this.handleClickOpenNama}
+                        onClick={handleClickOpenNama}
                         className={style["btn-text"]}
                       >
                         <Icon>edit</Icon>Edit
                       </button>
                     </div>
                   </div>
-                )}
+                  
+                </div>
+              )}
+            </div>
+
+            {/* Input Email */}
+            <div className={style["form-container"]}>
+              <div className={style["form-unedit"]}>
+                <div className={style.left}>
+                  <p>Email</p>
+                </div>
+
+                <div className={style.middle}>
+                  <div className={style["item-1"]}>
+                  <p>{email}</p>
+                  { email && (
+                    <div
+                      className={style.verifikasi}
+                      style={ verifikasi
+                          ? { backgroundColor: "#40C02B" }
+                          : { backgroundColor: "#F4B12F" }}>
+                      { verifikasi ? (
+                        <p style={{ color: "white" }}>Terverifikasi</p>
+                      ) : (
+                        <p> Belum terverifikasi.{" "}
+                          <span onClick={handleVerifikasi}>
+                            Kirim ulang
+                          </span>
+                        </p>
+                      )}
+                    </div>)}
+                  </div> 
+                </div>
               </div>
-              <div className={style["form-container"]}>
+            </div>
+
+            {/* Input Password */}
+            <div className={style["form-container"]}>
+              {openPassword ? (
+                <form
+                  onSubmit={onUpdatePassword}
+                  className={style["form-edit"]}
+                >
+                  <div
+                    className={style["form-text"]}
+                    // style={{ marginTop: "5px" }}
+                  >
+                    <p>Password</p>
+                  </div>
+                  <div className={style["input-wrapper"]}>
+                    <div className={style["input-container"]}>
+                    <Password
+                      type="password"
+                      placeholder="Password lama"
+                      disabled={isUpdatePasswordLoading}
+                      hintText={
+                        currentPasswordErr
+                          ? currentPasswordErr.message
+                          : ""
+                      }
+                      error={currentPasswordErr != null}
+                      name="current_password"
+                      value={currentPassword}
+                      handleChange={(e) => setCurrentPassword(e.target.value)}
+                      visibilityEye={isShowCurrent}
+                      handleShow={() => setIsShowCurrent(!isShowCurrent)}
+                    />
+                    
+                    <Password
+                      type="password"
+                      placeholder="Password Baru"
+                      disabled={isUpdatePasswordLoading}
+                      hintText={
+                        newPasswordErr
+                          ? newPasswordErr.message
+                          : ""
+                      }
+                      error={newPasswordErr != null}
+                      name="new_password"
+                      value={newPassword}
+                      handleChange={(e) => setNewPassword(e.target.value)}
+                      visibilityEye={isShowNew}
+                      handleShow={() => setIsShowNew(!isShowNew)}
+                    />
+
+                    <Password
+                      type="password"
+                      placeholder="Ulangi Password"
+                      disabled={isUpdatePasswordLoading}
+                      name="retype_password"
+                      hintText={
+                        retypePasswordErr
+                          ? retypePasswordErr.message
+                          : ""
+                      }
+                      error={retypePasswordErr != null}
+                      value={retypePassword}
+                      handleChange={(e) => setRetypePassword(e.target.value)}
+                      visibilityEye={isShowRetype}
+                      handleShow={() => setIsShowRetype(!isShowRetype)}
+                    />
+                    </div>
+
+                    <div className={style["button-wrapper"]}>
+                      <Button
+                        type="secondary"
+                        onClick={handleClickOpenPassword}
+                        className={style["btn-batal"]}
+                      >
+                        Batalkan
+                      </Button>
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        color="primary"
+                        type="submit"
+                      >
+                        Simpan
+                      </Button>
+                    </div>
+                  </div>
+
+                  {isUpdatePasswordLoading ? <Loading /> : ""}
+                </form>
+              ) : (
                 <div className={style["form-unedit"]}>
                   <div className={style.left}>
-                    <p>Email</p>
+                    <p>Password</p>
                   </div>
 
                   <div className={style.middle}>
-                    <p style={{ color: "#05A1D1" }}>{this.state.email}</p>
-                    {this.state.email && (
-                      <div
-                        className={style.verifikasi}
-                        style={
-                          this.state.verifikasi
-                            ? { backgroundColor: "#40C02B" }
-                            : { backgroundColor: "#F4B12F" }
-                        }
+                    <div className={style["btn-ubah"]}>
+                      <Button
+                        condensed
+                        icon="/img/icons/edit.svg"
+                        onClick={handleClickOpenPassword}
                       >
-                        {this.state.verifikasi ? (
-                          <p style={{ color: "white" }}>Terverifikasi</p>
-                        ) : (
-                          <p>
-                            Belum terverifikasi.{" "}
-                            <span onClick={this.handleVerifikasi}>
-                              Kirim ulang
-                            </span>
-                          </p>
-                        )}
-                      </div>
-                    )}
+                        Ubah Password
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className={style["form-container"]}>
-                {this.state.openPassword ? (
-                  <form
-                    onSubmit={this.onUpdatePassword}
-                    className={style["form-edit"]}
-                  >
-                    <div
-                      className={style["form-text"]}
-                      style={{ marginTop: "5px" }}
-                    >
-                      <p>Password</p>
-                    </div>
-                    <div className={style["input-wrapper"]}>
-                      <Input
-                        type="password"
-                        placeholder="Password lama"
-                        disabled={this.state.isUpdatePasswordLoading}
-                        hintText={
-                          this.state.currentPasswordErr
-                            ? this.state.currentPasswordErr.message
-                            : ""
-                        }
-                        error={this.state.currentPasswordErr != null}
-                        name="current_password"
-                        value={this.state.currentPassword}
-                        onChange={this.handleChange("currentPassword")}
-                      />
-                      <Input
-                        type="password"
-                        placeholder="Password Baru"
-                        disabled={this.state.isUpdatePasswordLoading}
-                        // fullWidth
-                        hintText={
-                          this.state.newPasswordErr
-                            ? this.state.newPasswordErr.message
-                            : ""
-                        }
-                        error={this.state.newPasswordErr != null}
-                        name="new_password"
-                        value={this.state.newPassword}
-                        onChange={this.handleChange("newPassword")}
-                      />
-
-                      <Input
-                        type="password"
-                        placeholder="Ulangi Password"
-                        disabled={this.state.isUpdatePasswordLoading}
-                        // fullWidth
-                        name="retype_password"
-                        hintText={
-                          this.state.retypePasswordErr
-                            ? this.state.retypePasswordErr.message
-                            : ""
-                        }
-                        error={this.state.retypePasswordErr != null}
-                        value={this.state.retypePassword}
-                        onChange={this.handleChange("retypePassword")}
-                      />
-
-                      <div className={style["button-wrapper"]}>
-                        <Button
-                          type="secondary"
-                          onClick={this.handleClickOpenPassword}
-                          className={style["btn-batal"]}
-                        >
-                          Batalkan
-                        </Button>
-                        <Button
-                          size="large"
-                          variant="outlined"
-                          color="primary"
-                          type="submit"
-                        >
-                          Simpan
-                        </Button>
-                      </div>
-                    </div>
-
-                    {this.state.isUpdatePasswordLoading ? <Loading /> : ""}
-                  </form>
-                ) : (
-                  <div className={style["form-unedit"]}>
-                    <div className={style.left}>
-                      <p>Password</p>
-                    </div>
-
-                    <div className={style.middle}>
-                      <div className={style["btn-ubah"]}>
-                        <Button
-                          type="primary"
-                          onClick={this.handleClickOpenPassword}
-                        >
-                          <Icon>edit</Icon>Ubah Password
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        ) : (
-          <Preloader />
-        )}
-      </div>
-    );
-  }
+        </div>
+      ) : (
+        <Preloader />
+      )}
+    </div>
+  );
 }
-
+ 
 export default Profile;

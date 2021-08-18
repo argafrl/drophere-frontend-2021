@@ -11,6 +11,7 @@ import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
 import Footer from "../../common/Footer";
 import mainApi from "../../../api/mainApi";
+import ResetPasswordNew from "./ResetPasswordNew";
 
 const Home = ({ location }) => {
   useMemo(() => {
@@ -22,7 +23,8 @@ const Home = ({ location }) => {
     <div className={style.container}>
       <div className={style.content}>
         {(location.pathname === "/home" ||
-          location.pathname === "/register") && (
+          location.pathname === "/register" ||
+          location.pathname === "/reset-password") && (
           <div className={style.header + " left-to-right-anim"}>
             <Header />
           </div>
@@ -33,6 +35,7 @@ const Home = ({ location }) => {
             <Redirect from="/login" to="/home" />
             <AuthRoute path="/home" exact component={Login} />
             <AuthRoute path="/register" exact component={Register} />
+            <AuthRoute path="/reset-password" exact component={ResetPasswordNew} />
             <PrivateRoute
               path="/connect-account"
               exact
