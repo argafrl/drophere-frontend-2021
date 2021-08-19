@@ -86,8 +86,8 @@ const Content = () => {
   };
 
   useEffect(() => {
-    getSubmissionInfo(slug);
-  }, [slug]);
+    getSubmissionInfo();
+  }, []);
 
   if (error === "entry not found") {
     return <NotFound />;

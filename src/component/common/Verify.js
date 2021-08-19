@@ -1,24 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import Preloader from "../common/Preloader";
 
 import { Button } from "@bccfilkom/designsystem/build";
 import style from "../../css/verify.module.scss";
+import mainApi from "../../api/mainApi";
+import { SnackbarContext } from "../../contexts/SnackbarContext";
+import { getErrorMessage } from "../../helpers";
 
 const Verify = () => {
+  const { search } = useLocation();
+  const snackbar = useContext(SnackbarContext);
+  const history = useHistory();
+
+  const [isVerifyingAccount, setIsVerifyingAccount] = useState(false);
+
+  const verifyAccount = async (token) => {
+    try {
+      setIsVerifyingAccount(true);
+      await mainApi.get(`/verify?verificationToken=${token}`);
+    } catch (error) {
+      snackbar.error(getErrorMessage(error));
+      history.push("/");
+    } finally {
+      setIsVerifyingAccount(false);
+    }
+  };
+
+  useEffect(() => {
+    const query = new URLSearchParams(search);
+    const verificationToken = query.get("verificationToken");
+    if (verificationToken) {
+      verifyAccount(verificationToken);
+    } else {
+      history.push("/");
+    }
+  }, []);
+
   return (
     <div className={style["container"]}>
-      <img src="/img/not-found-old.png" alt="not-found" />
-      <h2>Email Terverifikasi!</h2>
-      <p>
-        Selamat! email anda telah berhasil diverifikasi. Silahkan kembali ke beranda.
-      </p>
-      <Link to="/">
-        <Button>
-          Kembali ke beranda
-        </Button>
-      </Link>
-  </div>
+      {isVerifyingAccount ? (
+        <Preloader />
+      ) : (
+        <>
+          <img src="/img/not-found-old.png" alt="not-found" />
+          <h2>Email Terverifikasi!</h2>
+          <p>
+            Selamat! email anda telah berhasil diverifikasi. Silahkan kembali ke
+            beranda.
+          </p>
+          <Link to="/">
+            <Button>Kembali ke beranda</Button>
+          </Link>
+        </>
+      )}
+    </div>
   );
-}
- 
+};
+
 export default Verify;

@@ -5,14 +5,12 @@ import { StorageContext } from "../../../contexts/StorageContext";
 import { UserContext } from "../../../contexts/UserContext";
 import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
-import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const ConnectAccount = () => {
-  const { connectGoogleDrive, getOAuthUrl, isFetchingOAuthUrl, oAuthUrl } =
+  const { connectGoogleDrive, getOAuthUrl, oAuthUrl } =
     useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
-  const snackbar = useContext(SnackbarContext);
 
   const [useDrive, setUseDrive] = useState(false);
   const [confirmModalShown, showConfirmModal] = useState(false);
@@ -21,21 +19,21 @@ const ConnectAccount = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const query = new URLSearchParams(search);
-    const state = query.get("state");
-    const code = query.get("code");
-    const scope = query.get("scope");
-    if (state && code && scope) {
-      connectGoogleDrive({ state, code, scope });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, connectGoogleDrive]);
-
-  useEffect(() => {
     if (userInfo) {
       setUseDrive(userInfo.is_gdrive_connected);
     }
   }, [userInfo, fetchUserInfo]);
+
+  useEffect(() => {
+    const query = new URLSearchParams(search);
+    const state = query.get("state");
+    const code = query.get("code");
+    const scope = query.get("scope");
+    if (state && code && scope && userInfo && !userInfo.is_gdrive_connected) {
+      connectGoogleDrive({ state, code, scope });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, connectGoogleDrive, userInfo]);
 
   useEffect(() => {
     if (oAuthUrl) {
@@ -109,7 +107,7 @@ const ConnectAccount = () => {
         </Button>
       </div>
       <Portal>
-        <div class={style["dialog"]}>
+        <div className={style["dialog"]}>
           <Dialog
             visible={confirmModalShown}
             onCancel={() => showConfirmModal(false)}

@@ -27,7 +27,6 @@ const AddNewPage = () => {
   const [storage, setStorage] = useState(1);
   const [usePassword, setUsePassword] = useState(false);
   const [password, setPassword] = useState("");
-  const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
   const [fileTypes, setFileTypes] = useState({
     PDF: true,
@@ -57,7 +56,7 @@ const AddNewPage = () => {
       return;
     }
 
-    if (!useDeadline || !deadline) {
+    if (!deadline) {
       snackbar.error("Deadline harus ditetapkan");
       return;
     }
@@ -75,22 +74,8 @@ const AddNewPage = () => {
       storage_type: 1,
     };
 
-    updateSubmission(slug, body);
+    updateSubmission(body);
   };
-
-  useEffect(() => {
-    if (!userSubmissionDetail) {
-      getUserSubmissionDetail(slug);
-    } else {
-      setTitle(userSubmissionDetail.title);
-      setUsePassword(!!userSubmissionDetail.password);
-      setPassword(userSubmissionDetail.password);
-      setDescription(userSubmissionDetail.description);
-      setUseDeadline(!!userSubmissionDetail.due_time);
-      setDeadline(userSubmissionDetail.due_time);
-      setStorage(userSubmissionDetail.storage_type);
-    }
-  }, [userSubmissionDetail, slug]);
 
   const getUserSubmissionDetail = async () => {
     try {
@@ -108,16 +93,29 @@ const AddNewPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!userSubmissionDetail) {
+      getUserSubmissionDetail(slug);
+    } else {
+      setTitle(userSubmissionDetail.title);
+      setUsePassword(!!userSubmissionDetail.password);
+      setPassword(userSubmissionDetail.password);
+      setDescription(userSubmissionDetail.description);
+      setDeadline(userSubmissionDetail.due_time);
+      setStorage(userSubmissionDetail.storage_type);
+    }
+  }, [userSubmissionDetail, slug]);
+
   const updateSubmission = async (data) => {
     try {
       setIsUpdatingSubmission(true);
-      
+
       await mainApi.patch(`/submissions/${slug}/edit`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
-      
+
       snackbar.success("Halaman Berhasil Diperbarui");
       getUserSubmissionDetail(slug);
     } catch (error) {
@@ -187,6 +185,7 @@ const AddNewPage = () => {
                 <div>
                   <Switcher
                     checked={specificFileTypes}
+                    disabled
                     onSlide={() => {
                       setSpecificFileTypes(!specificFileTypes);
                     }}
@@ -359,25 +358,11 @@ const AddNewPage = () => {
             <div className={style["form__control"]}>
               <div className={style["form__control__switcher"]}>
                 <div>
-                  <Switcher
-                    checked={useDeadline}
-                    onSlide={() => {
-                      if (useDeadline) {
-                        setDeadline("");
-                      }
-                      setUseDeadline(!useDeadline);
-                    }}
-                  />
                   <label>Terapkan Deadline</label>
                 </div>
-                <p>
-                  Gunakan password agar orang asing tidak dapat mengakses
-                  halaman ini
-                </p>
                 <Input
                   value={deadline}
                   type="datetime-local"
-                  disabled={!useDeadline}
                   handleChange={(e) => setDeadline(e.target.value)}
                 />
               </div>

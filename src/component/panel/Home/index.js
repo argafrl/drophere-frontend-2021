@@ -18,9 +18,6 @@ import Contributor from "../../common/Contributor";
 import Verify from "../../common/Verify";
 import Footer from "../../common/Footer";
 
-
-
-
 const Home = ({ location }) => {
   useMemo(() => {
     mainApi.defaults.headers.common["Authorization"] =
@@ -43,18 +40,21 @@ const Home = ({ location }) => {
             <Redirect from="/login" to="/home" />
             <AuthRoute path="/home" exact component={Login} />
             <AuthRoute path="/register" exact component={Register} />
-            <AuthRoute path="/reset-password" exact component={ResetPasswordNew} />
+            <AuthRoute
+              path="/reset-password"
+              exact
+              component={ResetPasswordNew}
+            />
             <PrivateRoute
               path="/connect-account"
               exact
               component={ConnectAccount}
             />
             <Route path="/contributor" component={Contributor} />
-            <Route path="/verify" component={Verify} />
+            <PrivateRoute path="/verify-email" component={Verify} />
             <Route path="*" component={NotFound} />
           </Switch>
         </div>
-        
       </div>
       <Footer />
     </div>

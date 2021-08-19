@@ -29,7 +29,6 @@ const AddNewPage = () => {
   const [storage, setStorage] = useState(1);
   const [usePassword, setUsePassword] = useState(false);
   const [password, setPassword] = useState("");
-  const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
   const [fileTypes, setFileTypes] = useState({
     PDF: true,
@@ -61,7 +60,7 @@ const AddNewPage = () => {
       return;
     }
 
-    if (!useDeadline || !deadline) {
+    if (!deadline) {
       snackbar.error("Deadline harus ditetapkan");
       return;
     }
@@ -92,7 +91,7 @@ const AddNewPage = () => {
       snackbar.error("Connect ke Google Drive terlebih dahulu");
       history.push("/account/storage");
     }
-  }, [userInfo]);
+  }, [userInfo, snackbar, history]);
 
   const createSubmission = async (data) => {
     try {
@@ -171,6 +170,7 @@ const AddNewPage = () => {
           <div className={style["form__control__switcher"]}>
             <div>
               <Switcher
+                disabled
                 checked={multipleFiles}
                 onSlide={() => setMultipleFiles(!multipleFiles)}
               />
@@ -183,6 +183,7 @@ const AddNewPage = () => {
           <div className={style["form__control__switcher"]}>
             <div>
               <Switcher
+                disabled
                 checked={specificFileTypes}
                 onSlide={() => {
                   setSpecificFileTypes(!specificFileTypes);
@@ -351,25 +352,11 @@ const AddNewPage = () => {
         <div className={style["form__control"]}>
           <div className={style["form__control__switcher"]}>
             <div>
-              <Switcher
-                checked={useDeadline}
-                onSlide={() => {
-                  if (useDeadline) {
-                    setDeadline("");
-                  }
-                  setUseDeadline(!useDeadline);
-                }}
-              />
               <label>Terapkan Deadline</label>
             </div>
-            <p>
-              Gunakan password agar orang asing tidak dapat mengakses halaman
-              ini
-            </p>
             <Input
               value={deadline}
               type="datetime-local"
-              disabled={!useDeadline}
               handleChange={(e) => setDeadline(e.target.value)}
             />
           </div>

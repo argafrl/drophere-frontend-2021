@@ -1,71 +1,77 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Portal } from "react-portal";
 import { Helmet } from "react-helmet";
-
 import Loading from "../../common/Loading";
-
-import { UserContext } from "../../../contexts/UserContext";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-
-import { Card, Button, Input, Password, Dialog } from "@bccfilkom/designsystem/build";
+import { Card, Button, Password, Dialog } from "@bccfilkom/designsystem/build";
 import style from "../../../css/login.module.scss";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
 const ResetPasswordNew = () => {
-  const { 
-    updateForgotPassword, 
-    isUpdatingForgotPassword, 
-    successUpdatingForgotPassword, 
-    errorUpdatingForgotPassword, 
-    clearError, 
-    isLogin, 
-    userInfo, 
-    fetchUserInfo, 
-    clearUserInfo } = useContext(UserContext);
-
+  const history = useHistory();
   const snackbar = useContext(SnackbarContext);
+  const { search } = useLocation();
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [isShowNew, setIsShowNew] = useState(false)
-  const [isShowRetype, setIsShowRetype] = useState(false)
-
-  const [email, setEmail] = useState("")
   const [newPassword, setNewPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isShowNew, setIsShowNew] = useState(false);
+  const [isShowRetype, setIsShowRetype] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
 
-  const history = useHistory();
-
-  const handleUpdateForgotPassword = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    clearError();
-    // updateForgotPassword(token, email, newPassword)
+
+    if (!newPassword || !retypePassword) {
+      snackbar.error("Password dan konfirmasi password tidak boleh kosong");
+      return;
+    }
+
+    if (newPassword !== retypePassword) {
+      snackbar.error("Password dan konfirmasi password harus sama");
+      return;
+    }
+
+    resetPassword();
+  };
+
+  const resetPassword = async () => {
+    try {
+      setIsResettingPassword(true);
+      await mainApi.post(`/users/forgot-password?email=${email}`, {
+        token,
+        password: newPassword,
+      });
+      setOpenDialog(!openDialog);
+    } catch (error) {
+      snackbar.error(getErrorMessage(error));
+    } finally {
+      setIsResettingPassword(false);
+    }
   };
 
   useEffect(() => {
-    if (userInfo) {
-      setEmail(userInfo.email);
+    const query = new URLSearchParams(search);
+    const email = query.get("email");
+    const verificationToken = query.get("verificationToken");
+
+    if (email && verificationToken) {
+      setEmail(email);
+      setToken(verificationToken);
     } else {
-      fetchUserInfo();
+      history.push("/");
     }
-    if (successUpdatingForgotPassword){
-      snackbar.success("Profil berhasil diperbarui");
-      clearUserInfo();
-    }
-    else if (errorUpdatingForgotPassword){
-      snackbar.error(errorUpdatingForgotPassword)
-    }
-  }, [
-    userInfo,
-    successUpdatingForgotPassword,
-  ])
+  }, []);
 
   return (
     <div className={style.container}>
-
       <Helmet>
-          <title>Reset Password</title>
+        <title>Reset Password</title>
       </Helmet>
-
       <Portal>
         <div className={style.dialog}>
           <Dialog
@@ -74,7 +80,7 @@ const ResetPasswordNew = () => {
             primaryButton={{
               text: "Masuk",
               onClick: () => {
-                history.push('/');
+                history.replace("/");
               },
             }}
             secondaryButton={""}
@@ -82,21 +88,21 @@ const ResetPasswordNew = () => {
             <div className={style.content}>
               <div className={style["content-container"]}>
                 <h1>Password Berhasil Diubah!</h1>
-                <p>Password anda telah diubah. Silahkan mencoba untuk masuk kembali.</p>
+                <p>
+                  Password anda telah diubah. Silahkan mencoba untuk masuk
+                  kembali.
+                </p>
               </div>
             </div>
           </Dialog>
         </div>
       </Portal>
-
       <Card className={style.form}>
         <div className={style.header}>
           <h1>Atur Ulang Password</h1>
-          <p>
-            Masukkan password baru anda.
-          </p>
+          <p>Masukkan password baru anda.</p>
         </div>
-        <form onSubmit={handleUpdateForgotPassword}>
+        <form onSubmit={handleSubmit}>
           <div className={style["form-container"]}>
             <div className={style["input-wrapper"]}>
               <p>Password baru</p>
@@ -126,13 +132,13 @@ const ResetPasswordNew = () => {
                 style={{ borderRadius: "6px" }}
               />
             </div>
-            <Button className={style["button-daftar"]} onClick={() => setOpenDialog(!openDialog)}>Konfirmasi</Button>
+            <Button className={style["button-daftar"]}>Konfirmasi</Button>
           </div>
-          { isUpdatingForgotPassword ? <Loading /> : "" }
+          {isResettingPassword ? <Loading /> : ""}
         </form>
       </Card>
     </div>
   );
-}
- 
+};
+
 export default ResetPasswordNew;
