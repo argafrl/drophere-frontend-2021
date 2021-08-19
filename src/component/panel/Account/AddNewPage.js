@@ -8,14 +8,19 @@ import {
   Button,
 } from "@bccfilkom/designsystem/build";
 import style from "../../../css/account-add-new-page.module.scss";
-import { PageContext } from "../../../contexts/PageContext";
 import { UserContext } from "../../../contexts/UserContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-import { characterCheck, countWords } from "../../../helpers";
+import { characterCheck, countWords, getErrorMessage } from "../../../helpers";
 import { Helmet } from "react-helmet";
+import mainApi from "../../../api/mainApi";
 
 const AddNewPage = () => {
+  const { userInfo } = useContext(UserContext);
+
+  const snackbar = useContext(SnackbarContext);
+  const history = useHistory();
+
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
@@ -36,12 +41,7 @@ const AddNewPage = () => {
     Video: true,
     Audio: true,
   });
-
-  const { createSubmission, isCreatingSubmission } = useContext(PageContext);
-  const { userInfo } = useContext(UserContext);
-
-  const snackbar = useContext(SnackbarContext);
-  const history = useHistory();
+  const [isCreatingSubmission, setIsCreatingSubmission] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -93,6 +93,32 @@ const AddNewPage = () => {
       history.push("/account/storage");
     }
   }, [userInfo]);
+
+  const createSubmission = async (data) => {
+    try {
+      setIsCreatingSubmission(true);
+
+      await mainApi.post("/submissions/", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+
+      snackbar.success("Halaman Berhasil Dibuat");
+      history.push("/account/pages");
+    } catch (error) {
+      if (
+        getErrorMessage(error) ===
+        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
+      ) {
+        snackbar.error("Link Telah Digunakan");
+      } else {
+        snackbar.error(getErrorMessage(error));
+      }
+    } finally {
+      setIsCreatingSubmission(true);
+    }
+  };
 
   return (
     <div className={style["container"]}>

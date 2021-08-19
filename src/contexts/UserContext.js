@@ -48,7 +48,7 @@ export class UserStore extends React.Component {
       });
     } catch (error) {
       console.log(getErrorMessage(error));
-      this.logout();
+      // this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });
     }

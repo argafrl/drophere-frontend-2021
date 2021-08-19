@@ -9,23 +9,17 @@ export const defaultValue = {
   allPages: [],
   submissionInfo: null,
   userSubmissionDetail: null,
-  isCreatingSubmission: false,
   isUploadingSubmission: false,
   isFetchingAllPages: false,
   isFetchingSubmissionInfo: false,
-  isFetchingUserSubmissionDetail: false,
-  isUpdatingSubmission: false,
   isDeletingSubmission: false,
   successUploadSubmission: false,
   uploadProgress: 0,
-  createSubmission: () => {},
   uploadSubmission: () => {},
-  updateSubmission: () => {},
   deleteSubmission: () => {},
   resetState: () => {},
   getAllPages: () => {},
   getSubmissionInfo: () => {},
-  getUserSubmissionDetail: () => {},
   resetUploadState: () => {},
 };
 
@@ -35,55 +29,6 @@ class PageStore extends React.Component {
   state = defaultValue;
 
   static contextType = SnackbarContext;
-
-  createSubmission = async (data) => {
-    try {
-      this.setState({ isCreatingSubmission: true });
-
-      await mainApi.post("/submissions/", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
-        },
-      });
-
-      this.context.success("Halaman Berhasil Dibuat");
-      this.props.history.push("/account/pages");
-    } catch (error) {
-      if (
-        getErrorMessage(error) ===
-        'supabase error: duplicate key value violates unique constraint "submissions_slug_key"'
-      ) {
-        this.context.error("Link Telah Digunakan");
-      } else {
-        this.context.error(getErrorMessage(error));
-      }
-    } finally {
-      this.setState({ isCreatingSubmission: false });
-    }
-  };
-
-  updateSubmission = async (slug, data) => {
-    try {
-      this.setState({ isUpdatingSubmission: true });
-
-      await mainApi.patch(`/submissions/${slug}/edit`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
-        },
-      });
-
-      this.context.success("Halaman Berhasil Diperbarui");
-      this.getUserSubmissionDetail(slug);
-    } catch (error) {
-      if (getErrorMessage(error) === "entry not found") {
-        this.props.history.push("/not-found");
-      } else {
-        this.context.error(getErrorMessage(error));
-      }
-    } finally {
-      this.setState({ isUpdatingSubmission: false });
-    }
-  };
 
   uploadSubmission = async (formData, slug) => {
     try {
@@ -128,22 +73,6 @@ class PageStore extends React.Component {
       this.setState({ error: getErrorMessage(error) });
     } finally {
       this.setState({ isFetchingSubmissionInfo: false });
-    }
-  };
-
-  getUserSubmissionDetail = async (slug) => {
-    try {
-      this.setState({ isFetchingUserSubmissionDetail: true });
-      const { data } = await mainApi.get(`/submissions/${slug}/details`);
-      this.setState({ userSubmissionDetail: data.data });
-    } catch (error) {
-      if (getErrorMessage(error) === "entry not found") {
-        this.props.history.push("/not-found");
-      } else {
-        this.context.error(getErrorMessage(error));
-      }
-    } finally {
-      this.setState({ isFetchingUserSubmissionDetail: false });
     }
   };
 
@@ -196,13 +125,10 @@ class PageStore extends React.Component {
       <PageContext.Provider
         value={{
           ...this.state,
-          createSubmission: this.createSubmission,
           resetState: this.resetState,
           uploadSubmission: this.uploadSubmission,
           getAllPages: this.getAllPages,
           getSubmissionInfo: this.getSubmissionInfo,
-          getUserSubmissionDetail: this.getUserSubmissionDetail,
-          updateSubmission: this.updateSubmission,
           deleteSubmission: this.deleteSubmission,
           resetUploadState: this.resetUploadState,
         }}

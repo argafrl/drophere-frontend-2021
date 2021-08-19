@@ -8,21 +8,14 @@ import {
   Button,
 } from "@bccfilkom/designsystem/build";
 import style from "../../../css/account-add-new-page.module.scss";
-import { PageContext } from "../../../contexts/PageContext";
 import { useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
 import { Helmet } from "react-helmet";
-import { countWords } from "../../../helpers";
+import { countWords, getErrorMessage } from "../../../helpers";
+import mainApi from "../../../api/mainApi";
 
 const AddNewPage = () => {
-  const {
-    updateSubmission,
-    isUpdatingSubmission,
-    isFetchingUserSubmissionDetail,
-    userSubmissionDetail,
-    getUserSubmissionDetail,
-  } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
   const { slug } = useParams();
@@ -46,6 +39,11 @@ const AddNewPage = () => {
     Video: true,
     Audio: true,
   });
+
+  const [userSubmissionDetail, setUserSubmissionDetail] = useState(null);
+  const [isFetchingUserSubmissionDetail, setIsFetchingUserSubmissionDetail] =
+    useState(false);
+  const [isUpdatingSubmission, setIsUpdatingSubmission] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,7 +90,46 @@ const AddNewPage = () => {
       setDeadline(userSubmissionDetail.due_time);
       setStorage(userSubmissionDetail.storage_type);
     }
-  }, [userSubmissionDetail, getUserSubmissionDetail, slug]);
+  }, [userSubmissionDetail, slug]);
+
+  const getUserSubmissionDetail = async () => {
+    try {
+      setIsFetchingUserSubmissionDetail(true);
+      const { data } = await mainApi.get(`/submissions/${slug}/details`);
+      setUserSubmissionDetail(data.data);
+    } catch (error) {
+      if (getErrorMessage(error) === "entry not found") {
+        history.push("/not-found");
+      } else {
+        snackbar.error(getErrorMessage(error));
+      }
+    } finally {
+      setIsFetchingUserSubmissionDetail(false);
+    }
+  };
+
+  const updateSubmission = async (data) => {
+    try {
+      setIsUpdatingSubmission(true);
+      
+      await mainApi.patch(`/submissions/${slug}/edit`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+      
+      snackbar.success("Halaman Berhasil Diperbarui");
+      getUserSubmissionDetail(slug);
+    } catch (error) {
+      if (getErrorMessage(error) === "entry not found") {
+        history.push("/not-found");
+      } else {
+        snackbar.error(getErrorMessage(error));
+      }
+    } finally {
+      setIsUpdatingSubmission(false);
+    }
+  };
 
   return (
     <div className={style["container"]}>
