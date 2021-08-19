@@ -1,58 +1,59 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import style from "../../../css/forgot-password.module.scss";
 import Loading from "../../common/Loading";
 import { Input, Dialog } from "@bccfilkom/designsystem/build";
-import { UserContext } from "../../../contexts/UserContext";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
-const ForgotPassword = (props) => {
-  const open = props.open;
-  const onClose = props.onClose;
+const ForgotPassword = ({ open, onClose }) => {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [successSendEmail, setSuccessSendEmail] = useState(false);
 
-  const [state, setState] = React.useState({
-    email: "",
-    error: "",
-    isLoading: false,
-    success: false,
-  });
-
-  const {
-    sendForgotPassword,
-    successSendForgotPassword,
-    errorSendForgotPassword,
-    isSendingForgotPassword,
-    clearError,
-    resetSendForgotPassword,
-  } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
-
-  const handleChange = (name) => {
-    return (event) => {
-      setState({ ...state, [name]: event.target.value });
-    };
-  };
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    sendForgotPassword(state.email);
+    sendForgotPasswordEmail(email);
   };
 
-  const onCancelHandler = (event) => {
-    event.preventDefault();
-    onClose();
-    clearError();
-    document.getElementById("reset-password-form").value = "";
-    setTimeout(() => resetSendForgotPassword(), 1000);
-  };
-
-  useEffect(() => {
-    if (errorSendForgotPassword === "Request failed with status code 500") {
-      snackbar.error("Email yang anda masukkan tidak valid");
-    } else if (errorSendForgotPassword) {
-      snackbar.error(errorSendForgotPassword);
+  const onCancelHandler = (e) => {
+    if (e) {
+      e.preventDefault();
     }
-    clearError();
-  }, [errorSendForgotPassword, snackbar]);
+    onClose();
+    setTimeout(() => {
+      setError("");
+      setEmail("");
+    }, 100);
+  };
+
+  const sendForgotPasswordEmail = async (email) => {
+    try {
+      setIsSendingEmail(true);
+
+      await mainApi.get("/forgot-password", {
+        params: {
+          email: email,
+        },
+      });
+
+      setSuccessSendEmail(true);
+    } catch (error) {
+      setError(getErrorMessage(error));
+      if (error === "entry not found") {
+        snackbar.error("Email tidak ditemukan");
+      } else if (error === "Request failed with status code 500") {
+        snackbar.error("Email tidak valid");
+      } else {
+        snackbar.error(error);
+      }
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
 
   return (
     <div className={style["forgot-password"]}>
@@ -60,13 +61,13 @@ const ForgotPassword = (props) => {
         <Dialog
           className={style.dialog}
           visible={open}
-          onCancel={onClose}
+          onCancel={onCancelHandler}
           primaryButton={{
-            text: successSendForgotPassword ? "Ok, Mengerti" : "Konfirmasi",
-            onClick: successSendForgotPassword ? onCancelHandler : () => {},
+            text: successSendEmail ? "Ok, Mengerti" : "Konfirmasi",
+            onClick: successSendEmail ? onCancelHandler : () => {},
           }}
           secondaryButton={
-            !successSendForgotPassword
+            !successSendEmail
               ? {
                   text: "Batalkan",
                   onClick: onCancelHandler,
@@ -76,12 +77,12 @@ const ForgotPassword = (props) => {
         >
           <div className={style.content}>
             <div id="alert-dialog-description">
-              {successSendForgotPassword ? (
+              {successSendEmail ? (
                 <div className={style["content-container"]}>
                   <h1>Link Berhasil Terkirim!</h1>
                   <p>
                     Kami telah mengirim link ke{" "}
-                    <span style={{ color: "#2196F3" }}>{state.email}</span>
+                    <span style={{ color: "#2196F3" }}>{email}</span>
                     {". "}
                     Silahkan periksa email anda untuk instruksi lebih lanjut.
                   </p>
@@ -100,8 +101,10 @@ const ForgotPassword = (props) => {
                       type="email"
                       placeholder="Masukkan Email"
                       required
-                      value={state.email}
-                      handleChange={handleChange("email")}
+                      value={email}
+                      hintText={error}
+                      action={error ? "error" : ""}
+                      handleChange={(e) => setEmail(e.target.value)}
                       style={{
                         borderRadius: "6px",
                         width: "100%",
@@ -113,14 +116,7 @@ const ForgotPassword = (props) => {
               )}
             </div>
           </div>
-          <div className={style.actions}>
-            {state.error ? (
-              <div className="error">{state.error.message}</div>
-            ) : (
-              ""
-            )}
-          </div>
-          {state.isLoading ? <Loading /> : ""}
+          {isSendingEmail ? <Loading /> : ""}
         </Dialog>
       </form>
     </div>

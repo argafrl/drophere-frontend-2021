@@ -9,26 +9,18 @@ export const defaultValue = {
   isLogin: false,
   isRegister: false,
   isFetchingUserInfo: false,
-  errorSendForgotPassword: "",
-  successSendForgotPassword: false,
-  isSendingForgotPassword: false,
   isSendingEmailVerification: false,
   successSendEmailVerification: false,
   isUpdating: false,
   successUpdating: false,
   errorUpdating: "",
-  successUpdatingForgotPassword: false,
-  isUpdatingForgotPassword: false,
-  errorUpdatingForgotPassword: "",
   login: () => {},
   register: () => {},
   fetchUserInfo: () => {},
-  sendForgotPassword: () => {},
   sendEmailVerification: () => {},
   update: () => {},
   logout: () => {},
   clearError: () => {},
-  updateForgotPassword: () => {},
 };
 
 export const UserContext = React.createContext(defaultValue);
@@ -72,65 +64,6 @@ export class UserStore extends React.Component {
       this.setState({ isSendingEmailVerification: false });
     }
   };
-
-  sendForgotPassword = async (email) => {
-    try {
-      this.setState({ isSendingForgotPassword: true });
-
-      const { data } = await mainApi.get("/forgot-password", {
-        params: {
-          email: email,
-        },
-      });
-      this.setState({
-        successSendForgotPassword: data.is_success,
-        errorSendForgotPassword: "",
-      });
-    } catch (err) {
-      this.setState({
-        errorSendForgotPassword: err.message,
-        successSendEmailVerification: false,
-      });
-    } finally {
-      this.setState({ isSendingForgotPassword: false });
-    }
-  };
-
-  resetSendForgotPassword = () => {
-    this.setState({
-      successSendForgotPassword: false,
-    });
-  };
-
-  updateForgotPassword = async (email, token, password) => {
-    try{
-      this.setState({ isUpdatingForgotPassword: true });
-
-      const { data } = await mainApi.post("/forgot-password", {
-        params: {
-          email: email
-        },
-        data: {
-          token: token,
-          password: password,
-        }
-      });
-
-      this.setState({
-        successUpdatingForgotPassword: data.is_success,
-        errorUpdatingForgotPassword: "",
-      })
-    } catch (err) {
-      console.log(err.response.data.message);
-      this.setState({
-        successUpdatingForgotPassword: false,
-        errorUpdatingForgotPassword: err.response.data.message,
-      });
-      
-    } finally {
-      this.setState({ isUpdatingForgotPassword: false, successUpdatingForgotPassword: false });
-    }
-  }
 
   update = async (profileImage, name, email) => {
     try {
@@ -212,7 +145,10 @@ export class UserStore extends React.Component {
   };
 
   clearError = () => {
-    this.setState({ error: "", errorSendForgotPassword: "", errorUpdating: "", errorUpdatingForgotPassword: "" });
+    this.setState({
+      error: "",
+      errorUpdating: "",
+    });
   };
 
   render() {
@@ -222,8 +158,6 @@ export class UserStore extends React.Component {
           ...this.state,
           fetchUserInfo: this.fetchUserInfo,
           clearUserInfo: this.clearUserInfo,
-          sendForgotPassword: this.sendForgotPassword,
-          resetSendForgotPassword: this.resetSendForgotPassword,
           sendEmailVerification: this.sendEmailVerification,
           update: this.update,
           login: this.login,
