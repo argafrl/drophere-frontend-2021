@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import mainApi from "../../../api/mainApi";
@@ -11,7 +11,7 @@ import PrivateRoute from "../../../routes/PrivateRoute";
 import Header from "./Header";
 import Login from "./Login";
 import Register from "./Register";
-import ResetPasswordNew from "./ResetPasswordNew";
+import ResetPassword from "./ResetPassword";
 import ConnectAccount from "./ConnectAccount";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
@@ -40,11 +40,7 @@ const Home = ({ location }) => {
             <Redirect from="/login" to="/home" />
             <AuthRoute path="/home" exact component={Login} />
             <AuthRoute path="/register" exact component={Register} />
-            <AuthRoute
-              path="/reset-password"
-              exact
-              component={ResetPasswordNew}
-            />
+            <AuthRoute path="/reset-password" exact component={ResetPassword} />
             <PrivateRoute
               path="/connect-account"
               exact

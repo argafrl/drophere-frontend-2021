@@ -24,8 +24,6 @@ const Pages = () => {
   const [sort, setSort] = useState("Tanggal");
   const [allPages, setAllPages] = useState([]);
   const [isFetchingAllPages, setIsFetchingAllPages] = useState(false);
-  const [isDeletingSubmission, setIsDeletingSubmission] = useState(false);
-
   const getAllPages = async () => {
     try {
       setIsFetchingAllPages(true);
@@ -40,8 +38,6 @@ const Pages = () => {
 
   const deleteSubmission = async (slug) => {
     try {
-      setIsDeletingSubmission(true);
-
       await mainApi.delete(`/submissions/${slug}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
@@ -51,8 +47,6 @@ const Pages = () => {
       snackbar.success("Halaman Berhasil Dihapus");
     } catch (error) {
       snackbar.error(getErrorMessage(error));
-    } finally {
-      setIsDeletingSubmission(false);
     }
   };
 
@@ -64,6 +58,7 @@ const Pages = () => {
 
   useEffect(() => {
     getAllPages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSendEmail = async (e) => {
@@ -83,14 +78,7 @@ const Pages = () => {
         ? (a, b) => a.due_time.localeCompare(b.due_time)
         : (a, b) => a.title.localeCompare(b.title)
     )
-    .filter((page) => {
-      // return page.title.includes(search);
-      if (!search) {
-        return page;
-      } else if (page.title.toLowerCase().includes(search.toLowerCase())) {
-        return page;
-      }
-    });
+    .filter((page) => page.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className={style.container}>

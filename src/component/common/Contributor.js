@@ -2,7 +2,6 @@ import React from 'react';
 import style from '../../css/contributor.module.scss';
 import { Button } from "@bccfilkom/designsystem/build";
 import { Link } from 'react-router-dom';
-import Footer from './Footer';
 
 const Contributor = () => {
   return (

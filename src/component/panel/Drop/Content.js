@@ -87,6 +87,7 @@ const Content = () => {
 
   useEffect(() => {
     getSubmissionInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error === "entry not found") {

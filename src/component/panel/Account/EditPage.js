@@ -95,7 +95,7 @@ const AddNewPage = () => {
 
   useEffect(() => {
     if (!userSubmissionDetail) {
-      getUserSubmissionDetail(slug);
+      getUserSubmissionDetail();
     } else {
       setTitle(userSubmissionDetail.title);
       setUsePassword(!!userSubmissionDetail.password);
@@ -104,6 +104,7 @@ const AddNewPage = () => {
       setDeadline(userSubmissionDetail.due_time);
       setStorage(userSubmissionDetail.storage_type);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSubmissionDetail, slug]);
 
   const updateSubmission = async (data) => {

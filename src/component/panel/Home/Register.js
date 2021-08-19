@@ -16,7 +16,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isShow, setIsShow] = useState(false);
-  const [errorRegister, setErrorRegister] = useState('');
+  const [errorRegister, setErrorRegister] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -25,21 +25,24 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if(error == "supabase error: duplicate key value violates unique constraint " + '"users_email_key"'){
+    if (
+      error ===
+      "supabase error: duplicate key value violates unique constraint " +
+        '"users_email_key"'
+    ) {
       snackbar.error("Akun dengan email tersebut sudah terdaftar");
       setErrorRegister(error);
-    } else if (error){
+    } else if (error) {
       snackbar.error(error);
       setErrorRegister(error);
     }
     clearError();
-  }, [error, snackbar])
+  }, [error, snackbar, clearError]);
 
   return (
     <div className={style.container}>
-
       <Helmet>
-          <title>Register</title>
+        <title>Register</title>
       </Helmet>
 
       <Card className={style.form}>
@@ -74,14 +77,14 @@ const Register = () => {
                 handleChange={(e) => setEmail(e.target.value)}
                 style={{ borderRadius: "6px" }}
                 hintText={
-                  errorRegister ==
+                  errorRegister ===
                   "supabase error: duplicate key value violates unique constraint " +
                     '"users_email_key"'
                     ? `Akun dengan email tersebut sudah terdaftar`
                     : ""
                 }
                 action={
-                  errorRegister ==
+                  errorRegister ===
                   "supabase error: duplicate key value violates unique constraint " +
                     '"users_email_key"'
                     ? "error"
@@ -91,15 +94,6 @@ const Register = () => {
             </div>
             <div className={style["input-wrapper"]}>
               <p>Password</p>
-              {/* <Input
-                className={style["input"]}
-                type="password"
-                placeholder="Masukkan Password"
-                required
-                value={password}
-                handleChange={(e) => setPassword(e.target.value)}
-                style={{ borderRadius: "6px" }}
-              /> */}
               <Password
                 className={style["input"]}
                 type="password"

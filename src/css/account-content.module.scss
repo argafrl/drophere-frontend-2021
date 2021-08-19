@@ -9,15 +9,15 @@
   @media only screen and (max-width: 768px) {
     width: 90%;
     padding-right: 0;
-}
-  
+  }
+
   .content {
     position: relative;
     flex: 1 1 auto;
     width: 100%;
     min-height: 85vh;
     margin-left: rem(32);
-    
+
     &-full {
       display: flex;
       max-width: 100%;
@@ -28,7 +28,7 @@
       margin-left: 0;
     }
   }
-  
+
   .buat-halaman {
     width: 80%;
     margin: 0 auto;
@@ -36,9 +36,12 @@
     justify-content: flex-start;
     align-items: center;
     font-size: rem(16);
-    font-family: 'Inter';
-    span{
+    font-family: "Inter";
+    span {
       margin-right: 1rem;
+    }
+    @include breakpoint(md) {
+      width: 100%;
     }
   }
 }

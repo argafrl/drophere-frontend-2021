@@ -1,213 +1,145 @@
-import React from "react";
-import Axios from "axios";
-import { Redirect } from "react-router-dom";
-
-import { endpointURL } from "../../../config";
-
-import homeStyle from "../../../css/home.module.scss";
-import loginStyle from "../../../css/login.module.scss";
-
-import Footer from "../../common/Footer";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Portal } from "react-portal";
+import { Helmet } from "react-helmet";
 import Loading from "../../common/Loading";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { Card, Button, Password, Dialog } from "@bccfilkom/designsystem/build";
+import style from "../../../css/login.module.scss";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-import TextField from "@material-ui/core/TextField";
-import { TokenContext } from "../../../contexts/token";
+const ResetPassword = () => {
+  const history = useHistory();
+  const snackbar = useContext(SnackbarContext);
+  const { search } = useLocation();
 
-const ResetPassword = (props) => {
-  const [state, setState] = React.useState({
-    newPassword: "",
-    retypePassword: "",
+  const [newPassword, setNewPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isShowNew, setIsShowNew] = useState(false);
+  const [isShowRetype, setIsShowRetype] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
 
-    newPasswordErr: null,
-    retypePasswordErr: null,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    error: "",
-    isLoading: false,
-    redirectToAccountPage: false,
-  });
-
-  const queries = new URLSearchParams(props.location.search);
-
-  const email = queries.get("email") || "";
-  const token = queries.get("token") || "";
-
-  const handleChange = (name) => {
-    return (event) => {
-      setState({ ...state, [name]: event.target.value });
-    };
-  };
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-
-    const { retypePassword, newPassword } = state;
-
-    let hasError = false;
-    let errorStates = {
-      newPasswordErr: null,
-      retypePasswordErr: null,
-    };
-
-    // check retype password to match new password
-    if (retypePassword !== newPassword) {
-      errorStates = {
-        ...errorStates,
-        retypePasswordErr: new Error("Password tidak cocok"),
-      };
-      hasError = true;
-    }
-
-    // check for empty new password
-    if (newPassword.length <= 0) {
-      errorStates = {
-        ...errorStates,
-        newPasswordErr: new Error("Password tidak boleh kosong"),
-      };
-      hasError = true;
-    }
-
-    if (retypePassword.length <= 0) {
-      errorStates = {
-        ...errorStates,
-        retypePasswordErr: new Error("Password tidak boleh kosong"),
-      };
-      hasError = true;
-    }
-
-    setState({
-      ...state,
-      ...errorStates,
-      isLoading: !hasError,
-    });
-    if (hasError) {
+    if (!newPassword || !retypePassword) {
+      snackbar.error("Password dan konfirmasi password tidak boleh kosong");
       return;
     }
 
-    recoverPassword(newPassword);
+    if (newPassword !== retypePassword) {
+      snackbar.error("Password dan konfirmasi password harus sama");
+      return;
+    }
+
+    resetPassword();
   };
 
-  const recoverPassword = async (newPassword) => {
+  const resetPassword = async () => {
     try {
-      const resp = await Axios.post(endpointURL, {
-        query: `
-        mutation recoverPassword($email:String!, $token:String!, $newPassword:String!){
-          recoverPassword(email:$email, recoverToken:$token,newPassword:$newPassword){
-            loginToken
-          }
-        }`,
-        variables: {
-          email,
-          token,
-          newPassword,
-        },
-        operationName: "recoverPassword",
+      setIsResettingPassword(true);
+      await mainApi.post(`/users/forgot-password?email=${email}`, {
+        token,
+        password: newPassword,
       });
-
-      if (resp.data.errors) {
-        throw new Error(resp.data.errors[0].message);
-      }
-      const recoverPasswordResp = resp.data.data.recoverPassword;
-
-      if (
-        recoverPasswordResp &&
-        props.context !== null &&
-        props.context !== undefined
-      ) {
-        props.context.setToken(recoverPasswordResp.loginToken);
-      }
-
-      setState({
-        ...state,
-        newPassword: "",
-        retypePassword: "",
-        newPasswordErr: null,
-        retypePasswordErr: null,
-        isLoading: false,
-        redirectToAccountPage: true,
-      });
+      setOpenDialog(!openDialog);
     } catch (error) {
-      setState({
-        ...state,
-        isLoading: false,
-      });
+      snackbar.error(getErrorMessage(error));
+    } finally {
+      setIsResettingPassword(false);
     }
   };
 
-  if (state.redirectToAccountPage) {
-    return <Redirect to="/account" />;
-  }
+  useEffect(() => {
+    const query = new URLSearchParams(search);
+    const email = query.get("email");
+    const verificationToken = query.get("verificationToken");
+
+    if (email && verificationToken) {
+      setEmail(email);
+      setToken(verificationToken);
+    } else {
+      history.push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className={homeStyle.container}>
-      <div className={homeStyle.content}>
-        <div className={loginStyle.container}>
-          <div className={loginStyle.header}>
-            <h1>Atur Password Baru</h1>
-          </div>
-
-          <div className={loginStyle.form}>
-            <form onSubmit={onSubmitHandler}>
-              <div className={loginStyle["form-container"]}>
-                <TextField
-                  type="password"
-                  label="New Password"
-                  disabled={state.isLoading}
-                  fullWidth
-                  helperText={
-                    state.newPasswordErr ? state.newPasswordErr.message : ""
-                  }
-                  error={state.newPasswordErr != null}
-                  name="new_password"
-                  value={state.newPassword}
-                  onChange={handleChange("newPassword")}
-                />
-
-                <TextField
-                  type="password"
-                  label="Retype Password"
-                  disabled={state.isLoading}
-                  fullWidth
-                  name="retype_password"
-                  helperText={
-                    state.retypePasswordErr
-                      ? state.retypePasswordErr.message
-                      : ""
-                  }
-                  error={state.retypePasswordErr != null}
-                  value={state.retypePassword}
-                  onChange={handleChange("retypePassword")}
-                />
-
-                {state.error ? (
-                  <div className="error">{state.error.message}</div>
-                ) : (
-                  ""
-                )}
-                <Button
-                  fullWidth
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Simpan
-                  <Icon style={{ fontSize: 20, marginLeft: 8 }}>save</Icon>
-                </Button>
+    <div className={style.container}>
+      <Helmet>
+        <title>Reset Password</title>
+      </Helmet>
+      <Portal>
+        <div className={style.dialog}>
+          <Dialog
+            visible={openDialog}
+            onCancel={() => setOpenDialog(false)}
+            primaryButton={{
+              text: "Masuk",
+              onClick: () => {
+                history.replace("/");
+              },
+            }}
+            secondaryButton={""}
+          >
+            <div className={style.content}>
+              <div className={style["content-container"]}>
+                <h1>Password Berhasil Diubah!</h1>
+                <p>
+                  Password anda telah diubah. Silahkan mencoba untuk masuk
+                  kembali.
+                </p>
               </div>
-              {state.isLoading ? <Loading /> : ""}
-            </form>
-          </div>
+            </div>
+          </Dialog>
         </div>
-      </div>
-      <Footer />
+      </Portal>
+      <Card className={style.form}>
+        <div className={style.header}>
+          <h1>Atur Ulang Password</h1>
+          <p>Masukkan password baru anda.</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className={style["form-container"]}>
+            <div className={style["input-wrapper"]}>
+              <p>Password baru</p>
+              <Password
+                className={style["input"]}
+                type="password"
+                placeholder="Masukkan Password"
+                required
+                value={newPassword}
+                handleChange={(e) => setNewPassword(e.target.value)}
+                visibilityEye={isShowNew}
+                handleShow={() => setIsShowNew(!isShowNew)}
+                style={{ borderRadius: "6px" }}
+              />
+            </div>
+            <div className={style["input-wrapper"]}>
+              <p>Ulangi Password</p>
+              <Password
+                className={style["input"]}
+                type="password"
+                placeholder="Masukkan Password"
+                required
+                value={retypePassword}
+                handleChange={(e) => setRetypePassword(e.target.value)}
+                visibilityEye={isShowRetype}
+                handleShow={() => setIsShowRetype(!isShowRetype)}
+                style={{ borderRadius: "6px" }}
+              />
+            </div>
+            <Button className={style["button-daftar"]}>Konfirmasi</Button>
+          </div>
+          {isResettingPassword ? <Loading /> : ""}
+        </form>
+      </Card>
     </div>
   );
 };
 
-export default (props) => (
-  <TokenContext.Consumer>
-    {(value) => <ResetPassword {...props} context={value} />}
-  </TokenContext.Consumer>
-);
+export default ResetPassword;

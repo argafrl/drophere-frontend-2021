@@ -16,8 +16,14 @@ const ForgotPassword = (props) => {
     success: false,
   });
 
-  const { sendForgotPassword, successSendForgotPassword, errorSendForgotPassword, isSendingForgotPassword, clearError, resetSendForgotPassword } =
-    useContext(UserContext);
+  const {
+    sendForgotPassword,
+    successSendForgotPassword,
+    errorSendForgotPassword,
+    isSendingForgotPassword,
+    clearError,
+    resetSendForgotPassword,
+  } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
 
   const handleChange = (name) => {
@@ -36,21 +42,17 @@ const ForgotPassword = (props) => {
     onClose();
     clearError();
     document.getElementById("reset-password-form").value = "";
-    setTimeout(
-      () =>
-        resetSendForgotPassword(),
-      1000
-    );
+    setTimeout(() => resetSendForgotPassword(), 1000);
   };
 
   useEffect(() => {
-    if (errorSendForgotPassword == "Request failed with status code 500"){
+    if (errorSendForgotPassword === "Request failed with status code 500") {
       snackbar.error("Email yang anda masukkan tidak valid");
-    } else if (errorSendForgotPassword){
+    } else if (errorSendForgotPassword) {
       snackbar.error(errorSendForgotPassword);
     }
     clearError();
-  },[errorSendForgotPassword, snackbar])
+  }, [errorSendForgotPassword, snackbar]);
 
   return (
     <div className={style["forgot-password"]}>
@@ -63,19 +65,24 @@ const ForgotPassword = (props) => {
             text: successSendForgotPassword ? "Ok, Mengerti" : "Konfirmasi",
             onClick: successSendForgotPassword ? onCancelHandler : () => {},
           }}
-          secondaryButton={!successSendForgotPassword ? {
-            text: "Batalkan",
-            onClick: onCancelHandler,
-          } : "" }
+          secondaryButton={
+            !successSendForgotPassword
+              ? {
+                  text: "Batalkan",
+                  onClick: onCancelHandler,
+                }
+              : ""
+          }
         >
           <div className={style.content}>
             <div id="alert-dialog-description">
-              { successSendForgotPassword ? (
+              {successSendForgotPassword ? (
                 <div className={style["content-container"]}>
                   <h1>Link Berhasil Terkirim!</h1>
                   <p>
                     Kami telah mengirim link ke{" "}
-                    <span style={{ color: "#2196F3" }}>{state.email}</span>{". "}
+                    <span style={{ color: "#2196F3" }}>{state.email}</span>
+                    {". "}
                     Silahkan periksa email anda untuk instruksi lebih lanjut.
                   </p>
                 </div>
