@@ -7,7 +7,7 @@ import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
 
 const ConnectAccount = () => {
-  const { connectGoogleDrive, getOAuthUrl, oAuthUrl } =
+  const { connectGoogleDrive, getOAuthUrl, oAuthUrl, isConnectingGoogleDrive } =
     useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
@@ -19,12 +19,6 @@ const ConnectAccount = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (userInfo) {
-      setUseDrive(userInfo.is_gdrive_connected);
-    }
-  }, [userInfo, fetchUserInfo]);
-
-  useEffect(() => {
     const query = new URLSearchParams(search);
     const state = query.get("state");
     const code = query.get("code");
@@ -33,7 +27,14 @@ const ConnectAccount = () => {
       connectGoogleDrive({ state, code, scope });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, connectGoogleDrive, userInfo]);
+  }, [search, connectGoogleDrive, userInfo, fetchUserInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      setUseDrive(userInfo.is_gdrive_connected);
+      console.log("set use drive");
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     if (oAuthUrl) {
@@ -77,8 +78,10 @@ const ConnectAccount = () => {
             <Button
               className={useDrive ? style["button-cancel"] : ""}
               onClick={handleConnectDrive}
-              skeleton={isFetchingUserInfo}
-              disabled={useDrive}
+              skeleton={isFetchingUserInfo || isConnectingGoogleDrive}
+              disabled={
+                useDrive || isFetchingUserInfo || isConnectingGoogleDrive
+              }
             >
               {useDrive ? "Batalkan" : "Tautkan"}
             </Button>

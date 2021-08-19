@@ -27,6 +27,7 @@ const ForgotPassword = ({ open, onClose }) => {
     setTimeout(() => {
       setError("");
       setEmail("");
+      setSuccessSendEmail(false);
     }, 100);
   };
 
@@ -42,13 +43,14 @@ const ForgotPassword = ({ open, onClose }) => {
 
       setSuccessSendEmail(true);
     } catch (error) {
-      setError(getErrorMessage(error));
-      if (error === "entry not found") {
-        snackbar.error("Email tidak ditemukan");
-      } else if (error === "Request failed with status code 500") {
-        snackbar.error("Email tidak valid");
+      if (getErrorMessage(error) === "entry not found") {
+        setError("Email tidak ditemukan");
+      } else if (
+        getErrorMessage(error) === "Request failed with status code 500"
+      ) {
+        setError("Email tidak valid");
       } else {
-        snackbar.error(error);
+        snackbar.error(getErrorMessage(error));
       }
     } finally {
       setIsSendingEmail(false);

@@ -2,6 +2,7 @@ import React from "react";
 import mainApi from "../api/mainApi";
 import { getErrorMessage } from "../helpers";
 import { SnackbarContext } from "./SnackbarContext";
+import { withUser } from "./UserContext";
 
 export const defaultValue = {
   isFetchingOAuthUrl: false,
@@ -43,6 +44,7 @@ class StorageStore extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
+      await this.props.userContext.fetchUserInfo();
     } catch (error) {
       this.context.error("Terjadi Kesalahan");
     } finally {
@@ -70,4 +72,4 @@ class StorageStore extends React.Component {
   }
 }
 
-export default StorageStore;
+export default withUser(StorageStore);

@@ -1,6 +1,7 @@
 import React from "react";
 import mainApi from "../api/mainApi";
 import { getErrorMessage } from "../helpers";
+import { SnackbarContext } from "./SnackbarContext";
 
 export const defaultValue = {
   userInfo: null,
@@ -27,6 +28,7 @@ export const UserContext = React.createContext(defaultValue);
 
 export class UserStore extends React.Component {
   state = defaultValue;
+  static contextType = SnackbarContext;
 
   fetchUserInfo = async () => {
     try {
@@ -39,8 +41,8 @@ export class UserStore extends React.Component {
         userInfo: { ...resProfile.data, ...resDriveStatus.data },
       });
     } catch (error) {
-      console.log(getErrorMessage(error));
-      // this.logout();
+      this.context.error(getErrorMessage(error));
+      this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });
     }
@@ -171,3 +173,11 @@ export class UserStore extends React.Component {
     );
   }
 }
+
+export const withUser = (Comp) => (props) => {
+  return (
+    <UserContext.Consumer>
+      {(context) => <Comp {...props} userContext={context} />}
+    </UserContext.Consumer>
+  );
+};

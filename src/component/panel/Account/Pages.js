@@ -172,8 +172,16 @@ const Pages = () => {
                       due_time={link.due_time}
                       slug={link.slug}
                       storage_type={link.storage_type}
-                      files={link.gdrive_submissions[0].uploaded_files.length}
-                      views={link.gdrive_submissions[0].views.length}
+                      files={
+                        link.gdrive_submissions[0]
+                          ? link.gdrive_submissions[0].uploaded_files.length
+                          : 0
+                      }
+                      views={
+                        link.gdrive_submissions[0]
+                          ? link.gdrive_submissions[0].views.length
+                          : 0
+                      }
                       onDelete={() => deleteSubmission(link.slug)}
                       key={idx}
                     />
