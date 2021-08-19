@@ -13,8 +13,8 @@ const AccountFooter = () => {
       >Basic Computing Community</a>. All rights reserved</p>
       <div className={style.logo}>
         <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/bccfilkom">
-        </a>
           <img src="/img/instagram.svg" alt="BCC Instagram"/>
+        </a>
         <a target="_blank" rel="noopener noreferrer" href="https://id.linkedin.com/company/bccfilkomub">
           <img src="/img/linkedin.svg" alt="BCC LinkedIn" />
         </a>

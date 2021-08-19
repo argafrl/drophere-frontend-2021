@@ -21,6 +21,7 @@
     padding: rem(40);
 
     @include breakpoint(md) {
+      width: 90%;
       padding: rem(30);
     }
 
@@ -50,6 +51,7 @@
         &-daftar,
         &-masuk {
           font-size: rem(18);
+          font-family: 'Inter';
         }
 
         &-daftar {

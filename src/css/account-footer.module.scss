@@ -1,52 +1,38 @@
 .footer {
   width: 90%;
-  margin: 10px auto;
-  // padding: 0px 130px;
+  margin: 20px auto;
   display: flex;
   justify-content: space-between;
-  // padding-right: 110px;
-  // padding-left: -110px;
+  align-items: center;
 
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    padding: 0px 20px;
+  }
 
-  @media only screen and (max-width: 880px) {
-      flex-direction: column;
-      padding: 0px 20px;
+  > :first-child{
+    width: 60px;
   }
 
   
   p {
-      padding-top: 8px;
-      font-weight: 300;
-      text-align: center;
-      // margin-right: -58px;
-      margin-right: -28px;
+    font-weight: 300;
+    text-align: center;
 
-      @media only screen and (max-width: 880px) {
-          // margin-top: 20px;
-          // margin-bottom: 5px;
-          margin: 20px 0px 5px 0px;
-      }
+    @media only screen and (max-width: 768px) {
+        margin-bottom: 10px;
+    }
   }
 
   .logo{
-      // margin-right: 110px;
-      align-self: center;
-      display: flex;
-      // margin-left: -138px;
+    align-self: center;
+    display: flex;
+    gap: 10px;
 
-      > * {
-          margin: 7px;
-      }
-
-      img{
-          // padding-right: 110px;
-          height: 25px;
-          display: flex;
-          align-self: center;
-      }
-
-      @media only screen and (max-width: 640px) {
-          margin: 0px 0px 10px 0px;
-      }
+    img{
+        height: 25px;
+        display: flex;
+        align-self: center;
+    }
   }
 }
