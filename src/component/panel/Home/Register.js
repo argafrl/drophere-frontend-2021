@@ -1,26 +1,39 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import style from "../../../css/login.module.scss";
 import Loading from "../../common/Loading";
 import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const Register = () => {
   const { error, register, isRegister, clearError, isLogin } =
     useContext(UserContext);
+  const snackbar = useContext(SnackbarContext);
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [isShow, setIsShow] = useState(false)
-  // const [newPassword, setNewPassword] = useState("");
+  const [isShow, setIsShow] = useState(false);
+  const [errorRegister, setErrorRegister] = useState('');
 
   const handleSignup = async (e) => {
     e.preventDefault();
     clearError();
     register(name, email, password);
   };
+
+  useEffect(() => {
+    if(error == "supabase error: duplicate key value violates unique constraint " + '"users_email_key"'){
+      snackbar.error("Akun dengan email tersebut sudah terdaftar");
+      setErrorRegister(error);
+    } else if (error){
+      snackbar.error(error);
+      setErrorRegister(error);
+    }
+    clearError();
+  }, [error, snackbar])
 
   return (
     <div className={style.container}>
@@ -61,14 +74,14 @@ const Register = () => {
                 handleChange={(e) => setEmail(e.target.value)}
                 style={{ borderRadius: "6px" }}
                 hintText={
-                  error ===
+                  errorRegister ==
                   "supabase error: duplicate key value violates unique constraint " +
                     '"users_email_key"'
                     ? `Akun dengan email tersebut sudah terdaftar`
                     : ""
                 }
                 action={
-                  error ===
+                  errorRegister ==
                   "supabase error: duplicate key value violates unique constraint " +
                     '"users_email_key"'
                     ? "error"

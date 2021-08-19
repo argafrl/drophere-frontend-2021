@@ -24,7 +24,7 @@
 
 .form-wrapper {
   margin-top: 20px;
-  padding: 0px 35px;
+  padding: 0px rem(35);
   border: 1px solid #dadce0;
   border-radius: 8px;
 
@@ -43,19 +43,32 @@
       // width: 100%;
       // min-width: 0;
       // justify-content: space-between;
+
+      @media only screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+        row-gap: 0;
+      }
+
       .form-text {
         // width: 150px;
         margin-top: 0;
 
         flex-basis: 200px;
         margin-right: 10px;
+        @media only screen and (max-width: 768px) {
+          flex-basis: 0;
+          p{
+            margin-bottom: rem(10);
+          }
+        }
       }
       .input-wrapper {
         flex: 4;
         // width: 100%;
         // width: 400px;
         max-width: 400px;
-        min-width: 200px;
+        min-width: 0;
         margin-top: 0;
         display: flex;
         flex-direction: column;
@@ -65,6 +78,7 @@
           width: 100%;
           min-width: 0;
           border-radius: 8px;
+          height: rem(53);
           // margin: 5px 0 5px 0;
           // margin-bottom: 10px;
         }
@@ -83,6 +97,7 @@
           input {
             padding: 16px;
             width: 100%;
+            min-width: 0;
           }
         }
 
@@ -92,12 +107,11 @@
         }
         .button-wrapper {
           display: flex;
+          flex-wrap: wrap;
           flex-direction: row;
           justify-content: flex-end;
+          gap: rem(10);
           // margin-top: 15px;
-          .btn-batal {
-            margin-right: 10px;
-          }
         }
       }
     }
@@ -241,12 +255,8 @@
       }
     }
     .btn-ubah {
-      // margin-left: 15px;=
-      // min-width: 100px;
       button {
-        padding: 0 10px;
         height: 24px;
-        // min-width: 100px;
         font-weight: normal;
         svg,
         span {
@@ -260,39 +270,5 @@
         }
       }
     }
-
-    // form{
-    //     flex: 8;
-    //     > :first-child{
-    //         width: 100%;
-    //     }
-    //     .button-wrapper{
-    //         display: flex;
-    //         justify-content: flex-end;
-    //         .btn-batal{
-    //             margin-right: 10px;
-    //         }
-    //     }
-    // }
-
-    // .form-description{
-    //     flex: 2;
-    //     // align-self: start;
-    // }
-    // .form-edit{
-    //     flex:8;
-    //     display: flex;
-    //     align-items: center;
-    // }
-
-    // .form-input{
-    //     flex: 6;
-    //     p{
-    //         font-weight: 600;
-    //     }
-    // }
-    // .form-action{
-    //     flex: 1;
-    // }
   }
 }

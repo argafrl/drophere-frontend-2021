@@ -16,7 +16,7 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const Profile = () => {
 
-  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, update, isUpdating, successUpdating, errorUpdating } = useContext(UserContext);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, update, isUpdating, successUpdating, errorUpdating, clearError } = useContext(UserContext);
 
   const snackbar = useContext(SnackbarContext);
 
@@ -46,45 +46,15 @@ const Profile = () => {
   const [isUpdateProfileLoading, setIsUpdateProfileLoading] = useState(false);
   const [isUpdatePasswordLoading, setIsUpdatePasswordLoading] = useState(false);
 
-  const handleClickOpenNama = () => {
-    setOpenNama(!openNama);
-  };
-
-  const handleClickOpenPassword = () => {
-    setOpenPassword(!openPassword);
-  };
-
-  const handleVerifikasi = (e) => {
-    setVerifikasi(e);
-  };
-
-  const handleProfileChange = (e) => {
-    // console.log(e.target.files[0]);
-    setProfileImage(e.target.files[0]);
-    console.log(profileImage);
-  }
-
   const onUpdateProfile = async (e) => {
     e.preventDefault();
-    console.log(profileImage)
-    update(profileImage, name, email);
-  };
-
-  // const handleChange = (name) => (event) => {
-  //   setState({ [name]: event.target.value });
-  // };
-
-  const onSave = async (e) => {
-    e.preventDefault();
-
+    console.log(profileImage);
     if (name.length <= 0) {
-      setNameErr(new Error("Nama tidak boleh kosong"))
+      snackbar.error("Nama tidak boleh kosong");
+      setName(userInfo.full_name);
       return;
     }
-
-    setNameErr(null);
-    setIsUpdateProfileLoading(true);
-    setIsUpdateProfileError(null);
+    update(profileImage, name, email);
   };
 
   const onUpdatePassword = async (e) => {
@@ -159,17 +129,14 @@ const Profile = () => {
       clearUserInfo();
     }
     else if (errorUpdating){
-      snackbar.error(errorUpdating)
+      snackbar.error(errorUpdating);
+      clearError();
     }
   },[
     userInfo,
     successUpdating,
     errorUpdating
   ])
-
-  useEffect(() => {
-    fetchUserInfo();
-  },[])
 
   return (
     <div className={style.container}>
@@ -255,7 +222,7 @@ const Profile = () => {
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={handleClickOpenNama}
+                        onClick={() => setOpenNama(!openNama)}
                         className={style["btn-batal"]}
                       >
                         Batalkan
@@ -285,7 +252,7 @@ const Profile = () => {
                     <div className={style["item-2"]}>
                       <button
                         type="button"
-                        onClick={handleClickOpenNama}
+                        onClick={() => setOpenNama(!openNama)}
                         className={style["btn-text"]}
                       >
                         <Icon>edit</Icon>Edit
@@ -317,7 +284,7 @@ const Profile = () => {
                         <p style={{ color: "white" }}>Terverifikasi</p>
                       ) : (
                         <p> Belum terverifikasi.{" "}
-                          <span onClick={handleVerifikasi}>
+                          <span onClick={(e) => setVerifikasi(e)}>
                             Kirim ulang
                           </span>
                         </p>
@@ -398,7 +365,7 @@ const Profile = () => {
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={handleClickOpenPassword}
+                        onClick={() => setOpenPassword(!openPassword)}
                         className={style["btn-batal"]}
                       >
                         Batalkan
@@ -427,7 +394,7 @@ const Profile = () => {
                       <Button
                         condensed
                         icon="/img/icons/edit.svg"
-                        onClick={handleClickOpenPassword}
+                        onClick={() => setOpenPassword(!openPassword)}
                       >
                         Ubah Password
                       </Button>

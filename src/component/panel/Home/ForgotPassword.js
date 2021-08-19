@@ -44,9 +44,12 @@ const ForgotPassword = (props) => {
   };
 
   useEffect(() => {
-    if (errorSendForgotPassword){
-      snackbar.error(errorSendForgotPassword)
+    if (errorSendForgotPassword == "Request failed with status code 500"){
+      snackbar.error("Email yang anda masukkan tidak valid");
+    } else if (errorSendForgotPassword){
+      snackbar.error(errorSendForgotPassword);
     }
+    clearError();
   },[errorSendForgotPassword, snackbar])
 
   return (

@@ -17,6 +17,7 @@
 
   .verify-alert {
     background-color: #fff9dd;
+    margin-bottom: rem(16);
     padding: rem(20) rem(30);
     border-radius: rem(8);
 
@@ -36,7 +37,7 @@
 
   .heading-wrapper {
     // padding: 0 0 rem(20) 0;
-    margin: 16px 0;
+    margin: 0 0 rem(16) 0;
     display: flex;
     flex-wrap: wrap;
     row-gap: rem(10);
@@ -79,13 +80,16 @@
 
       .dropdown {
         & > :last-child {
+          
           & > :first-child {
+            white-space: nowrap;
             border: none;
             border-radius: 0;
             height: rem(48);
             display: flex;
             align-items: center;
             font-size: rem(16);
+            padding: 0 0 0 16px;
 
             svg {
               height: rem(40);
