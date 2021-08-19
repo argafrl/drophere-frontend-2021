@@ -33,21 +33,23 @@ function MenuItem(props) {
         onClick={props.onClick}
         style={props.selected ? { backgroundColor: "#D9EDF7" } : {}}
       >
-        {props.icon != null ? (
-          <ListItemIcon>
-            <Icon
-              style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
-            >
-              {props.icon}
-            </Icon>
-          </ListItemIcon>
-        ) : (
-          ""
-        )}
-        <ListItemText
-          primary={props.caption}
-          style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
-        />
+        <div className={menuStyle["list-wrapper"]}>
+          {props.icon != null ? (
+            <ListItemIcon>
+              <Icon
+                style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
+              >
+                {props.icon}
+              </Icon>
+            </ListItemIcon>
+          ) : (
+            ""
+          )}
+          <ListItemText
+            primary={props.caption}
+            style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
+          />
+        </div>
       </ListItem>
     </div>
   );

@@ -4,6 +4,12 @@
 .container {
   display: flex;
   flex-direction: row;
+  padding-right: 5%;
+
+  @media only screen and (max-width: 768px) {
+    width: 90%;
+    padding-right: 0;
+}
   
   .content {
     position: relative;
@@ -24,17 +30,23 @@
   }
   
   .buat-halaman {
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
     margin-bottom: 12px;
-    justify-content: center;
-    column-gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: rem(16);
+    font-family: 'Inter';
+    span{
+      margin-right: 1rem;
+    }
   }
 }
 
 .menu {
   position: sticky;
   top: rem(50);
-  flex: 0 0 rem(250);
+  flex: 0 0 rem(300);
 
   @include breakpoint(md) {
     padding-top: rem(24);
