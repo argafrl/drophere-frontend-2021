@@ -19,7 +19,9 @@ export const defaultValue = {
   register: () => {},
   fetchUserInfo: () => {},
   sendEmailVerification: () => {},
-  update: () => {},
+  updateName: () => {},
+  updatePassword: () => {},
+  updateProfileImage: () => {},
   logout: () => {},
   clearError: () => {},
 };
@@ -67,16 +69,58 @@ export class UserStore extends React.Component {
     }
   };
 
-  update = async (profileImage, name, email) => {
+  updateName = async (name) => {
+    try {
+      this.setState({ isUpdating: true });
+
+      const { data } = await mainApi.patch("/users/profile", {
+        full_name: name
+      });
+      this.setState({
+        successUpdating: data.is_success,
+        errorUpdating: "",
+      });
+    } catch (err) {
+      this.setState({
+        successUpdating: false,
+        errorUpdating: err.message,
+      });
+    } finally {
+      this.setState({ isUpdating: false, successUpdating: false });
+    }
+  };
+
+  updatePassword = async (currentPassword, retypePassword) => {
+    try {
+      this.setState({ isUpdating: true });
+
+      const { data } = await mainApi.patch("/users/profile/password", {
+        old_password: currentPassword,
+        new_password: retypePassword,
+      });
+      console.log(data)
+      this.setState({
+        successUpdating: data.is_success,
+        errorUpdating: "",
+      });
+    } catch (err) {
+      this.setState({
+        successUpdating: false,
+        errorUpdating: err.message,
+      });
+    } finally {
+      this.setState({ isUpdating: false, successUpdating: false });
+    }
+  };
+
+  updateProfileImage = async (profileImage) => {
     try {
       this.setState({ isUpdating: true });
 
       const bodyFormData = new FormData();
       bodyFormData.append("profile_image", profileImage);
-      bodyFormData.append("full_name", name);
-      bodyFormData.append("email", email);
 
-      const { data } = await mainApi.patch("/users/profile", bodyFormData, {
+      const { data } = await mainApi.patch("/users/profile/image", bodyFormData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       this.setState({
@@ -161,7 +205,9 @@ export class UserStore extends React.Component {
           fetchUserInfo: this.fetchUserInfo,
           clearUserInfo: this.clearUserInfo,
           sendEmailVerification: this.sendEmailVerification,
-          update: this.update,
+          updateName: this.updateName,
+          updatePassword: this.updatePassword,
+          updateProfileImage: this.updateProfileImage,
           login: this.login,
           logout: this.logout,
           register: this.register,

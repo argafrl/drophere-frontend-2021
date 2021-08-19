@@ -145,6 +145,10 @@
     width: 100%;
   }
 
+  > :nth-child(3) {
+    color: #E84C3D;
+  }
+
   svg:first-child {
     display: none;
   }

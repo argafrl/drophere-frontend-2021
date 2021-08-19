@@ -7,9 +7,11 @@ import style from "../../css/verify.module.scss";
 import mainApi from "../../api/mainApi";
 import { SnackbarContext } from "../../contexts/SnackbarContext";
 import { getErrorMessage } from "../../helpers";
+import { UserContext } from "../../contexts/UserContext";
 
 const Verify = () => {
   const { search } = useLocation();
+  const { logout } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
 
@@ -51,7 +53,7 @@ const Verify = () => {
             beranda.
           </p>
           <Link to="/">
-            <Button>Kembali ke beranda</Button>
+            <Button onClick={() => logout()}>Kembali ke beranda</Button>
           </Link>
         </>
       )}

@@ -16,7 +16,7 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const Profile = () => {
 
-  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, update, isUpdating, successUpdating, errorUpdating, clearError } = useContext(UserContext);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, updateName, updatePassword, updateProfileImage, isUpdating, successUpdating, errorUpdating, clearError } = useContext(UserContext);
 
   const snackbar = useContext(SnackbarContext);
 
@@ -35,18 +35,7 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
 
-  const [nameErr, setNameErr] = useState(null);
-  const [currentPasswordErr, setCurrentPasswordErr] = useState(null);
-  const [newPasswordErr, setNewPasswordErr] = useState(null);
-  const [retypePasswordErr, setRetypePasswordErr] = useState(null);
-
-  const [isUpdateProfileError, setIsUpdateProfileError] = useState(null);
-  const [isUpdatedPasswordError, setIsUpdatedPasswordError] = useState(null);
-
-  const [isUpdateProfileLoading, setIsUpdateProfileLoading] = useState(false);
-  const [isUpdatePasswordLoading, setIsUpdatePasswordLoading] = useState(false);
-
-  const onUpdateProfile = async (e) => {
+  const onUpdateName = async (e) => {
     e.preventDefault();
     console.log(profileImage);
     if (name.length <= 0) {
@@ -54,64 +43,42 @@ const Profile = () => {
       setName(userInfo.full_name);
       return;
     }
-    update(profileImage, name, email);
+    updateName(name);
   };
 
   const onUpdatePassword = async (e) => {
     e.preventDefault();
 
-    let hasError = false;
-    let errorStates = {
-      currentPasswordErr: null,
-      newPasswordErr: null,
-      retypePasswordErr: null,
-    };
-
-    // check current password
     if (currentPassword.length <= 0) {
-      errorStates = {
-        ...errorStates,
-        currentPasswordErr: new Error("Password tidak boleh kosong"),
-      };
-      hasError = true;
+      snackbar.error("Password tidak boleh kosong");
+      return;
     }
 
-    // check retype password to match new password
     if (retypePassword !== newPassword) {
-      errorStates = {
-        ...errorStates,
-        retypePasswordErr: new Error("Password tidak cocok"),
-      };
-      hasError = true;
+      snackbar.error("Password tidak cocok");
+      return;
     }
 
-    // check for empty new password
     if (newPassword.length <= 0) {
-      errorStates = {
-        ...errorStates,
-        newPasswordErr: new Error("Password tidak boleh kosong"),
-      };
-      hasError = true;
+      snackbar.error("Password tidak boleh kosong");
+      return;
     }
 
     if (retypePassword.length <= 0) {
-      errorStates = {
-        ...errorStates,
-        retypePasswordErr: new Error("Password tidak boleh kosong"),
-      };
-      hasError = true;
-    }
-
-    // this.setState({
-    //   ...errorStates,
-    //   isUpdatePasswordLoading: !hasError,
-    //   isUpdatePasswordError: null,
-    // });
-    setIsUpdateProfileLoading(!hasError);
-    setIsUpdatedPasswordError(null);
-    if (hasError) {
+      snackbar.error("Password tidak boleh kosong");
       return;
     }
+
+    updatePassword(currentPassword, retypePassword);
+  };
+
+  const onUpdateProfileImage = async (e) => {
+    setProfileImage(e.target.files[0]);
+    if (profileImage.length <= 0) {
+      snackbar.error("File tidak boleh kosong");
+      return;
+    }
+    updateProfileImage(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -126,6 +93,9 @@ const Profile = () => {
     }
     if (successUpdating){
       snackbar.success("Profil berhasil diperbarui");
+      setCurrentPassword("");
+      setNewPassword("");
+      setRetypePassword("");
       clearUserInfo();
     }
     else if (errorUpdating){
@@ -171,7 +141,7 @@ const Profile = () => {
                       <input
                         type="file"
                         // value={profileImage}
-                        onChange={(e) => setProfileImage(e.target.files[0])}
+                        onChange={(e) => onUpdateProfileImage(e)}
                         name="avatar"
                         id="btn-avatar"
                         accept="image/*"
@@ -183,6 +153,7 @@ const Profile = () => {
                           Ubah
                         </label>
                       </div>
+                      {isUpdating? <Loading /> : ""}
                     </div>
                   </div>
 
@@ -204,7 +175,7 @@ const Profile = () => {
             <div className={style["form-container"]}>
               {openNama ? (
                 <form
-                  onSubmit={onUpdateProfile}
+                  onSubmit={onUpdateName}
                   className={style["form-edit"]}
                 >
                   <div className={style["form-text"]}>
@@ -213,6 +184,7 @@ const Profile = () => {
                   <div className={style["input-wrapper"]}>
                     <div className={style["input-container"]}>
                       <Input
+                        type="text"
                         handleChange={(e) => setName(e.target.value)}
                         value={name}
                         className={style["input"]}
@@ -238,7 +210,7 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {isUpdateProfileLoading ? <Loading /> : ""}
+                  {isUpdating? <Loading /> : ""}
                 </form>
               ) : (
                 <div className={style["form-unedit"]}>
@@ -302,10 +274,7 @@ const Profile = () => {
                   onSubmit={onUpdatePassword}
                   className={style["form-edit"]}
                 >
-                  <div
-                    className={style["form-text"]}
-                    // style={{ marginTop: "5px" }}
-                  >
+                  <div className={style["form-text"]}>
                     <p>Password</p>
                   </div>
                   <div className={style["input-wrapper"]}>
@@ -313,13 +282,6 @@ const Profile = () => {
                     <Password
                       type="password"
                       placeholder="Password lama"
-                      disabled={isUpdatePasswordLoading}
-                      hintText={
-                        currentPasswordErr
-                          ? currentPasswordErr.message
-                          : ""
-                      }
-                      error={currentPasswordErr != null}
                       name="current_password"
                       value={currentPassword}
                       handleChange={(e) => setCurrentPassword(e.target.value)}
@@ -330,13 +292,6 @@ const Profile = () => {
                     <Password
                       type="password"
                       placeholder="Password Baru"
-                      disabled={isUpdatePasswordLoading}
-                      hintText={
-                        newPasswordErr
-                          ? newPasswordErr.message
-                          : ""
-                      }
-                      error={newPasswordErr != null}
                       name="new_password"
                       value={newPassword}
                       handleChange={(e) => setNewPassword(e.target.value)}
@@ -347,14 +302,7 @@ const Profile = () => {
                     <Password
                       type="password"
                       placeholder="Ulangi Password"
-                      disabled={isUpdatePasswordLoading}
                       name="retype_password"
-                      hintText={
-                        retypePasswordErr
-                          ? retypePasswordErr.message
-                          : ""
-                      }
-                      error={retypePasswordErr != null}
                       value={retypePassword}
                       handleChange={(e) => setRetypePassword(e.target.value)}
                       visibilityEye={isShowRetype}
@@ -381,7 +329,7 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {isUpdatePasswordLoading ? <Loading /> : ""}
+                  {isUpdating ? <Loading /> : ""}
                 </form>
               ) : (
                 <div className={style["form-unedit"]}>
