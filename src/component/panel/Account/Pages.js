@@ -8,28 +8,63 @@ import {
 } from "@bccfilkom/designsystem/build";
 import Preloader from "../../common/Preloader";
 import { UserContext } from "../../../contexts/UserContext";
-import { PageContext } from "../../../contexts/PageContext";
 import mainApi from "../../../api/mainApi";
 import PageCard from "./PageCard";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
+import { getErrorMessage } from "../../../helpers";
 
 const Pages = () => {
   const { userInfo } = useContext(UserContext);
-  const { allPages, getAllPages, isFetchingAllPages } = useContext(PageContext);
   const snackbar = useContext(SnackbarContext);
 
   const [openAlert, setOpenAlert] = useState(false);
   const [sendEmail, setSendEmail] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
+  const [allPages, setAllPages] = useState([]);
+  const [isFetchingAllPages, setIsFetchingAllPages] = useState(false);
+  const [isDeletingSubmission, setIsDeletingSubmission] = useState(false);
+
+  const getAllPages = async () => {
+    try {
+      setIsFetchingAllPages(true);
+      const { data } = await mainApi.get("/submissions/");
+      setAllPages(data.data);
+    } catch (error) {
+      snackbar.error(getErrorMessage(error));
+    } finally {
+      setIsFetchingAllPages(false);
+    }
+  };
+
+  const deleteSubmission = async (slug) => {
+    try {
+      setIsDeletingSubmission(true);
+
+      await mainApi.delete(`/submissions/${slug}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
+        },
+      });
+      getAllPages();
+      snackbar.success("Halaman Berhasil Dihapus");
+    } catch (error) {
+      snackbar.error(getErrorMessage(error));
+    } finally {
+      setIsDeletingSubmission(false);
+    }
+  };
 
   useEffect(() => {
     if (userInfo) {
       setSendEmail(userInfo.is_verified);
     }
+  }, [userInfo]);
+
+  useEffect(() => {
     getAllPages();
-  }, [getAllPages, userInfo]);
+  }, []);
 
   const handleSendEmail = async (e) => {
     try {
@@ -151,6 +186,7 @@ const Pages = () => {
                       storage_type={link.storage_type}
                       files={link.gdrive_submissions[0].uploaded_files.length}
                       views={link.gdrive_submissions[0].views.length}
+                      onDelete={() => deleteSubmission(link.slug)}
                       key={idx}
                     />
                   );

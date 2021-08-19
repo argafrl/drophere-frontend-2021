@@ -1,22 +1,25 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@bccfilkom/designsystem/build";
 import { useDropzone } from "react-dropzone";
 import style from "../../../css/drop-content.module.scss";
 import FileItem from "./FileItem";
 import { useParams } from "react-router";
 import ConfirmSend from "./ConfirmSend";
-import { PageContext } from "../../../contexts/PageContext";
 import Preloader from "../../common/Preloader";
 import moment from "moment";
 import NotFound from "../../common/NotFound";
 import Inaccessible from "./Inaccessible";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
 const Content = () => {
   const { slug } = useParams();
-  const { getSubmissionInfo, submissionInfo, error, isFetchingSubmissionInfo } =
-    useContext(PageContext);
 
   const [confirmModalShown, showConfirmModal] = useState(false);
+  const [submissionInfo, setSubmissionInfo] = useState(null);
+  const [isFetchingSubmissionInfo, setIsFetchingSubmissionInfo] =
+    useState(false);
+  const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
 
   const onDrop = (receivedFiles) => {
@@ -70,9 +73,21 @@ const Content = () => {
     [isDragReject, isDragAccept, acceptStyle, baseStyle, rejectStyle]
   );
 
+  const getSubmissionInfo = async () => {
+    try {
+      setIsFetchingSubmissionInfo(true);
+      const { data } = await mainApi.get(`/submissions/${slug}`);
+      setSubmissionInfo(data.data);
+    } catch (error) {
+      setError(getErrorMessage(error));
+    } finally {
+      setIsFetchingSubmissionInfo(false);
+    }
+  };
+
   useEffect(() => {
     getSubmissionInfo(slug);
-  }, [slug, getSubmissionInfo]);
+  }, [slug]);
 
   if (error === "entry not found") {
     return <NotFound />;

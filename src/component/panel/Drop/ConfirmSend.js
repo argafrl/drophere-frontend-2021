@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { Button, Input } from "@bccfilkom/designsystem/build";
 import style from "../../../css/drop-confirm-send.module.scss";
 import FileCard from "./FileCard";
-import { PageContext } from "../../../contexts/PageContext";
 import { useParams } from "react-router";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
 const ConfirmSend = ({
   open,
@@ -14,18 +15,14 @@ const ConfirmSend = ({
   formatBytes,
   hasPassword,
 }) => {
-  const {
-    uploadProgress,
-    uploadSubmission,
-    isUploadingSubmission,
-    successUploadSubmission,
-    error,
-    resetUploadState,
-  } = useContext(PageContext);
-  const { slug } = useParams();
-
   const [submitted, setSubmitted] = useState(false);
   const [password, setPassword] = useState("");
+  const [isUploadingSubmission, setIsUploadingSubmission] = useState(false);
+  const [successUploadSubmission, setSuccessUploadSubmission] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [error, setError] = useState("");
+
+  const { slug } = useParams();
 
   const handleSubmit = async () => {
     resetUploadState();
@@ -42,6 +39,33 @@ const ConfirmSend = ({
     emptyFiles();
     setPassword("");
     resetUploadState();
+  };
+
+  const uploadSubmission = async (formData) => {
+    try {
+      setIsUploadingSubmission(true);
+      await mainApi.post(`/submissions/${slug}/upload`, formData, {
+        onUploadProgress: (progressEvent) => {
+          let percentCompleted = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress(percentCompleted);
+        },
+      });
+      setSuccessUploadSubmission(true);
+    } catch (error) {
+      setError(getErrorMessage(error));
+      setSuccessUploadSubmission(false);
+    } finally {
+      setIsUploadingSubmission(false);
+    }
+  };
+
+  const resetUploadState = () => {
+    setError("");
+    setIsUploadingSubmission(false);
+    setSuccessUploadSubmission(false);
+    setUploadProgress(0);
   };
 
   return (
