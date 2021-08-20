@@ -74,7 +74,7 @@ const Profile = () => {
 
   const onUpdateProfileImage = async (e) => {
     setProfileImage(e.target.files[0]);
-    if (profileImage.length <= 0) {
+    if (e.target.files[0] <= 0) {
       snackbar.error("File tidak boleh kosong");
       return;
     }
