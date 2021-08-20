@@ -1,8 +1,14 @@
-.wrapper {
+.container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  flex-grow: 1;
+
+  .content{
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
   
   .page {
     text-align: center;

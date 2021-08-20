@@ -125,7 +125,9 @@ const PageCard = ({
         </div>
         <div className={style.bottom}>
           <div className={style.title}>
-            <p>{title}</p>
+            { title.length >=40 ? 
+              <p>{`${title.substring(0, 55)}`}</p>
+            : <p>{title}</p> }
           </div>
           <div className={style.files}>
             <img src="/img/icons/folder.svg" alt="folder" />

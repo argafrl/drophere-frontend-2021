@@ -128,6 +128,9 @@
       .title {
         text-align: center;
         font-weight: 600;
+        p{
+          overflow-wrap: anywhere;
+        }
       }
       .files {
         display: flex;

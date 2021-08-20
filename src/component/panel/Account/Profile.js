@@ -16,7 +16,7 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const Profile = () => {
 
-  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, updateName, updatePassword, updateProfileImage, isUpdating, successUpdating, errorUpdating, clearError } = useContext(UserContext);
+  const { fetchUserInfo, userInfo, isFetchingUserInfo, clearUserInfo, updateName, updatePassword, updateProfileImage, deleteProfileImage, isUpdating, successUpdating, errorUpdating, clearError } = useContext(UserContext);
 
   const snackbar = useContext(SnackbarContext);
 
@@ -79,6 +79,14 @@ const Profile = () => {
       return;
     }
     updateProfileImage(e.target.files[0]);
+  };
+
+  const onDeleteProfileImage = async () => {
+    if (!userInfo.profile_image) {
+      snackbar.error("Foto telah kosong");
+      return;
+    }
+    deleteProfileImage();
   };
 
   useEffect(() => {
@@ -160,7 +168,7 @@ const Profile = () => {
                   <div className={style["item-2"]}>
                     <button
                       type="button"
-                      // onClick={handleClickOpen}
+                      onClick={onDeleteProfileImage}
                       className={style["btn-text"]}
                     >
                       <Icon>delete</Icon>Hapus

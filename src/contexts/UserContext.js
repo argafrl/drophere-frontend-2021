@@ -22,6 +22,7 @@ export const defaultValue = {
   updateName: () => {},
   updatePassword: () => {},
   updateProfileImage: () => {},
+  deleteProfileImage: () => {},
   logout: () => {},
   clearError: () => {},
 };
@@ -137,6 +138,25 @@ export class UserStore extends React.Component {
     }
   };
 
+  deleteProfileImage = async () => {
+    try {
+      this.setState({ isUpdating: true });
+
+      const { data } = await mainApi.delete("/users/profile/image");
+      this.setState({
+        successUpdating: data.is_success,
+        errorUpdating: "",
+      });
+    } catch (err) {
+      this.setState({
+        successUpdating: false,
+        errorUpdating: err.message,
+      });
+    } finally {
+      this.setState({ isUpdating: false, successUpdating: false });
+    }
+  };
+
   login = async (email, password) => {
     try {
       this.setState({ isLogin: true });
@@ -208,6 +228,7 @@ export class UserStore extends React.Component {
           updateName: this.updateName,
           updatePassword: this.updatePassword,
           updateProfileImage: this.updateProfileImage,
+          deleteProfileImage: this.deleteProfileImage,
           login: this.login,
           logout: this.logout,
           register: this.register,
