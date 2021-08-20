@@ -90,6 +90,18 @@ const Content = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (
+      submissionInfo &&
+      moment(submissionInfo.due_time).diff(moment(new Date()), "seconds") > 0
+    ) {
+      setTimeout(() => {
+        getSubmissionInfo();
+      }, moment(submissionInfo.due_time).diff(moment(new Date()), "seconds") * 1000);
+    } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submissionInfo]);
+
   if (error === "entry not found") {
     return <NotFound />;
   }
