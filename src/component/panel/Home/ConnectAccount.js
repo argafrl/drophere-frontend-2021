@@ -103,7 +103,7 @@ const ConnectAccount = () => {
       <div className={style["button-container"]}>
         <Button
           type="secondary"
-          disabled={isFetchingUserInfo}
+          disabled={isFetchingUserInfo || isConnectingGoogleDrive}
           onClick={handleNextPage}
         >
           Lanjutkan

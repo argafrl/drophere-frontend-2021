@@ -20,6 +20,7 @@ import Footer from "../../common/Footer";
 
 const Home = ({ location }) => {
   useMemo(() => {
+    mainApi.defaults.headers.post["Content-Type"] = "application/json";
     mainApi.defaults.headers.common["Authorization"] =
       localStorage.getItem("bccdrophere_token");
   }, []);

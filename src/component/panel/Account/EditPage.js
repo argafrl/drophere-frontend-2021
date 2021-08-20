@@ -173,6 +173,7 @@ const AddNewPage = () => {
               <div className={style["form__control__switcher"]}>
                 <div>
                   <Switcher
+                    disabled
                     checked={multipleFiles}
                     onSlide={() => setMultipleFiles(!multipleFiles)}
                   />

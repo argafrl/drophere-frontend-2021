@@ -5,39 +5,57 @@ import Loading from "../../common/Loading";
 import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
-import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import mainApi from "../../../api/mainApi";
+import { getErrorMessage } from "../../../helpers";
 
 const Register = () => {
-  const { error, register, isRegister, clearError, isLogin } =
-    useContext(UserContext);
-  const snackbar = useContext(SnackbarContext);
-
+  const {
+    isLogin,
+    login,
+    error: errorLogin,
+    clearError,
+  } = useContext(UserContext);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isShow, setIsShow] = useState(false);
-  const [errorRegister, setErrorRegister] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
     clearError();
+    setError("");
     register(name, email, password);
   };
 
-  useEffect(() => {
-    if (
-      error ===
-      "supabase error: duplicate key value violates unique constraint " +
-        '"users_email_key"'
-    ) {
-      snackbar.error("Akun dengan email tersebut sudah terdaftar");
-      setErrorRegister(error);
-    } else if (error) {
-      snackbar.error(error);
-      setErrorRegister(error);
+  const register = async () => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await mainApi.post("/sign_up", {
+        full_name: name,
+        email: email,
+        password: password,
+      });
+
+      if (data.is_success) {
+        login(email, password);
+      }
+    } catch (err) {
+      if (
+        getErrorMessage(err) ===
+        "supabase error: duplicate key value violates unique constraint " +
+          '"users_email_key"'
+      ) {
+        setError("Akun dengan email tersebut sudah terdaftar");
+      } else {
+        setError(getErrorMessage(err));
+      }
+    } finally {
+      setIsLoading(false);
     }
-    clearError();
-  }, [error, snackbar, clearError]);
+  };
 
   return (
     <div className={style.container}>
@@ -76,20 +94,8 @@ const Register = () => {
                 value={email}
                 handleChange={(e) => setEmail(e.target.value)}
                 style={{ borderRadius: "6px" }}
-                hintText={
-                  errorRegister ===
-                  "supabase error: duplicate key value violates unique constraint " +
-                    '"users_email_key"'
-                    ? `Akun dengan email tersebut sudah terdaftar`
-                    : ""
-                }
-                action={
-                  errorRegister ===
-                  "supabase error: duplicate key value violates unique constraint " +
-                    '"users_email_key"'
-                    ? "error"
-                    : ""
-                }
+                hintText={error || errorLogin ? error || errorLogin : ""}
+                action={error || errorLogin ? "error" : ""}
               />
             </div>
             <div className={style["input-wrapper"]}>
@@ -108,7 +114,7 @@ const Register = () => {
             </div>
             <Button className={style["button-daftar"]}>Daftar</Button>
           </div>
-          {isRegister || isLogin ? <Loading /> : ""}
+          {isLoading || isLogin ? <Loading /> : ""}
         </form>
       </Card>
     </div>

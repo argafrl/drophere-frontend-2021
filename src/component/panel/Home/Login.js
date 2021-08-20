@@ -38,9 +38,9 @@ class Login extends Component {
 
   handleIsShow = () => {
     this.setState({
-      isShow: !this.state.isShow
-    })
-  }
+      isShow: !this.state.isShow,
+    });
+  };
 
   static id = "loginLoading";
 
@@ -53,9 +53,8 @@ class Login extends Component {
   render() {
     return (
       <div className={style.container}>
-
         <Helmet>
-            <title>Login</title>
+          <title>Login</title>
         </Helmet>
 
         <Card className={style.form}>
@@ -91,13 +90,14 @@ class Login extends Component {
 
               <div className={style["input-wrapper"]}>
                 <p>Password</p>
-                {/* <Input
+                <Password
                   className={style["input"]}
-                  type="password"
                   placeholder="Masukkan Password"
                   required
+                  visibilityEye={this.state.isShow}
                   value={this.state.password}
                   handleChange={this.handleChange("password")}
+                  handleShow={() => this.handleIsShow()}
                   style={{ borderRadius: "6px" }}
                   hintText={
                     this.context.error ===
@@ -111,28 +111,6 @@ class Login extends Component {
                       ? "error"
                       : ""
                   }
-                /> */}
-                <Password
-                className={style["input"]}
-                placeholder="Masukkan Password"
-                required
-                visibilityEye={this.state.isShow}
-                value={this.state.password}
-                handleChange={this.handleChange("password")}
-                handleShow={() => this.handleIsShow()}
-                style={{ borderRadius: "6px" }}
-                hintText={
-                  this.context.error ===
-                  "crypto/bcrypt: hashedPassword is not the hash of the given password"
-                    ? "Password yang anda masukkan salah"
-                    : ""
-                }
-                action={
-                  this.context.error ===
-                  "crypto/bcrypt: hashedPassword is not the hash of the given password"
-                    ? "error"
-                    : ""
-                }
                 />
               </div>
               <button
@@ -156,7 +134,6 @@ class Login extends Component {
           </Portal>
         </Card>
       </div>
-      
     );
   }
 }

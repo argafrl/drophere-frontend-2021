@@ -28,7 +28,7 @@ const ForgotPassword = ({ open, onClose }) => {
       setError("");
       setEmail("");
       setSuccessSendEmail(false);
-    }, 100);
+    }, 1000);
   };
 
   const sendForgotPasswordEmail = async (email) => {

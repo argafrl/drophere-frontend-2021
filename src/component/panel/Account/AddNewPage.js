@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import {
   TextArea,
   Input,
@@ -86,7 +86,7 @@ const AddNewPage = () => {
     );
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (userInfo && !userInfo.is_gdrive_connected) {
       snackbar.error("Connect ke Google Drive terlebih dahulu");
       history.push("/account/storage");

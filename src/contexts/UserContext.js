@@ -8,21 +8,12 @@ export const defaultValue = {
   isAuthenticated: !!localStorage.getItem("bccdrophere_token"),
   error: "",
   isLogin: false,
-  isRegister: false,
   isFetchingUserInfo: false,
   isSendingEmailVerification: false,
   successSendEmailVerification: false,
-  isUpdating: false,
-  successUpdating: false,
-  errorUpdating: "",
   login: () => {},
-  register: () => {},
   fetchUserInfo: () => {},
   sendEmailVerification: () => {},
-  updateName: () => {},
-  updatePassword: () => {},
-  updateProfileImage: () => {},
-  deleteProfileImage: () => {},
   logout: () => {},
   clearError: () => {},
 };
@@ -45,6 +36,7 @@ export class UserStore extends React.Component {
       });
     } catch (error) {
       this.context.error(getErrorMessage(error));
+      console.log(getErrorMessage(error));
       this.logout();
     } finally {
       this.setState({ isFetchingUserInfo: false });
@@ -63,97 +55,9 @@ export class UserStore extends React.Component {
       await mainApi.get("/users/verify");
       this.setState({ successSendEmailVerification: true });
     } catch (error) {
-      console.log(error);
-      this.logout();
+      this.context.error("Terjadi Kesalahan");
     } finally {
       this.setState({ isSendingEmailVerification: false });
-    }
-  };
-
-  updateName = async (name) => {
-    try {
-      this.setState({ isUpdating: true });
-
-      const { data } = await mainApi.patch("/users/profile", {
-        full_name: name
-      });
-      this.setState({
-        successUpdating: data.is_success,
-        errorUpdating: "",
-      });
-    } catch (err) {
-      this.setState({
-        successUpdating: false,
-        errorUpdating: err.message,
-      });
-    } finally {
-      this.setState({ isUpdating: false, successUpdating: false });
-    }
-  };
-
-  updatePassword = async (currentPassword, retypePassword) => {
-    try {
-      this.setState({ isUpdating: true });
-
-      const { data } = await mainApi.patch("/users/profile/password", {
-        old_password: currentPassword,
-        new_password: retypePassword,
-      });
-      console.log(data)
-      this.setState({
-        successUpdating: data.is_success,
-        errorUpdating: "",
-      });
-    } catch (err) {
-      this.setState({
-        successUpdating: false,
-        errorUpdating: err.message,
-      });
-    } finally {
-      this.setState({ isUpdating: false, successUpdating: false });
-    }
-  };
-
-  updateProfileImage = async (profileImage) => {
-    try {
-      this.setState({ isUpdating: true });
-
-      const bodyFormData = new FormData();
-      bodyFormData.append("profile_image", profileImage);
-
-      const { data } = await mainApi.patch("/users/profile/image", bodyFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      this.setState({
-        successUpdating: data.is_success,
-        errorUpdating: "",
-      });
-    } catch (err) {
-      this.setState({
-        successUpdating: false,
-        errorUpdating: err.message,
-      });
-    } finally {
-      this.setState({ isUpdating: false, successUpdating: false });
-    }
-  };
-
-  deleteProfileImage = async () => {
-    try {
-      this.setState({ isUpdating: true });
-
-      const { data } = await mainApi.delete("/users/profile/image");
-      this.setState({
-        successUpdating: data.is_success,
-        errorUpdating: "",
-      });
-    } catch (err) {
-      this.setState({
-        successUpdating: false,
-        errorUpdating: err.message,
-      });
-    } finally {
-      this.setState({ isUpdating: false, successUpdating: false });
     }
   };
 
@@ -186,34 +90,9 @@ export class UserStore extends React.Component {
     localStorage.removeItem("bccdrophere_token");
   };
 
-  register = async (name, email, password) => {
-    try {
-      this.setState({ isRegister: true });
-
-      const { data } = await mainApi.post("/sign_up", {
-        full_name: name,
-        email: email,
-        password: password,
-      });
-
-      if (data.is_success) {
-        this.login(email, password);
-      }
-    } catch (err) {
-      console.log(err.response.data.message);
-      this.setState({
-        error: err.response.data.message,
-        isAuthenticated: false,
-      });
-    } finally {
-      this.setState({ isRegister: false });
-    }
-  };
-
   clearError = () => {
     this.setState({
       error: "",
-      errorUpdating: "",
     });
   };
 
@@ -225,13 +104,8 @@ export class UserStore extends React.Component {
           fetchUserInfo: this.fetchUserInfo,
           clearUserInfo: this.clearUserInfo,
           sendEmailVerification: this.sendEmailVerification,
-          updateName: this.updateName,
-          updatePassword: this.updatePassword,
-          updateProfileImage: this.updateProfileImage,
-          deleteProfileImage: this.deleteProfileImage,
           login: this.login,
           logout: this.logout,
-          register: this.register,
           clearError: this.clearError,
         }}
       >
