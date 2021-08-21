@@ -15,7 +15,7 @@ import ResetPassword from "./ResetPassword";
 import ConnectAccount from "./ConnectAccount";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
-import Verify from "../../common/Verify";
+import Verify from "./Verify";
 import Footer from "../../common/Footer";
 
 const Home = ({ location }) => {

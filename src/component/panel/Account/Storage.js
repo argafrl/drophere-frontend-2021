@@ -41,7 +41,7 @@ const Storage = () => {
                 className={useDrive ? style["button-cancel"] : ""}
                 onClick={handleConnectDrive}
                 skeleton={isFetchingUserInfo}
-                disabled={useDrive}
+                disabled={useDrive || isFetchingUserInfo}
               >
                 {useDrive ? "Batalkan" : "Tautkan"}
               </Button>

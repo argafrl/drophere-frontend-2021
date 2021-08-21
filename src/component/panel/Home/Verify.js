@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import Preloader from "../common/Preloader";
-
+import { useHistory, useLocation } from "react-router-dom";
+import Preloader from "../../common/Preloader";
 import { Button } from "@bccfilkom/designsystem/build";
-import style from "../../css/verify.module.scss";
-import mainApi from "../../api/mainApi";
-import { SnackbarContext } from "../../contexts/SnackbarContext";
-import { getErrorMessage } from "../../helpers";
+import style from "../../../css/verify.module.scss";
+import mainApi from "../../../api/mainApi";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
+import { getErrorMessage } from "../../../helpers";
 
 const Verify = () => {
   const { search } = useLocation();
@@ -50,9 +49,10 @@ const Verify = () => {
             Selamat! email anda telah berhasil diverifikasi. Silahkan kembali ke
             beranda.
           </p>
-          <Link to="/">
-            <Button onClick={() => history.replace('/')}>Kembali ke beranda</Button>
-          </Link>
+
+          <Button onClick={() => history.replace("/")}>
+            Kembali ke beranda
+          </Button>
         </>
       )}
     </div>
