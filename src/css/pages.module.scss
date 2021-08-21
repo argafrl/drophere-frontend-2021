@@ -74,13 +74,12 @@
         padding: rem(16) rem(16) rem(16) rem(48);
       }
 
-      .search{
+      .search {
         flex: 1 1 auto;
       }
 
       .dropdown {
         & > :last-child {
-          
           & > :first-child {
             white-space: nowrap;
             border: none;
@@ -136,21 +135,22 @@
   }
 
   .grid-container {
-    margin-top: 0;
     display: grid;
-    grid-auto-rows: rem(210);
-    grid-template-columns: repeat(auto-fill, minmax(193.5px, 1fr));
-    gap: rem(24);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: rem(10);
+
+    @include breakpoint(md) {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: rem(6);
+    }
+
+    @include breakpoint(xxs) {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
 
     .not-found {
-      grid-column-start: 1;
-      grid-column-end: span 5;
-      grid-row-start: 1;
-      grid-row-end: 3;
       flex-direction: column;
       @include center-flex;
-      text-align: center;
-
       p {
         text-align: center;
         margin: rem(15);

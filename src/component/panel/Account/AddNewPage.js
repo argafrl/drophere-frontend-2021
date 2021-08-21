@@ -115,7 +115,7 @@ const AddNewPage = () => {
         snackbar.error(getErrorMessage(error));
       }
     } finally {
-      setIsCreatingSubmission(true);
+      setIsCreatingSubmission(false);
     }
   };
 

@@ -85,8 +85,7 @@ const PageCard = ({
             <p>
               Apakah anda yakin ingin menghapus halaman{" "}
               <span style={{ fontWeight: "600" }}>{title}</span>
-              {"? "}
-              Halaman yang dihapus tidak akan dapat diakses kembali.
+              {" ?"} Halaman yang dihapus tidak akan dapat diakses kembali.
             </p>
           </div>
         </div>

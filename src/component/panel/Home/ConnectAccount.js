@@ -7,8 +7,13 @@ import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
 
 const ConnectAccount = () => {
-  const { connectGoogleDrive, getOAuthUrl, oAuthUrl, isConnectingGoogleDrive } =
-    useContext(StorageContext);
+  const {
+    connectGoogleDrive,
+    getOAuthUrl,
+    oAuthUrl,
+    isConnectingGoogleDrive,
+    isFetchingOAuthUrl,
+  } = useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
 
@@ -80,7 +85,10 @@ const ConnectAccount = () => {
               onClick={handleConnectDrive}
               skeleton={isFetchingUserInfo || isConnectingGoogleDrive}
               disabled={
-                useDrive || isFetchingUserInfo || isConnectingGoogleDrive
+                useDrive ||
+                isFetchingUserInfo ||
+                isConnectingGoogleDrive ||
+                isFetchingOAuthUrl
               }
             >
               {useDrive ? "Batalkan" : "Tautkan"}
