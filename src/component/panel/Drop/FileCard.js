@@ -1,6 +1,6 @@
 import React from "react";
 import style from "../../../css/drop-file-card.module.scss";
-import { FILE_TYPES } from "../../../utils";
+import { FILE_TYPES } from "../../../utils/utils";
 
 const ProgressBar = ({ uploaded }) => {
   return (

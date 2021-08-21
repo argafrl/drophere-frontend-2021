@@ -6,7 +6,7 @@ import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
 import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const Register = () => {
   const {

@@ -12,7 +12,7 @@ import { useHistory, useParams } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import Preloader from "../../common/Preloader";
 import { Helmet } from "react-helmet";
-import { countWords, getErrorMessage } from "../../../helpers";
+import { countWords, getErrorMessage } from "../../../utils/functions";
 import mainApi from "../../../api/mainApi";
 
 const AddNewPage = () => {

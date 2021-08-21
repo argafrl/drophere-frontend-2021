@@ -5,7 +5,7 @@ import style from "../../../css/drop-confirm-send.module.scss";
 import FileCard from "./FileCard";
 import { useParams } from "react-router";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const ConfirmSend = ({
   open,

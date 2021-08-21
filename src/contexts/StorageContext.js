@@ -1,6 +1,6 @@
 import React from "react";
 import mainApi from "../api/mainApi";
-import { getErrorMessage } from "../helpers";
+import { getErrorMessage } from "../utils/functions";
 import { SnackbarContext } from "./SnackbarContext";
 import { withUser } from "./UserContext";
 

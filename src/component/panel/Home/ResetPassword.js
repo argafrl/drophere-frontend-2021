@@ -7,7 +7,7 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Card, Button, Password, Dialog } from "@bccfilkom/designsystem/build";
 import style from "../../../css/login.module.scss";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const ResetPassword = () => {
   const history = useHistory();

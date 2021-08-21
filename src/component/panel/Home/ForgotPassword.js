@@ -4,7 +4,7 @@ import Loading from "../../common/Loading";
 import { Input, Dialog } from "@bccfilkom/designsystem/build";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const ForgotPassword = ({ open, onClose }) => {
   const [email, setEmail] = useState("");

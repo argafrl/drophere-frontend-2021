@@ -49,7 +49,7 @@ export default () => {
           </div>
           <div className={style.link}>
             <Link to="/contributor">Kontributor</Link>
-            <Link>Hubungi Kami</Link>
+            <Link to='/'>Hubungi Kami</Link>
           </div>
           <div className={style.logo}>
             <a

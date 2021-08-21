@@ -11,7 +11,7 @@ import style from "../../../css/account-add-new-page.module.scss";
 import { UserContext } from "../../../contexts/UserContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-import { characterCheck, countWords, getErrorMessage } from "../../../helpers";
+import { characterCheck, countWords, getErrorMessage } from "../../../utils/functions";
 import { Helmet } from "react-helmet";
 import mainApi from "../../../api/mainApi";
 

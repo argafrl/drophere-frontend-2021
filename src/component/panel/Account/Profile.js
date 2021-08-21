@@ -10,7 +10,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const Profile = () => {
   const { userInfo, isFetchingUserInfo, fetchUserInfo } =

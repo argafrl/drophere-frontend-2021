@@ -12,7 +12,7 @@ import mainApi from "../../../api/mainApi";
 import PageCard from "./PageCard";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 import { useLocation } from "react-router";
 
 const Pages = () => {

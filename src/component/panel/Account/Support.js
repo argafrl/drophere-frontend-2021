@@ -4,7 +4,7 @@ import { TextArea, Button } from "@bccfilkom/designsystem/build";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 export default function Support() {
   const [message, setMessage] = useState("");

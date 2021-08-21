@@ -1,6 +1,6 @@
 import React from "react";
 import style from "../../../css/drop-file.module.scss";
-import { FILE_TYPES } from "../../../utils";
+import { FILE_TYPES } from "../../../utils/utils";
 
 const FileItem = ({ name, size, onRemove }) => {
   const extPosition = Math.max(0, name.lastIndexOf(".")) || Infinity;

@@ -10,7 +10,7 @@ import moment from "moment";
 import NotFound from "../../common/NotFound";
 import Inaccessible from "./Inaccessible";
 import mainApi from "../../../api/mainApi";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const Content = () => {
   const { slug } = useParams();

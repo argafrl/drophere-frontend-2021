@@ -18,7 +18,7 @@ const Storage = () => {
 
   const handleConnectDrive = () => {
     if (!useDrive) {
-      history.push('/connect-account')
+      history.push("/connect-account");
     }
   };
 
@@ -35,13 +35,13 @@ const Storage = () => {
             <div className={style["card__body"]}>
               <h3 className={style["card__body__title"]}>Google Drive</h3>
               <p className={style["card__body__description"]}>
-                Nantikan fitur baru untuk dapat terhubung ke Google Drive
+                Tautkan akun ke Google Drive untuk menyimpan file
               </p>
               <Button
                 className={useDrive ? style["button-cancel"] : ""}
                 onClick={handleConnectDrive}
                 skeleton={isFetchingUserInfo}
-                disabled={useDrive}
+                disabled={useDrive || isFetchingUserInfo}
               >
                 {useDrive ? "Batalkan" : "Tautkan"}
               </Button>
@@ -54,7 +54,7 @@ const Storage = () => {
             <div className={style["card__body"]}>
               <h3 className={style["card__body__title"]}>Dropbox</h3>
               <p className={style["card__body__description"]}>
-                Tautkan akun ke Dropbox untuk menyimpan file
+                Nantikan fitur baru untuk dapat terhubung ke Dropbox
               </p>
               <div className={style["card__body__badge"]}>Coming Soon</div>
             </div>

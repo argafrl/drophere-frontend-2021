@@ -5,7 +5,7 @@ import { Button } from "@bccfilkom/designsystem/build";
 import style from "../../../css/verify.module.scss";
 import mainApi from "../../../api/mainApi";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-import { getErrorMessage } from "../../../helpers";
+import { getErrorMessage } from "../../../utils/functions";
 
 const Verify = () => {
   const { search } = useLocation();
