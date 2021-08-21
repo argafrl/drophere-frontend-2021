@@ -13,7 +13,7 @@ import mainApi from "../../../api/mainApi";
 import { getErrorMessage } from "../../../utils/functions";
 
 const Profile = () => {
-  const { userInfo, isFetchingUserInfo, fetchUserInfo } =
+  const { userInfo, isFetchingUserInfo, fetchUserInfo, successSendEmailVerification, setSuccessSendEmailVerification } =
     useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
 
@@ -106,6 +106,20 @@ const Profile = () => {
       fetchUserInfo();
     } catch (err) {
       snackbar.error(getErrorMessage(err));
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    try {
+      setIsUpdating(true);
+      await mainApi.get("/users/verify");
+      setSuccessSendEmailVerification();
+      snackbar.success("Email berhasil dikirim");
+    } catch (error) {
+      console.log(error);
+      snackbar.error("Email gagal dikirim");
     } finally {
       setIsUpdating(false);
     }
@@ -314,7 +328,7 @@ const Profile = () => {
                           <p>
                             {" "}
                             Belum terverifikasi.{" "}
-                            <span onClick={(e) => setVerifikasi(e)}>
+                            <span onClick={handleSendEmail}>
                               Kirim ulang
                             </span>
                           </p>

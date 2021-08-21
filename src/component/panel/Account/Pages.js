@@ -14,14 +14,16 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
 import { getErrorMessage } from "../../../utils/functions";
 import { useLocation } from "react-router";
+import Loading from "../../common/Loading";
 
 const Pages = () => {
-  const { userInfo, fetchUserInfo } = useContext(UserContext);
+  const { userInfo, fetchUserInfo, successSendEmailVerification, setSuccessSendEmailVerification } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
   const { state } = useLocation();
 
   const [openAlert, setOpenAlert] = useState(false);
-  const [sendEmail, setSendEmail] = useState(true);
+  const [verifikasi, setVerifikasi] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Tanggal");
   const [allPages, setAllPages] = useState([]);
@@ -54,7 +56,7 @@ const Pages = () => {
 
   useEffect(() => {
     if (userInfo) {
-      setSendEmail(userInfo.is_verified);
+      setVerifikasi(userInfo.is_verified);
     }
   }, [userInfo]);
 
@@ -66,14 +68,18 @@ const Pages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSendEmail = async (e) => {
+  const handleSendEmail = async () => {
     try {
+      setIsUpdating(true);
       await mainApi.get("/users/verify");
-      setSendEmail(e);
+      setVerifikasi(true);
+      setSuccessSendEmailVerification();
       snackbar.success("Email berhasil dikirim");
     } catch (error) {
       console.log(error);
       snackbar.error("Email gagal dikirim");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -90,13 +96,13 @@ const Pages = () => {
       <Helmet>
         <title>Halaman</title>
       </Helmet>
-      {!sendEmail && (
+      {!verifikasi && !successSendEmailVerification && (
         <div className={style["verify-alert"]}>
           <h6>Verifikasi Email Anda</h6>
           <p>
             Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum
             menerima email?{" "}
-            <span onClick={() => handleSendEmail(true)}>Kirim ulang</span>
+            <span onClick={handleSendEmail}>Kirim ulang</span>
           </p>
           <Dialog
             title="Title"
@@ -115,6 +121,8 @@ const Pages = () => {
             cursus fermentum risus, sit amet fringilla nunc pellentesque quis.
             Duis quis odio ultrices, cursus lacus ac, posuere felis.
           </Dialog>
+
+          {isUpdating ? <Loading /> : ""}
         </div>
       )}
 

@@ -9,11 +9,10 @@ export const defaultValue = {
   error: "",
   isLogin: false,
   isFetchingUserInfo: false,
-  isSendingEmailVerification: false,
   successSendEmailVerification: false,
   login: () => {},
   fetchUserInfo: () => {},
-  sendEmailVerification: () => {},
+  setSuccessSendEmailVerification: () => {},
   logout: () => {},
   clearError: () => {},
 };
@@ -49,16 +48,10 @@ export class UserStore extends React.Component {
     });
   };
 
-  sendEmailVerification = async () => {
-    try {
-      this.setState({ isSendingEmailVerification: true });
-      await mainApi.get("/users/verify");
-      this.setState({ successSendEmailVerification: true });
-    } catch (error) {
-      this.context.error("Terjadi Kesalahan");
-    } finally {
-      this.setState({ isSendingEmailVerification: false });
-    }
+  setSuccessSendEmailVerification = () => {
+    this.setState({
+      successSendEmailVerification: true,
+    })
   };
 
   login = async (email, password) => {
@@ -103,7 +96,7 @@ export class UserStore extends React.Component {
           ...this.state,
           fetchUserInfo: this.fetchUserInfo,
           clearUserInfo: this.clearUserInfo,
-          sendEmailVerification: this.sendEmailVerification,
+          setSuccessSendEmailVerification: this.setSuccessSendEmailVerification,
           login: this.login,
           logout: this.logout,
           clearError: this.clearError,
