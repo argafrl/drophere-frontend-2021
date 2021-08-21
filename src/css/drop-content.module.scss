@@ -16,6 +16,9 @@
 
     &__description {
       margin-bottom: rem(18);
+      max-width: rem(550);
+      margin: 0 auto 1rem auto;
+      padding: 0 1rem;
     }
 
     &__deadline {

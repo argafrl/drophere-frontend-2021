@@ -49,7 +49,9 @@ const PageCard = ({
   };
 
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.origin.toString() + "/link/" + slug);
+    navigator.clipboard.writeText(
+      window.location.origin.toString() + "/link/" + slug
+    );
     setCloseMenu();
     snackbar.success("Link " + title + " disalin ke clipboard");
   };
@@ -125,9 +127,11 @@ const PageCard = ({
         </div>
         <div className={style.bottom}>
           <div className={style.title}>
-            { title.length >=40 ? 
+            {title.length >= 40 ? (
               <p>{`${title.substring(0, 55)}`}</p>
-            : <p>{title}</p> }
+            ) : (
+              <p>{title}</p>
+            )}
           </div>
           <div className={style.files}>
             <img src="/img/icons/folder.svg" alt="folder" />

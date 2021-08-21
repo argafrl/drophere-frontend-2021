@@ -50,7 +50,14 @@ const Verify = () => {
             beranda.
           </p>
 
-          <Button onClick={() => history.replace("/")}>
+          <Button
+            onClick={() =>
+              history.replace({
+                pathname: "/account/pages",
+                state: { from: "/verify-email" },
+              })
+            }
+          >
             Kembali ke beranda
           </Button>
         </>

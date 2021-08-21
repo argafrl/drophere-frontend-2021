@@ -13,10 +13,12 @@ import PageCard from "./PageCard";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { Helmet } from "react-helmet";
 import { getErrorMessage } from "../../../helpers";
+import { useLocation } from "react-router";
 
 const Pages = () => {
-  const { userInfo } = useContext(UserContext);
+  const { userInfo, fetchUserInfo } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
+  const { state } = useLocation();
 
   const [openAlert, setOpenAlert] = useState(false);
   const [sendEmail, setSendEmail] = useState(true);
@@ -57,6 +59,9 @@ const Pages = () => {
   }, [userInfo]);
 
   useEffect(() => {
+    if (state && state.from === "/verify-email") {
+      fetchUserInfo();
+    }
     getAllPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

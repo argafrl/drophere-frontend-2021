@@ -142,7 +142,7 @@ const AddNewPage = () => {
         <div className={style["form__control"]}>
           <label>Link Halaman</label>
           <div className={style["form__control__link"]}>
-            <p>https://drophere.link/ </p>
+            <p>{window.location.origin.toString() + "/link/"} </p>
             <Input
               required
               value={link}
