@@ -37,7 +37,9 @@ function MenuItem(props) {
           {props.icon != null ? (
             <ListItemIcon>
               <Icon
-                style={props.selected ? { color: "#1A74A0" } : { color: "black" }}
+                style={
+                  props.selected ? { color: "#1A74A0" } : { color: "black" }
+                }
               >
                 {props.icon}
               </Icon>

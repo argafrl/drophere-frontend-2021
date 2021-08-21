@@ -71,10 +71,10 @@ export class UserStore extends React.Component {
 
       mainApi.defaults.headers.common["Authorization"] =
         localStorage.getItem("bccdrophere_token");
-      this.setState({ isAuthenticated: true, error: "" });
+      this.setState({ isAuthenticated: true });
     } catch (err) {
       this.setState({
-        error: err.response.data.message,
+        error: getErrorMessage(err),
         isAuthenticated: false,
       });
     } finally {
