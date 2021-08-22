@@ -12,6 +12,8 @@ import Inaccessible from "./Inaccessible";
 import mainApi from "../../../api/mainApi";
 import { getErrorMessage } from "../../../utils/functions";
 
+import AirplaneIcon from "../../../assets/images/icons/airplane.svg";
+
 const Content = () => {
   const { slug } = useParams();
 
@@ -98,7 +100,7 @@ const Content = () => {
       setTimeout(() => {
         getSubmissionInfo();
       }, moment(submissionInfo.due_time).diff(moment(new Date()), "seconds") * 1000);
-    } 
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submissionInfo]);
 
@@ -185,7 +187,7 @@ const Content = () => {
                   type="primary"
                   onClick={() => showConfirmModal(true)}
                   disabled={files.length === 0}
-                  icon="/img/icons/airplane.svg"
+                  icon={AirplaneIcon}
                 >
                   Kirim File
                 </Button>
