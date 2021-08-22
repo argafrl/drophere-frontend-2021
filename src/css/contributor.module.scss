@@ -1,14 +1,14 @@
+@import "./global/index";
+@import "./utils/index";
+
 .container {
   width: 80%;
-  // margin: 0 auto;
   padding: 35px 0 70px 0;
-  // padding: 0 10%;
   .heading {
-    // margin-top: 35px;
     text-align: center;
     h1 {
       font-weight: 600;
-      font-size: 20pt;
+      font-size: rem(36);
     }
 
     p {
@@ -17,9 +17,9 @@
   }
 
   .grid-container {
-    margin-top: 35px;
+    margin-top: rem(35);
     display: grid;
-    grid-auto-rows: 280px;
+    // grid-auto-rows: rem(280);
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 24px 24px;
     .item {
@@ -27,49 +27,66 @@
       border-radius: 8px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      padding: rem(25);
 
-      .avatar {
-        img {
-          width: 100px;
+      .top{
+        .avatar {
+          img {
+            width: rem(100);
+            height: rem(100);
+            border-radius: 50%;
+          }
         }
       }
-      .nama {
-        margin-top: 10px;
-        font-size: 18px;
-        font-weight: 600;
-        color: #3e3e3e;
-      }
-      .role {
-        color: #787879;
-        font-size: 14px;
-      }
-      .linkedin {
-        margin-top: 20px;
-        a {
-          display: flex;
-          align-items: center;
-          column-gap: 5px;
-          font-size: 14px;
-          font-style: italic;
+
+      .middle{
+        text-align: center;
+        .nama {
+          margin-top: rem(10);
+          font-size: rem(18);
+          font-weight: 600;
+          text-align: center;
+          color: #3e3e3e;
+        }
+        .role {
           color: #787879;
-          img {
-            content: url("/img/linkedin-grey.svg");
-          }
-          &:hover {
+          font-size: rem(14);
+        }
+      }
+
+      .bottom{
+        .linkedin {
+          margin-top: rem(20);
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            column-gap: rem(5);
+            p{
+              font-size: rem(14);
+              font-style: italic;
+              color: #787879;
+            }
             img {
-              content: url("/img/linkedin-blue.svg");
+              content: url("/img/linkedin-grey.svg");
+            }
+            &:hover {
+              img {
+                content: url("/img/linkedin-blue.svg");
+              }
             }
           }
         }
       }
+
     }
   }
 
   .btn-wrapper {
     display: flex;
-    margin: 35px 0;
+    margin: rem(35) 0;
     justify-content: center;
   }
 }
