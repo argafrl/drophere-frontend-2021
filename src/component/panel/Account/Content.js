@@ -159,10 +159,6 @@ class Content extends Component {
     this.context.closeSidebar();
   };
 
-  componentDidMount() {
-    console.log(this.context);
-  }
-
   render() {
     return (
       <div className={style.body}>
