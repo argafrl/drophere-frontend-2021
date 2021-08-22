@@ -13,6 +13,7 @@ import mainApi from "../../../api/mainApi";
 import { getErrorMessage } from "../../../utils/functions";
 
 import AirplaneIcon from "../../../assets/images/icons/airplane.svg";
+import CloudUpload from "../../../assets/images/illustrations/cloud-upload.png";
 
 const Content = () => {
   const { slug } = useParams();
@@ -173,7 +174,7 @@ const Content = () => {
                 ) : (
                   <>
                     <img
-                      src="/img/cloud-upload.png"
+                      src={CloudUpload}
                       alt="cloud"
                       className={style["cloud-icon"]}
                     />
