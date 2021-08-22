@@ -31,7 +31,7 @@
       align-items: center;
       padding: rem(25);
 
-      .top{
+      .top {
         .avatar {
           img {
             width: rem(100);
@@ -41,7 +41,7 @@
         }
       }
 
-      .middle{
+      .middle {
         text-align: center;
         .nama {
           margin-top: rem(10);
@@ -56,7 +56,7 @@
         }
       }
 
-      .bottom{
+      .bottom {
         .linkedin {
           margin-top: rem(20);
           a {
@@ -64,23 +64,22 @@
             align-items: center;
             justify-content: flex-start;
             column-gap: rem(5);
-            p{
+            p {
               font-size: rem(14);
               font-style: italic;
               color: #787879;
             }
             img {
-              content: url("/img/linkedin-grey.svg");
+              content: url("../assets/images/icons/linkedin-grey.svg");
             }
             &:hover {
               img {
-                content: url("/img/linkedin-blue.svg");
+                content: url("../assets/images/icons/linkedin-blue.svg");
               }
             }
           }
         }
       }
-
     }
   }
 
