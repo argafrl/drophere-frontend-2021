@@ -4,13 +4,14 @@
 .container {
   @include center-flex;
   flex-direction: column;
-  max-width: rem(400);
+  width: rem(400);
 
   .top {
     display: flex;
 
     img {
-      max-width: 100%;
+      width: 100%;
+      height: auto;
       margin-bottom: rem(30);
     }
   }

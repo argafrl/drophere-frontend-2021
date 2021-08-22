@@ -3,19 +3,11 @@
 
 .footer {
   width: 100%;
-  // margin: 10px 0;
-  // padding: 20px 77px 0 77px;
   border-top: 2px solid #e4e5e7;
   .wrapper {
     width: 80%;
     padding: 35px 0;
     margin: 0 auto;
-    // display: flex;
-    // flex-direction: column;
-    // row-gap: rem(40);
-    // @media only screen and (max-width: 768px) {
-    //     row-gap: rem(35);
-    // }
     .top {
       display: flex;
       justify-content: space-between;
@@ -39,7 +31,7 @@
         row-gap: rem(10);
         img {
           width: rem(200);
-          height: auto;
+          height: rem(42);
         }
       }
 
@@ -56,11 +48,13 @@
         .bcc-wrapper {
           img {
             width: rem(110);
+            height: rem(42);
           }
         }
         .gojek-wrapper {
           img {
             width: rem(140);
+            height: rem(36);
           }
         }
       }

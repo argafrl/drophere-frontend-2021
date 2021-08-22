@@ -28,7 +28,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    clearError();
+    return () => {
+      clearError();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

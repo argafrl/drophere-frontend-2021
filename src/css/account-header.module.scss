@@ -38,19 +38,10 @@
   }
 
   a {
-    display: flex;
     width: auto;
-    flex: 0 0 rem(250);
-
     img {
       width: rem(200);
-      height: auto;
-    }
-
-    h1 {
-      font-weight: 600;
-      font-size: rem(24);
-      color: #000;
+      height: rem(42);
     }
   }
 
