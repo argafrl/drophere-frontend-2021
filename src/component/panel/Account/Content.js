@@ -23,6 +23,8 @@ import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
 import AccountFooter from "./AccountFooter";
 
+import DummyUser from "../../../assets/images/user.png";
+
 function MenuItem(props) {
   return (
     <div className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}>
@@ -80,7 +82,7 @@ const Menu = (props) => {
   return (
     <div className={menuStyle.container + " wrapper"}>
       <div className={menuStyle["user"]}>
-        <img src="/img/user.png" alt="user-profile" />
+        <img src={DummyUser} alt="user-profile" />
         <p>
           Hi,{" "}
           <strong>

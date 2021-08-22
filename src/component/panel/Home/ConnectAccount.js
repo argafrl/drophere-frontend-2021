@@ -6,6 +6,9 @@ import { UserContext } from "../../../contexts/UserContext";
 import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
 
+import DriveIcon from "../../../assets/images/icons/drive-active.svg";
+import DropboxIcon from "../../../assets/images/icons/dropbox-active.svg";
+
 const ConnectAccount = () => {
   const {
     connectGoogleDrive,
@@ -73,7 +76,7 @@ const ConnectAccount = () => {
         <div className={style["card"] + " " + style["card-active"]}>
           <div className={style["card__img"]}>
             {" "}
-            <img src="/img/icons/drive-active.svg" alt="drive" />
+            <img src={DriveIcon} alt="drive" />
           </div>
           <div className={style["card__body"]}>
             <h3 className={style["card__body__title"]}>Google Drive</h3>
@@ -97,7 +100,7 @@ const ConnectAccount = () => {
         </div>
         <div className={style["card"]}>
           <div className={style["card__img"]}>
-            <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+            <img src={DropboxIcon} alt="dropbox" />
           </div>
           <div className={style["card__body"]}>
             <h3 className={style["card__body__title"]}> Dropbox</h3>

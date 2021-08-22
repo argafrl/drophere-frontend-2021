@@ -11,11 +11,12 @@ import SidebarStore from "./contexts/SidebarContext";
 import StorageStore from "./contexts/StorageContext";
 import "notyf/notyf.min.css";
 import ScrollToTop from "./ScrollToTop";
+import withPageView from "./utils/withPageView";
 
 class AppRouter extends Component {
   render() {
-    function PageSwitch() {
-      return (
+    return (
+      <BrowserRouter>
         <SidebarStore>
           <Helmet titleTemplate="Drophere • %s" defaultTitle="Drophere">
             <meta
@@ -34,20 +35,21 @@ class AppRouter extends Component {
             <StorageStore>
               <main>
                 <Switch>
-                  <Route path="/link/:slug" exact component={Drop} />
-                  <PrivateRoute path="/account" component={Account} />
-                  <Route path="/" component={Home} />{" "}
+                  <Route
+                    path="/link/:slug"
+                    exact
+                    component={withPageView(Drop)}
+                  />
+                  <PrivateRoute
+                    path="/account"
+                    component={withPageView(Account)}
+                  />
+                  <Route path="/" component={withPageView(Home)} />{" "}
                 </Switch>
               </main>
             </StorageStore>
           </UserStore>
         </SidebarStore>
-      );
-    }
-
-    return (
-      <BrowserRouter>
-        <PageSwitch />
       </BrowserRouter>
     );
   }
