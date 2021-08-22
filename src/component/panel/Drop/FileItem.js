@@ -2,6 +2,8 @@ import React from "react";
 import style from "../../../css/drop-file.module.scss";
 import { FILE_TYPES } from "../../../utils/utils";
 
+import CrossIcon from "../../../assets/images/icons/cross.svg";
+
 const FileItem = ({ name, size, onRemove }) => {
   const extPosition = Math.max(0, name.lastIndexOf(".")) || Infinity;
   const fileName = name.slice(0, extPosition);
@@ -19,7 +21,7 @@ const FileItem = ({ name, size, onRemove }) => {
         className={style["file__icon"]}
       >
         <button onClick={onRemove}>
-          <img src="/img/icons/cross.svg" alt="remove" />
+          <img src={CrossIcon} alt="remove" />
         </button>
         <h3>{fileExt}</h3>
       </div>

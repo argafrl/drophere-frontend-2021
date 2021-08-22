@@ -16,8 +16,15 @@ import { getErrorMessage } from "../../../utils/functions";
 import { useLocation } from "react-router";
 import Loading from "../../common/Loading";
 
+import SortIcon from "../../../assets/images/icons/sort.svg";
+
 const Pages = () => {
-  const { userInfo, fetchUserInfo, successSendEmailVerification, setSuccessSendEmailVerification } = useContext(UserContext);
+  const {
+    userInfo,
+    fetchUserInfo,
+    successSendEmailVerification,
+    setSuccessSendEmailVerification,
+  } = useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
   const { state } = useLocation();
 
@@ -101,8 +108,7 @@ const Pages = () => {
           <h6>Verifikasi Email Anda</h6>
           <p>
             Silahkan periksa email anda untuk mendapatkan link verifikasi. Belum
-            menerima email?{" "}
-            <span onClick={handleSendEmail}>Kirim ulang</span>
+            menerima email? <span onClick={handleSendEmail}>Kirim ulang</span>
           </p>
           <Dialog
             title="Title"
@@ -143,7 +149,7 @@ const Pages = () => {
             <Dropdown
               value={
                 <div>
-                  <img src="/img/icons/sort.svg" alt="sort" />
+                  <img src={SortIcon} alt="sort" />
                   {`Urut: ${sort}`}
                 </div>
               }

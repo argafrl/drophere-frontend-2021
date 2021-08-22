@@ -6,6 +6,13 @@ import style from "../../../css/page-card.module.scss";
 import { useHistory } from "react-router-dom";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
+import CalendarIcon from "../../../assets/images/icons/calendar.svg";
+import ViewIcon from "../../../assets/images/icons/views.svg";
+import DriveIcon from "../../../assets/images/icons/drive-active.svg";
+import DropboxIcon from "../../../assets/images/icons/dropbox-active.svg";
+import KebabIcon from "../../../assets/images/icons/kebab-menu.svg";
+import FolderIcon from "../../../assets/images/icons/folder.svg";
+
 const PageCard = ({
   title,
   slug,
@@ -94,11 +101,7 @@ const PageCard = ({
         <div className={style.top}>
           <div className={style.storage}>
             <img
-              src={
-                storage_type === 1
-                  ? "/img/icons/drive-active.svg"
-                  : "/img/icons/dropbox-active.svg"
-              }
+              src={storage_type === 1 ? DriveIcon : DropboxIcon}
               alt="dropbox-active"
             />
           </div>
@@ -120,7 +123,7 @@ const PageCard = ({
           </div>
           <div className={style["kebab-menu"]} style={{ display: "flex" }}>
             <button value={1} onClick={() => setOpenMenu(1, !isClosedBinary)}>
-              <img src="/img/icons/kebab-menu.svg" alt="kebab-menu" />
+              <img src={KebabIcon} alt="kebab-menu" />
             </button>
           </div>
         </div>
@@ -133,18 +136,18 @@ const PageCard = ({
             )}
           </div>
           <div className={style.files}>
-            <img src="/img/icons/folder.svg" alt="folder" />
+            <img src={FolderIcon} alt="folder" />
             <p>{files} files</p>
           </div>
         </div>
       </div>
       <div className={style.footer}>
         <div className={style.calendar}>
-          <img src="/img/icons/calendar.svg" alt="calendar" />
+          <img src={CalendarIcon} alt="calendar" />
           <p>{moment(due_time).format("L")}</p>
         </div>
         <div className={style.views}>
-          <img src="/img/icons/views.svg" alt="views" />
+          <img src={ViewIcon} alt="views" />
           <p>{views} Views</p>
         </div>
       </div>

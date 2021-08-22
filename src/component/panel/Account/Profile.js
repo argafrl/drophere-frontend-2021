@@ -12,6 +12,8 @@ import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import mainApi from "../../../api/mainApi";
 import { getErrorMessage } from "../../../utils/functions";
 
+import EditIcon from "../../../assets/images/icons/edit.svg"
+
 const Profile = () => {
   const { userInfo, isFetchingUserInfo, fetchUserInfo, successSendEmailVerification, setSuccessSendEmailVerification } =
     useContext(UserContext);
@@ -414,7 +416,7 @@ const Profile = () => {
                     <div className={style["btn-ubah"]}>
                       <Button
                         condensed
-                        icon="/img/icons/edit.svg"
+                        icon={EditIcon}
                         onClick={() => setOpenPassword(!openPassword)}
                       >
                         Ubah Password

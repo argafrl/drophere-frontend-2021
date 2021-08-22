@@ -5,6 +5,8 @@ import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
+import LogoutIcon from "../../assets/images/icons/logout.svg";
+
 const Header = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -57,14 +59,14 @@ const Header = () => {
                 </p>
               </div>
               <Button
-                className={style['btn-logout']}
+                className={style["btn-logout"]}
                 type="secondary"
-                icon="/img/icons/logout.svg"
+                icon={LogoutIcon}
                 onClick={() => setOpenDialog(true)}
               >
                 Keluar
               </Button>
-             
+
               <div className={style.dialog}>
                 <Dialog
                   visible={openDialog}
@@ -89,7 +91,6 @@ const Header = () => {
                   </div>
                 </Dialog>
               </div>
-              
             </div>
           )}
         </>
