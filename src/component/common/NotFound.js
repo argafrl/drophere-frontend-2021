@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../../css/drop-inaccessible-not-found.module.scss";
 
-import NotFoundImage from "../../assets/images/illustrations/not-found.png";
+import NotFoundImage from "../../assets/images/illustrations/not-found.webp";
 
 const NotFound = () => {
   return (

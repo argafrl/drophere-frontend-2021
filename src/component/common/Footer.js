@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import style from "../../css/footer.module.scss";
 
-import PrimaryLogo from "../../assets/images/primary-logo.svg";
-import BCCLogo from "../../assets/images/BCC-logo.svg";
-import GojekLogo from "../../assets/images/gojek-logo.svg";
+import PrimaryLogo from "../../assets/images/primary-logo.webp";
+import BCCLogo from "../../assets/images/BCC-logo.webp";
+import GojekLogo from "../../assets/images/gojek-logo.webp";
 
 import InstagramIcon from "../../assets/images/icons/instagram.svg";
 import LinkedinIcon from "../../assets/images/icons/linkedin.svg";

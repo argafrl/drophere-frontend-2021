@@ -5,9 +5,9 @@ import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
-import PrimaryLogo from "../../assets/images/primary-logo.svg";
+import PrimaryLogo from "../../assets/images/primary-logo.webp";
 import LogoutIcon from "../../assets/images/icons/logout.svg";
-import DummyUser from "../../assets/images/user.png";
+import DummyUser from "../../assets/images/user.webp";
 
 const Header = () => {
   const [openDialog, setOpenDialog] = useState(false);

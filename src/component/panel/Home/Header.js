@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../../../css/home-header.module.scss";
 
-import LoginImage from "../../../assets/images/illustrations/login.png";
+import LoginImage from "../../../assets/images/illustrations/login.webp";
 
 export default function Header() {
   return (

@@ -23,7 +23,7 @@ import { SidebarContext } from "../../../contexts/SidebarContext";
 import { UserContext } from "../../../contexts/UserContext";
 import AccountFooter from "./AccountFooter";
 
-import DummyUser from "../../../assets/images/user.png";
+import DummyUser from "../../../assets/images/user.webp";
 
 function MenuItem(props) {
   return (

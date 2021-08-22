@@ -17,7 +17,7 @@ import { useLocation } from "react-router";
 import Loading from "../../common/Loading";
 
 import SortIcon from "../../../assets/images/icons/sort.svg";
-import NoPageImage from "../../../assets/images/illustrations/no-page.png";
+import NoPageImage from "../../../assets/images/illustrations/no-page.webp";
 
 const Pages = () => {
   const {

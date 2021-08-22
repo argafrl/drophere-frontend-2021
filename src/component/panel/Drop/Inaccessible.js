@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../../../css/drop-inaccessible-not-found.module.scss";
 
-import OverdueImage from "../../../assets/images/illustrations/lewat-tenggat.png";
+import OverdueImage from "../../../assets/images/illustrations/lewat-tenggat.webp";
 
 const Inaccessible = () => {
   return (

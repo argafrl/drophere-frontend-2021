@@ -13,7 +13,7 @@ import mainApi from "../../../api/mainApi";
 import { getErrorMessage } from "../../../utils/functions";
 
 import AirplaneIcon from "../../../assets/images/icons/airplane.svg";
-import CloudUpload from "../../../assets/images/illustrations/cloud-upload.png";
+import CloudUpload from "../../../assets/images/illustrations/cloud-upload.webp";
 
 const Content = () => {
   const { slug } = useParams();
