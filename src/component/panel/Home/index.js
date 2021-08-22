@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import mainApi from "../../../api/mainApi";
@@ -8,16 +8,15 @@ import style from "../../../css/home.module.scss";
 import AuthRoute from "../../../routes/AuthRoute";
 import PrivateRoute from "../../../routes/PrivateRoute";
 
+import Header from "./Header";
+import Login from "./Login";
+import Register from "./Register";
+import ResetPassword from "./ResetPassword";
+import ConnectAccount from "./ConnectAccount";
 import NotFound from "../../common/NotFound";
 import Contributor from "../../common/Contributor";
 import Verify from "./Verify";
 import Footer from "../../common/Footer";
-import Header from "./Header";
-
-const Login = lazy(() => import("./Login"));
-const Register = lazy(() => import("./Register"));
-const ResetPassword = lazy(() => import("./ResetPassword"));
-const ConnectAccount = lazy(() => import("./ConnectAccount"));
 
 const Home = ({ location }) => {
   useMemo(() => {
