@@ -1,7 +1,7 @@
 import React from "react";
 import ReactGA from "react-ga";
 
-ReactGA.initialize("UA-177203329-1");
+ReactGA.initialize("UA-205565258-1");
 
 const withPageView = (WrappedComponent, options = {}) => {
   const trackPageView = (page) => {
@@ -9,6 +9,7 @@ const withPageView = (WrappedComponent, options = {}) => {
       page,
       ...options,
     });
+    ReactGA.pageview(page)
   };
 
   return class extends React.Component {
@@ -33,6 +34,7 @@ const withPageView = (WrappedComponent, options = {}) => {
     componentDidUpdate(prevProps) {
       const currentPage =
         prevProps.location.pathname + prevProps.location.search;
+      console.log("update");
 
       const nextPage = this.state.page;
 
