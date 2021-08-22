@@ -2,13 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import style from "../../css/footer.module.scss";
 
+import PrimaryLogo from "../../assets/images/primary-logo.svg";
+import BCCLogo from "../../assets/images/BCC-logo.svg";
+import GojekLogo from "../../assets/images/gojek-logo.svg";
+
+import InstagramIcon from "../../assets/images/icons/instagram.svg";
+import LinkedinIcon from "../../assets/images/icons/linkedin.svg";
+
 export default () => {
   return (
     <div className={style.footer}>
       <div className={style.wrapper}>
         <div className={style["top"]}>
           <div className={style["drophere-wrapper"]}>
-            <img src="/img/primary-logo.svg" alt="Drophere Logo" />
+            <img src={PrimaryLogo} alt="Drophere Logo" />
           </div>
           <div className={style["drophere-description"]}>
             <p>
@@ -24,7 +31,7 @@ export default () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/img/BCC-logo.svg" alt="BCC Logo" />
+                <img src={BCCLogo} alt="BCC Logo" />
               </a>
             </div>
             <div className={style["gojek-wrapper"]}>
@@ -34,7 +41,7 @@ export default () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/img/gojek-logo.svg" alt="Gojek Logo" />
+                <img src={GojekLogo} alt="Gojek Logo" />
               </a>
             </div>
           </div>
@@ -49,7 +56,7 @@ export default () => {
           </div>
           <div className={style.link}>
             <Link to="/contributor">Kontributor</Link>
-            <Link to='/'>Hubungi Kami</Link>
+            <Link to="/">Hubungi Kami</Link>
           </div>
           <div className={style.logo}>
             <a
@@ -57,14 +64,14 @@ export default () => {
               rel="noopener noreferrer"
               href="https://www.instagram.com/bccfilkom"
             >
-              <img src="/img/instagram.svg" alt="BCC Instagram" />
+              <img src={InstagramIcon} alt="BCC Instagram" />
             </a>
             <a
               target="_blank"
               rel="noopener noreferrer"
               href="https://id.linkedin.com/company/bccfilkomub"
             >
-              <img src="/img/linkedin.svg" alt="BCC LinkedIn" />
+              <img src={LinkedinIcon} alt="BCC LinkedIn" />
             </a>
           </div>
         </div>

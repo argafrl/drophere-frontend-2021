@@ -11,9 +11,16 @@ import style from "../../../css/account-add-new-page.module.scss";
 import { UserContext } from "../../../contexts/UserContext";
 import { useHistory } from "react-router";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
-import { characterCheck, countWords, getErrorMessage } from "../../../utils/functions";
+import {
+  characterCheck,
+  countWords,
+  getErrorMessage,
+} from "../../../utils/functions";
 import { Helmet } from "react-helmet";
 import mainApi from "../../../api/mainApi";
+
+import DriveIcon from "../../../assets/images/icons/drive-active.svg";
+import DropboxIcon from "../../../assets/images/icons/dropbox-active.svg";
 
 const AddNewPage = () => {
   const { userInfo } = useContext(UserContext);
@@ -307,7 +314,7 @@ const AddNewPage = () => {
                   id="option1"
                   value="BCC"
                 />
-                <img src="/img/icons/drive-active.svg" alt="drive" />
+                <img src={DriveIcon} alt="drive" />
                 <h3>Google Drive</h3>
               </button>
               <button
@@ -318,7 +325,7 @@ const AddNewPage = () => {
                 <span className={style["form__control__storage__item__badge"]}>
                   Coming Soon
                 </span>
-                <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+                <img src={DropboxIcon} alt="dropbox" />
                 <h3>Dropbox</h3>
               </button>
             </div>

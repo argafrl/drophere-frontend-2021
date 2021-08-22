@@ -5,7 +5,9 @@ import style from "../../css/account-header.module.scss";
 import { UserContext } from "../../contexts/UserContext";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
+import PrimaryLogo from "../../assets/images/primary-logo.svg";
 import LogoutIcon from "../../assets/images/icons/logout.svg";
+import DummyUser from "../../assets/images/user.png";
 
 const Header = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -31,11 +33,7 @@ const Header = () => {
   return (
     <div className={style.container + " wrapper"}>
       <Link to="/">
-        <img
-          src="/img/primary-logo.svg"
-          alt="Drophere Logo"
-          className={style["logo"]}
-        />
+        <img src={PrimaryLogo} alt="Drophere Logo" className={style["logo"]} />
       </Link>
       {location.pathname.includes("/account") && (
         <>
@@ -48,7 +46,7 @@ const Header = () => {
           {isAuthenticated && (
             <div className={style["auth"]}>
               <div className={style["user"]}>
-                <img src="/img/user.png" alt="user-profile" />
+                <img src={DummyUser} alt="user-profile" />
                 <p>
                   Hi,{" "}
                   <strong>

@@ -15,6 +15,9 @@ import { Helmet } from "react-helmet";
 import { countWords, getErrorMessage } from "../../../utils/functions";
 import mainApi from "../../../api/mainApi";
 
+import DriveIcon from "../../../assets/images/icons/drive-active.svg";
+import DropboxIcon from "../../../assets/images/icons/dropbox-active.svg";
+
 const AddNewPage = () => {
   const snackbar = useContext(SnackbarContext);
   const history = useHistory();
@@ -313,7 +316,7 @@ const AddNewPage = () => {
                       id="option1"
                       value="BCC"
                     />
-                    <img src="/img/icons/drive-active.svg" alt="drive" />
+                    <img src={DriveIcon} alt="drive" />
                     <h3>Google Drive</h3>
                   </button>
                   <button
@@ -326,7 +329,7 @@ const AddNewPage = () => {
                     >
                       Coming Soon
                     </span>
-                    <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+                    <img src={DropboxIcon} alt="dropbox" />
                     <h3>Dropbox</h3>
                   </button>
                 </div>

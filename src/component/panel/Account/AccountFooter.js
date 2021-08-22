@@ -1,6 +1,9 @@
 import React from "react";
 import style from "../../../css/account-footer.module.scss";
 
+import InstagramIcon from "../../../assets/images/icons/instagram.svg";
+import LinkedinIcon from "../../../assets/images/icons/linkedin.svg";
+
 const AccountFooter = () => {
   return (
     <div className={style.footer}>
@@ -23,14 +26,14 @@ const AccountFooter = () => {
           rel="noopener noreferrer"
           href="https://www.instagram.com/bccfilkom"
         >
-          <img src="/img/instagram.svg" alt="BCC Instagram" />
+          <img src={InstagramIcon} alt="BCC Instagram" />
         </a>
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://id.linkedin.com/company/bccfilkomub"
         >
-          <img src="/img/linkedin.svg" alt="BCC LinkedIn" />
+          <img src={LinkedinIcon} alt="BCC LinkedIn" />
         </a>
       </div>
     </div>
