@@ -1,6 +1,9 @@
-import React, { Component, lazy, Suspense } from "react";
+import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Home from "./component/panel/Home";
+import Account from "./component/panel/Account";
+import Drop from "./component/panel/Drop";
 import { UserStore } from "./contexts/UserContext";
 import PrivateRoute from "./routes/PrivateRoute";
 import Header from "./component/common/Header";
@@ -9,11 +12,6 @@ import StorageStore from "./contexts/StorageContext";
 import "notyf/notyf.min.css";
 import ScrollToTop from "./ScrollToTop";
 import withPageView from "./utils/withPageView";
-import Preloader from "./component/common/Preloader";
-
-const Home = lazy(() => import("./component/panel/Home"));
-const Account = lazy(() => import("./component/panel/Account"));
-const Drop = lazy(() => import("./component/panel/Drop"));
 
 class AppRouter extends Component {
   render() {
@@ -37,18 +35,16 @@ class AppRouter extends Component {
             <StorageStore>
               <main>
                 <Switch>
-                  <Suspense fallback={<Preloader />}>
-                    <Route
-                      path="/link/:slug"
-                      exact
-                      component={withPageView(Drop)}
-                    />
-                    <PrivateRoute
-                      path="/account"
-                      component={withPageView(Account)}
-                    />
-                    <Route path="/" component={withPageView(Home)} />
-                  </Suspense>
+                  <Route
+                    path="/link/:slug"
+                    exact
+                    component={withPageView(Drop)}
+                  />
+                  <PrivateRoute
+                    path="/account"
+                    component={withPageView(Account)}
+                  />
+                  <Route path="/" component={withPageView(Home)} />{" "}
                 </Switch>
               </main>
             </StorageStore>
