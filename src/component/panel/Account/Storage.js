@@ -5,6 +5,9 @@ import { Helmet } from "react-helmet";
 import { UserContext } from "../../../contexts/UserContext";
 import { useHistory } from "react-router";
 
+import DriveIcon from "../../../assets/images/icons/drive-active.svg";
+import DropboxIcon from "../../../assets/images/icons/dropbox-active.svg";
+
 const Storage = () => {
   const [useDrive, setUseDrive] = useState(false);
   const { userInfo, isFetchingUserInfo } = useContext(UserContext);
@@ -47,7 +50,7 @@ const Storage = () => {
               </Button>
             </div>
             <div className={style["card__img"]}>
-              <img src="/img/icons/drive-active.svg" alt="drive" />
+              <img src={DriveIcon} alt="drive" />
             </div>
           </div>
           <div className={style["card"]}>
@@ -59,7 +62,7 @@ const Storage = () => {
               <div className={style["card__body__badge"]}>Coming Soon</div>
             </div>
             <div className={style["card__img"]}>
-              <img src="/img/icons/dropbox-active.svg" alt="dropbox" />
+              <img src={DropboxIcon} alt="dropbox" />
             </div>
           </div>
         </div>

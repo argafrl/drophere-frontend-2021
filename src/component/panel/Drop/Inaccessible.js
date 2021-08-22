@@ -1,10 +1,12 @@
 import React from "react";
 import style from "../../../css/drop-inaccessible-not-found.module.scss";
 
+import OverdueImage from "../../../assets/images/illustrations/lewat-tenggat.png";
+
 const Inaccessible = () => {
   return (
     <div className={style["container"]}>
-      <img src="/img/lewat-tenggat.png" alt="overdue" />
+      <img src={OverdueImage} alt="overdue" />
       <h2>Maaf, Halaman Tidak Dapat Diakses</h2>
       <p>
         Halaman ini ditutup karena telah melewati batas waktu yang telah

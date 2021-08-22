@@ -17,6 +17,7 @@ import { useLocation } from "react-router";
 import Loading from "../../common/Loading";
 
 import SortIcon from "../../../assets/images/icons/sort.svg";
+import NoPageImage from "../../../assets/images/illustrations/no-page.png";
 
 const Pages = () => {
   const {
@@ -175,44 +176,46 @@ const Pages = () => {
           {allPages.length === 0 ? (
             <div className={style["noPage-container"]}>
               <img
-                src="/img/no-page.png"
+                src={NoPageImage}
                 alt="Drophere Logo"
                 className={style["logo"]}
               />
               <p>Belum ada halaman dibuat</p>
             </div>
           ) : (
-            <div className={style["grid-container"]}>
+            <>
               {filteredPages.length > 0 ? (
-                filteredPages.map((link, idx) => {
-                  return (
-                    <PageCard
-                      title={link.title}
-                      due_time={link.due_time}
-                      slug={link.slug}
-                      storage_type={link.storage_type}
-                      files={
-                        link.gdrive_submissions[0]
-                          ? link.gdrive_submissions[0].uploaded_files.length
-                          : 0
-                      }
-                      views={
-                        link.gdrive_submissions[0]
-                          ? link.gdrive_submissions[0].views.length
-                          : 0
-                      }
-                      onDelete={() => deleteSubmission(link.slug)}
-                      key={idx}
-                    />
-                  );
-                })
+                <div className={style["grid-container"]}>
+                  {filteredPages.map((link, idx) => {
+                    return (
+                      <PageCard
+                        title={link.title}
+                        due_time={link.due_time}
+                        slug={link.slug}
+                        storage_type={link.storage_type}
+                        files={
+                          link.gdrive_submissions[0]
+                            ? link.gdrive_submissions[0].uploaded_files.length
+                            : 0
+                        }
+                        views={
+                          link.gdrive_submissions[0]
+                            ? link.gdrive_submissions[0].views.length
+                            : 0
+                        }
+                        onDelete={() => deleteSubmission(link.slug)}
+                        key={idx}
+                      />
+                    );
+                  })}
+                </div>
               ) : (
                 <div className={style["not-found"]}>
-                  <img src="/img/no-page.png" alt="Drophere Logo" />
+                  <img src={NoPageImage} alt="Not Found" />
                   <p>Halaman tidak ditemukan</p>
                 </div>
               )}
-            </div>
+            </>
           )}
         </>
       )}
