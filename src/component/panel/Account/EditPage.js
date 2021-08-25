@@ -153,6 +153,7 @@ const AddNewPage = () => {
               <Input
                 value={title}
                 required
+                placeholder="Masukkan judul"
                 handleChange={(e) => setTitle(e.target.value)}
                 hintText={`Jumlah Karakter : ${title.length} karakter, Maksimum: 150 Karakter`}
                 action={title.length > 150 ? "warning" : ""}
@@ -163,6 +164,7 @@ const AddNewPage = () => {
               <div className={style["form__control__description"]}>
                 <TextArea
                   required
+                  placeholder="Masukkan deskripsi halaman"
                   value={description}
                   handleChange={(e) => setDescription(e.target.value)}
                   hintText={`Jumlah Kata : ${countWords(
@@ -356,6 +358,7 @@ const AddNewPage = () => {
                 <Input
                   value={password}
                   disabled={!usePassword}
+                  placeholder="Masukkan password"
                   handleChange={(e) => setPassword(e.target.value)}
                 />
               </div>
@@ -367,6 +370,7 @@ const AddNewPage = () => {
                 </div>
                 <Input
                   value={deadline}
+                  required
                   type="datetime-local"
                   handleChange={(e) => setDeadline(e.target.value)}
                 />

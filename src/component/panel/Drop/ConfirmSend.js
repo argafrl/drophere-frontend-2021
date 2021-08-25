@@ -98,6 +98,7 @@ const ConfirmSend = ({
               <Input
                 value={password}
                 required
+                placeholder='Masukkan password'
                 handleChange={(e) => setPassword(e.target.value)}
                 action={error === "invalid password" ? "error" : ""}
                 hintText={error === "invalid password" ? "Password Salah" : ""}

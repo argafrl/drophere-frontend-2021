@@ -140,6 +140,7 @@ const AddNewPage = () => {
           <label>Judul</label>
           <Input
             value={title}
+            placeholder="Masukkan judul"
             required
             handleChange={(e) => setTitle(e.target.value)}
             hintText={`Jumlah Karakter : ${title.length} karakter, Maksimum: 150 Karakter`}
@@ -152,6 +153,7 @@ const AddNewPage = () => {
             <p>{window.location.origin.toString() + "/link/"} </p>
             <Input
               required
+              placeholder=""
               value={link}
               handleChange={(e) => setLink(e.target.value)}
               hintText="Karakter meliputi : huruf, nomor, dash dan underscore"
@@ -164,6 +166,7 @@ const AddNewPage = () => {
           <div className={style["form__control__description"]}>
             <TextArea
               required
+              placeholder="Masukkan deskripsi halaman"
               value={description}
               handleChange={(e) => setDescription(e.target.value)}
               hintText={`Jumlah Kata : ${countWords(
@@ -350,6 +353,7 @@ const AddNewPage = () => {
               ini
             </p>
             <Input
+              placeholder="Masukkan password"
               value={password}
               disabled={!usePassword}
               handleChange={(e) => setPassword(e.target.value)}
@@ -363,6 +367,7 @@ const AddNewPage = () => {
             </div>
             <Input
               value={deadline}
+              required
               type="datetime-local"
               handleChange={(e) => setDeadline(e.target.value)}
             />

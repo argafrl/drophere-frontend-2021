@@ -44,6 +44,7 @@ class StorageStore extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("bccdrophere_token")}`,
         },
       });
+      this.context.success("Akun berhasil ditautkan")
       await this.props.userContext.fetchUserInfo();
     } catch (error) {
       this.context.error("Terjadi Kesalahan");
