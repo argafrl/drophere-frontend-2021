@@ -7,6 +7,8 @@ import mainApi from "../../../api/mainApi";
 import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import { getErrorMessage } from "../../../utils/functions";
 
+import VerifyImage from "../../../assets/images/illustrations/verify.webp";
+
 const Verify = () => {
   const { search } = useLocation();
   const snackbar = useContext(SnackbarContext);
@@ -43,8 +45,8 @@ const Verify = () => {
         <Preloader />
       ) : (
         <>
-          <img src="/img/not-found-old.png" alt="not-found" />
-          <h2>Email Terverifikasi!</h2>
+          <img src={VerifyImage} alt="not-found" />
+          <h1>Email Terverifikasi!</h1>
           <p>
             Selamat! email anda telah berhasil diverifikasi. Silahkan kembali ke
             beranda.

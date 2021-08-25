@@ -82,7 +82,7 @@ const Pages = () => {
       await mainApi.get("/users/verify");
       setVerifikasi(true);
       setSuccessSendEmailVerification();
-      snackbar.success("Email berhasil dikirim");
+      snackbar.success("Email verifikasi berhasil dikirim");
     } catch (error) {
       console.log(error);
       snackbar.error("Email gagal dikirim");

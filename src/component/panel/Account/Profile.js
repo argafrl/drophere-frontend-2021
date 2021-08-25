@@ -113,12 +113,17 @@ const Profile = () => {
     }
   };
 
+  const cancelUpdateName = () => {
+    setName(userInfo.full_name);
+    setOpenNama(!openNama);
+  }
+
   const handleSendEmail = async () => {
     try {
       setIsUpdating(true);
       await mainApi.get("/users/verify");
       setSuccessSendEmailVerification();
-      snackbar.success("Email berhasil dikirim");
+      snackbar.success("Email verifikasi berhasil dikirim");
     } catch (error) {
       console.log(error);
       snackbar.error("Email gagal dikirim");
@@ -154,6 +159,13 @@ const Profile = () => {
       setIsUpdating(false);
     }
   };
+
+  const cancelUpdatePassword = () => {
+    setNewPassword("");
+    setRetypePassword("");
+    setCurrentPassword("");
+    setOpenPassword(!openPassword);
+  }
 
   const updateProfileImage = async (file) => {
     try {
@@ -264,7 +276,7 @@ const Profile = () => {
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={() => setOpenNama(!openNama)}
+                        onClick={cancelUpdateName}
                         className={style["btn-batal"]}
                       >
                         Batalkan
@@ -388,7 +400,7 @@ const Profile = () => {
                     <div className={style["button-wrapper"]}>
                       <Button
                         type="secondary"
-                        onClick={() => setOpenPassword(!openPassword)}
+                        onClick={cancelUpdatePassword}
                         className={style["btn-batal"]}
                       >
                         Batalkan
