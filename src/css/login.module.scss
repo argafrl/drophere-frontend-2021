@@ -149,6 +149,12 @@
     color: #E84C3D;
   }
 
+  > :nth-child(2) {
+    span:nth-child(3) {
+      color: #E84C3D;
+    }
+  }
+
   svg:first-child {
     display: none;
   }
