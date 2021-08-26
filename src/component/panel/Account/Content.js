@@ -108,7 +108,7 @@ const Menu = (props) => {
             onClick={() => {
               onClickHandler(index);
               closeSidebar();
-              if (item.caption === "Logout") {
+              if (item.caption === "Keluar") {
                 logout();
               }
             }}
