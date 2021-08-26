@@ -42,7 +42,7 @@
       margin-right: 1rem;
     }
     @include breakpoint(md) {
-      width: 100%;
+      width: 85%;
     }
   }
 }
@@ -61,8 +61,8 @@
     height: vh(100);
     margin-top: 0;
     margin-left: 0;
-    padding-left: rem(20);
-    padding-right: rem(20);
+    // padding-left: rem(20);
+    // padding-right: rem(20);
     left: -100%;
     transition: 0.5s ease;
   }

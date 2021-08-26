@@ -27,7 +27,7 @@ import DummyUser from "../../../assets/images/user.webp";
 
 function MenuItem(props) {
   return (
-    <div className={props.caption === "Logout" ? menuStyle["btn-logout"] : ""}>
+    <div className={props.caption === "Keluar" ? menuStyle["btn-logout"] : ""}>
       <ListItem
         className={menuStyle["list-item"]}
         button
@@ -130,7 +130,7 @@ class Content extends Component {
     { caption: "Tautan Penyimpanan", icon: "link", url: "/storage" },
     { caption: "Masukan", icon: "comment", url: "/support" },
     { caption: "Profil", icon: "person_outline", url: "/profile" },
-    { caption: "Logout", icon: "logout", url: "/home" },
+    { caption: "Keluar", icon: "logout", url: "/home" },
   ];
 
   constructor(props) {

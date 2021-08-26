@@ -22,13 +22,19 @@ const Contributor = () => {
       nama: "Rivo Dimas Prakasa",
       role: "Product Designer",
       linkedin: "rivo-dimas",
-      foto: "user.png"
+      foto: "contributor-pd-rivo.jpg"
     },
     {
       nama: "Della Akhidatul Izzah",
       role: "Graphic Designer",
       linkedin: "adellaiz",
       foto: "contributor-graphic-della.jpg"
+    },
+    {
+      nama: "Gifary Dhimas Fadhillah",
+      role: "Developer",
+      linkedin: "gifarydhimas",
+      foto: "contributor-developer-gifary.jpg"
     },
     {
       nama: "Yahya Sahaja",
@@ -40,13 +46,19 @@ const Contributor = () => {
       nama: "Muhammad Arga Farrel Arkaan",
       role: "Front End Developer",
       linkedin: "muhammad-arga",
-      foto: "contributor-fe-arga.png"
+      foto: "contributor-fe-arga.jpg"
+    },
+    {
+      nama: "Alfonsus Avianto Chandrawan",
+      role: "Front End Developer",
+      linkedin: "alfonsus-avianto-chandrawan-680a271a6",
+      foto: "contributor-fe-alfonsus.jpeg"
     },
     {
       nama: "Muhammad Wildan Aldiansyah",
       role: "Back End Developer",
       linkedin: "aldiwildan",
-      foto: "user.png"
+      foto: "contributor-be-aldi.jpg"
     },
     {
       nama: "Harun Ulum F",
@@ -55,11 +67,11 @@ const Contributor = () => {
       foto: "contributor-be-harun.jpg"
     },
     {
-      nama: "Gifary Dhimas Fadhillah",
-      role: "Developer",
-      linkedin: "gifarydhimas",
-      foto: "user.png"
-    }
+      nama: "Ibrahim Z. Faruqi",
+      role: "Back End Developer",
+      linkedin: "izfaruqi",
+      foto: "contributor-be-ibrahim.png"
+    },
   ]
 
   return (
@@ -77,7 +89,7 @@ const Contributor = () => {
             <div className={style["item"]} key={idx}>
               <div className={style.top}>
                 <div className={style.avatar}>
-                  <img src={`/img/${contributor.foto}`} alt="Drophere Logo" />
+                  <img src={`/img/${contributor.foto}`} alt="Contributor" />
                 </div>
               </div>
 
