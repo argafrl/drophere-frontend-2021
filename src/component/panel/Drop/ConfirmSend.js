@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { Button, Input } from "@bccfilkom/designsystem/build";
 import style from "../../../css/drop-confirm-send.module.scss";
@@ -33,14 +33,6 @@ const ConfirmSend = ({
     uploadSubmission(formData, slug);
   };
 
-  const closeModal = () => {
-    onClose();
-    setSubmitted(false);
-    emptyFiles();
-    setPassword("");
-    resetUploadState();
-  };
-
   const uploadSubmission = async (formData) => {
     try {
       setIsUploadingSubmission(true);
@@ -67,6 +59,15 @@ const ConfirmSend = ({
     setSuccessUploadSubmission(false);
     setUploadProgress(0);
   };
+
+  useEffect(() => {
+    return () => {
+      setSubmitted(false);
+      emptyFiles();
+      setPassword("");
+      resetUploadState();
+    };
+  }, [open]);
 
   return (
     <Dialog open={open} className={style["dialog"]}>
@@ -98,7 +99,7 @@ const ConfirmSend = ({
               <Input
                 value={password}
                 required
-                placeholder='Masukkan password'
+                placeholder="Masukkan password"
                 handleChange={(e) => setPassword(e.target.value)}
                 action={error === "invalid password" ? "error" : ""}
                 hintText={error === "invalid password" ? "Password Salah" : ""}
@@ -111,7 +112,7 @@ const ConfirmSend = ({
             <Button
               className={style["btn-cancel"]}
               type="text"
-              onClick={closeModal}
+              onClick={onClose}
               disabled={isUploadingSubmission}
             >
               Batalkan
@@ -131,7 +132,7 @@ const ConfirmSend = ({
             <Button
               className={style["btn-send"]}
               type="primary"
-              onClick={closeModal}
+              onClick={onClose}
             >
               Tutup
             </Button>

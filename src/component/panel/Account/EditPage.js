@@ -30,6 +30,7 @@ const AddNewPage = () => {
   const [storage, setStorage] = useState(1);
   const [usePassword, setUsePassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
   const [fileTypes, setFileTypes] = useState({
     PDF: true,
@@ -56,11 +57,6 @@ const AddNewPage = () => {
 
     if (countWords(description) > 200) {
       snackbar.error("Deskripsi tidak boleh melebihi 200 kata");
-      return;
-    }
-
-    if (!deadline) {
-      snackbar.error("Deadline harus ditetapkan");
       return;
     }
 
@@ -104,7 +100,8 @@ const AddNewPage = () => {
       setUsePassword(!!userSubmissionDetail.password);
       setPassword(userSubmissionDetail.password);
       setDescription(userSubmissionDetail.description);
-      setDeadline(userSubmissionDetail.due_time);
+      setUseDeadline(!!userSubmissionDetail.due_time)
+      setDeadline(userSubmissionDetail.due_time || "");
       setStorage(userSubmissionDetail.storage_type);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -366,11 +363,20 @@ const AddNewPage = () => {
             <div className={style["form__control"]}>
               <div className={style["form__control__switcher"]}>
                 <div>
+                  <Switcher
+                    checked={useDeadline}
+                    onSlide={() => {
+                      if (useDeadline) {
+                        setDeadline("");
+                      }
+                      setUseDeadline(!useDeadline);
+                    }}
+                  />
                   <label>Terapkan Deadline</label>
                 </div>
                 <Input
                   value={deadline}
-                  required
+                  disabled={!useDeadline}
                   type="datetime-local"
                   handleChange={(e) => setDeadline(e.target.value)}
                 />

@@ -44,7 +44,7 @@ class AppRouter extends Component {
                     path="/account"
                     component={withPageView(Account)}
                   />
-                  <Route path="/" component={withPageView(Home)} />{" "}
+                  <Route path="/" component={withPageView(Home)} />
                 </Switch>
               </main>
             </StorageStore>

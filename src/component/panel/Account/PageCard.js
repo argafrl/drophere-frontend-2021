@@ -144,7 +144,11 @@ const PageCard = ({
       <div className={style.footer}>
         <div className={style.calendar}>
           <img src={CalendarIcon} alt="calendar" />
-          <p>{moment(due_time).format("L")}</p>
+          <p>
+            {moment(due_time).format("L") !== "Invalid date"
+              ? moment(due_time).format("L")
+              : "Tidak ada"}
+          </p>
         </div>
         <div className={style.views}>
           <img src={ViewIcon} alt="views" />

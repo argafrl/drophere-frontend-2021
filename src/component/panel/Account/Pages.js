@@ -94,7 +94,17 @@ const Pages = () => {
   const filteredPages = allPages
     .sort(
       sort === "Tanggal"
-        ? (a, b) => a.due_time.localeCompare(b.due_time)
+        ? (a, b) => {
+            if (!a.due_time && b.due_time) {
+              return 1;
+            } else if (a.due_time && !b.due_time) {
+              return -1;
+            } else if (!a.due_time && !b.due_time) {
+              return 0;
+            } else {
+              a.due_time.localeCompare(b.due_time);
+            }
+          }
         : (a, b) => a.title.localeCompare(b.title)
     )
     .filter((page) => page.title.toLowerCase().includes(search.toLowerCase()));

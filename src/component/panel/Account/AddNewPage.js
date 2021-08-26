@@ -3,7 +3,7 @@ import {
   TextArea,
   Input,
   Switcher,
-  Checkbox,
+  // Checkbox,
   RadioButton,
   Button,
 } from "@bccfilkom/designsystem/build";
@@ -31,22 +31,23 @@ const AddNewPage = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
-  const [multipleFiles, setMultipleFiles] = useState(false);
-  const [specificFileTypes, setSpecificFileTypes] = useState(false);
+  // const [multipleFiles, setMultipleFiles] = useState(false);
+  // const [specificFileTypes, setSpecificFileTypes] = useState(false);
   const [storage, setStorage] = useState(1);
   const [usePassword, setUsePassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [useDeadline, setUseDeadline] = useState(false);
   const [deadline, setDeadline] = useState("");
-  const [fileTypes, setFileTypes] = useState({
-    PDF: true,
-    Dokumen: true,
-    Presentasi: true,
-    Spreadsheet: true,
-    Folder: true,
-    Image: true,
-    Video: true,
-    Audio: true,
-  });
+  // const [fileTypes, setFileTypes] = useState({
+  //   PDF: true,
+  //   Dokumen: true,
+  //   Presentasi: true,
+  //   Spreadsheet: true,
+  //   Folder: true,
+  //   Image: true,
+  //   Video: true,
+  //   Audio: true,
+  // });
   const [isCreatingSubmission, setIsCreatingSubmission] = useState(false);
 
   const handleSubmit = (e) => {
@@ -64,11 +65,6 @@ const AddNewPage = () => {
 
     if (!characterCheck(link)) {
       snackbar.error("Link tidak valid");
-      return;
-    }
-
-    if (!deadline) {
-      snackbar.error("Deadline harus ditetapkan");
       return;
     }
 
@@ -176,7 +172,7 @@ const AddNewPage = () => {
             />
           </div>
         </div>
-        <div className={style["form__control"]}>
+        {/* <div className={style["form__control"]}>
           <div className={style["form__control__switcher"]}>
             <div>
               <Switcher
@@ -294,7 +290,7 @@ const AddNewPage = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className={style["form__control"]}>
           <div className={style["form__control__switcher"]}>
@@ -363,11 +359,20 @@ const AddNewPage = () => {
         <div className={style["form__control"]}>
           <div className={style["form__control__switcher"]}>
             <div>
+              <Switcher
+                checked={useDeadline}
+                onSlide={() => {
+                  if (useDeadline) {
+                    setDeadline("");
+                  }
+                  setUseDeadline(!useDeadline);
+                }}
+              />
               <label>Terapkan Deadline</label>
             </div>
             <Input
               value={deadline}
-              required
+              disabled={!useDeadline}
               type="datetime-local"
               handleChange={(e) => setDeadline(e.target.value)}
             />

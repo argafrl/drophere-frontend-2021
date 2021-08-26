@@ -12,6 +12,7 @@ const Drop = () => {
 
   return (
     <div className={style.container}>
+
       <div className={style.content}>
         <Content />
       </div>

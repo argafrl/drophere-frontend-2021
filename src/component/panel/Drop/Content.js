@@ -14,6 +14,7 @@ import { getErrorMessage } from "../../../utils/functions";
 
 import AirplaneIcon from "../../../assets/images/icons/airplane.svg";
 import CloudUpload from "../../../assets/images/illustrations/cloud-upload.webp";
+import { Helmet } from "react-helmet";
 
 const Content = () => {
   const { slug } = useParams();
@@ -96,6 +97,7 @@ const Content = () => {
   useEffect(() => {
     if (
       submissionInfo &&
+      submissionInfo.due_time &&
       moment(submissionInfo.due_time).diff(moment(new Date()), "seconds") > 0
     ) {
       setTimeout(() => {
@@ -109,7 +111,11 @@ const Content = () => {
     return <NotFound />;
   }
 
-  if (submissionInfo && moment(new Date()).isAfter(submissionInfo.due_time)) {
+  if (
+    submissionInfo &&
+    submissionInfo.due_time &&
+    moment(new Date()).isAfter(submissionInfo.due_time)
+  ) {
     return <Inaccessible />;
   }
 
@@ -128,25 +134,32 @@ const Content = () => {
         <Preloader />
       ) : (
         <>
-          <ConfirmSend
-            open={confirmModalShown}
-            onClose={() => showConfirmModal(false)}
-            files={files}
-            formatBytes={formatBytes}
-            emptyFiles={emptyFiles}
-            hasPassword={submissionInfo.has_password}
-          />
+          <Helmet>
+            <title>{submissionInfo.title}</title>
+          </Helmet>
+          {confirmModalShown && (
+            <ConfirmSend
+              open={confirmModalShown}
+              onClose={() => showConfirmModal(false)}
+              files={files}
+              formatBytes={formatBytes}
+              emptyFiles={emptyFiles}
+              hasPassword={submissionInfo.has_password}
+            />
+          )}
           <div className={style["page"]}>
             <h1>{submissionInfo.title}</h1>
             <div className={style["page__description"]}>
               {submissionInfo.description}
             </div>
-            <div className={style["page__deadline"]}>
-              Halaman ini akan ditutup dalam{" "}
-              <strong>
-                {moment(submissionInfo.due_time).locale("id").toNow(true)}
-              </strong>
-            </div>
+            {submissionInfo.due_time && (
+              <div className={style["page__deadline"]}>
+                Halaman ini akan ditutup dalam{" "}
+                <strong>
+                  {moment(submissionInfo.due_time).locale("id").toNow(true)}
+                </strong>
+              </div>
+            )}
           </div>
           <div className={style["container"]}>
             <div className={style["container-inner"]}>
