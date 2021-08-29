@@ -9,7 +9,7 @@ const withPageView = (WrappedComponent, options = {}) => {
       page,
       ...options,
     });
-    ReactGA.pageview(page)
+    ReactGA.pageview(page);
   };
 
   return class extends React.Component {
@@ -34,7 +34,6 @@ const withPageView = (WrappedComponent, options = {}) => {
     componentDidUpdate(prevProps) {
       const currentPage =
         prevProps.location.pathname + prevProps.location.search;
-      console.log("update");
 
       const nextPage = this.state.page;
 

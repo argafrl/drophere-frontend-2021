@@ -69,10 +69,11 @@ const AddNewPage = () => {
       title,
       description,
       password,
-      due_time: deadline,
+      due_time: deadline || null,
       storage_type: 1,
     };
 
+    console.log(body);
     updateSubmission(body);
   };
 
@@ -100,7 +101,7 @@ const AddNewPage = () => {
       setUsePassword(!!userSubmissionDetail.password);
       setPassword(userSubmissionDetail.password);
       setDescription(userSubmissionDetail.description);
-      setUseDeadline(!!userSubmissionDetail.due_time)
+      setUseDeadline(!!userSubmissionDetail.due_time);
       setDeadline(userSubmissionDetail.due_time || "");
       setStorage(userSubmissionDetail.storage_type);
     }
@@ -171,7 +172,7 @@ const AddNewPage = () => {
                 />
               </div>
             </div>
-            <div className={style["form__control"]}>
+            {/* <div className={style["form__control"]}>
               <div className={style["form__control__switcher"]}>
                 <div>
                   <Switcher
@@ -289,7 +290,7 @@ const AddNewPage = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className={style["form__control"]}>
               <div className={style["form__control__switcher"]}>
