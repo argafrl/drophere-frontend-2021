@@ -35,7 +35,7 @@ export default function Support() {
   };
 
   return (
-    <div className={style.container + " opening-transition"}>
+    <div className={style.container}>
       <Helmet>
         <title>Masukan</title>
       </Helmet>

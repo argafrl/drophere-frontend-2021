@@ -18,14 +18,14 @@ class AppRouter extends Component {
     return (
       <BrowserRouter>
         <SidebarStore>
-          <Helmet titleTemplate="Drophere • %s" defaultTitle="Drophere">
+          <Helmet titleTemplate="BCC Drophere • %s" defaultTitle="Drophere">
             <meta
               name="description"
-              content="Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive"
+              content="BCC Drophere merupakan sebuah fasilitas untuk mengunggah file yang terintegrasi dengan cloud storage Dropbox dan Google Drive"
             />
             <meta
               name="keywords"
-              content="BCC, Basic Computing Community, Application, Drop it to me, dropittome, Fakultas Ilmu Komputer, Universitas Brawijaa, UB, FILKOM"
+              content="BCC, Basic Computing Community, Application, drophere, drop here, Drop it to me, dropittome, Fakultas Ilmu Komputer, Universitas Brawijaa, UB, FILKOM"
             />
             <meta name="authors" content="BCC Fakultas Ilmu Komputer UB" />
           </Helmet>

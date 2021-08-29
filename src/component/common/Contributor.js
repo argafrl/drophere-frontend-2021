@@ -79,7 +79,7 @@ const Contributor = () => {
       <div className={style.heading}>
         <h1>Kontributor Kami</h1>
         <p>
-          Profil kontributor yang terlibat dalam pengembangan website Drophere
+          Profil kontributor yang terlibat dalam pengembangan website BCC Drophere
         </p>
       </div>
 
