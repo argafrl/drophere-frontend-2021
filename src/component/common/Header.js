@@ -8,6 +8,7 @@ import { SidebarContext } from "../../contexts/SidebarContext";
 import PrimaryLogo from "../../assets/images/primary-logo.webp";
 import LogoutIcon from "../../assets/images/icons/logout.svg";
 import DummyUser from "../../assets/images/user.webp";
+import { Avatar } from "@material-ui/core";
 
 const Header = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -24,11 +25,21 @@ const Header = () => {
 
   const location = useLocation();
 
+  const [name, setName] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchUserInfo();
     }
   }, [isAuthenticated, fetchUserInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.full_name);
+      setProfileImage(userInfo.profile_image);
+    }
+  }, [userInfo]);
 
   return (
     <div className={style.container + " wrapper"}>
@@ -46,7 +57,11 @@ const Header = () => {
           {isAuthenticated && (
             <div className={style["auth"]}>
               <div className={style["user"]}>
-                <img src={DummyUser} alt="user-profile" />
+                <Avatar
+                  alt={name}
+                  className={style.avatar}
+                  src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage}
+                />
                 <p>
                   Hi,{" "}
                   <strong>

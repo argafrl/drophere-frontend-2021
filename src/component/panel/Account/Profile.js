@@ -219,10 +219,11 @@ const Profile = () => {
               <div className={style.middle}>
                 <div className={style["item-1"]}>
                   <Avatar
-                    alt="Travis Howard"
+                    alt={name}
                     className={style.avatar}
-                    // src={profileImage}
+                    src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage}
                   />
+                  {/* <img src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage} alt="photo" srcset="" /> */}
                   <div className={style["btn-ubah"]}>
                     <input
                       type="file"

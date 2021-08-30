@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import Profile from "./Profile";
@@ -24,6 +24,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import AccountFooter from "./AccountFooter";
 
 import DummyUser from "../../../assets/images/user.webp";
+import { Avatar } from "@material-ui/core";
 
 function MenuItem(props) {
   return (
@@ -64,6 +65,16 @@ const Menu = (props) => {
   const { closeSidebar } = useContext(SidebarContext);
   const { isFetchingUserInfo, userInfo, logout } = useContext(UserContext);
 
+  const [name, setName] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.full_name);
+      setProfileImage(userInfo.profile_image);
+    }
+  }, [userInfo]);
+
   const selectedIndex =
     typeof props.selectedIndex === "number" ? props.selectedIndex : -1;
 
@@ -82,7 +93,11 @@ const Menu = (props) => {
   return (
     <div className={menuStyle.container + " wrapper"}>
       <div className={menuStyle["user"]}>
-        <img src={DummyUser} alt="user-profile" />
+        <Avatar
+          alt={name}
+          className={menuStyle.avatar}
+          src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage}
+        />
         <p>
           Hi,{" "}
           <strong>

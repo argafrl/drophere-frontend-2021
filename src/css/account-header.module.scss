@@ -61,9 +61,11 @@
       align-items: center;
       margin-right: rem(20);
 
-      img {
+      .avatar {
         width: rem(45);
         height: rem(45);
+        border-radius: 50%;
+        object-fit: cover;
         margin-right: rem(8);
       }
 

@@ -18,10 +18,12 @@
     padding-left: rem(20);
     padding-right: rem(20);
 
-    img {
-      width: 45px;
-      height: 45px;
-      margin-right: 16px;
+    .avatar {
+      width: rem(45);
+      height: rem(45);
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: rem(8);
     }
 
     p {
