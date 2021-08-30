@@ -221,7 +221,7 @@ const Profile = () => {
                   <Avatar
                     alt={name}
                     className={style.avatar}
-                    src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage}
+                    src={"https://api-drophere.bccfilkom.net/" + profileImage}
                   />
                   {/* <img src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage} alt="photo" srcset="" /> */}
                   <div className={style["btn-ubah"]}>

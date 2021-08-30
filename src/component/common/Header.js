@@ -60,7 +60,7 @@ const Header = () => {
                 <Avatar
                   alt={name}
                   className={style.avatar}
-                  src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage}
+                  src={"https://api-drophere.bccfilkom.net/" + profileImage}
                 />
                 <p>
                   Hi,{" "}
