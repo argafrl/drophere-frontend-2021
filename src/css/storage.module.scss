@@ -9,7 +9,7 @@
 
   p {
     margin: 0;
-    margin-bottom: rem(32);
+    margin-bottom: rem(20);
   }
 
   .card-container {
@@ -23,7 +23,7 @@
 
     .card {
       max-width: rem(480);
-      border: 2px solid #e4e5e7;
+      border: 1px solid #e4e5e7;
       padding: rem(32);
       border-radius: rem(8);
       display: flex;

@@ -15,7 +15,7 @@ import { getErrorMessage } from "../../../utils/functions";
 import EditIcon from "../../../assets/images/icons/edit.svg"
 
 const Profile = () => {
-  const { userInfo, isFetchingUserInfo, fetchUserInfo, successSendEmailVerification, setSuccessSendEmailVerification } =
+  const { userInfo, isFetchingUserInfo, fetchUserInfo, setSuccessSendEmailVerification } =
     useContext(UserContext);
   const snackbar = useContext(SnackbarContext);
 

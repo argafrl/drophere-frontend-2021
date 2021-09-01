@@ -1,12 +1,17 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import style from "../../../css/login.module.scss";
-import Loading from "../../common/Loading";
-import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
-import { UserContext } from "../../../contexts/UserContext";
 import { Helmet } from "react-helmet";
-import mainApi from "../../../api/mainApi";
+
+import Loading from "../../common/Loading";
 import { getErrorMessage } from "../../../utils/functions";
+
+import { Card, Button, Input, Password } from "@bccfilkom/designsystem/build";
+import style from "../../../css/login.module.scss";
+
+import mainApi from "../../../api/mainApi";
+
+import { UserContext } from "../../../contexts/UserContext";
+import { SnackbarContext } from "../../../contexts/SnackbarContext";
 
 const Register = () => {
   const {
@@ -15,12 +20,24 @@ const Register = () => {
     error: errorLogin,
     clearError,
   } = useContext(UserContext);
+  const snackbar = useContext(SnackbarContext);
+
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isShow, setIsShow] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleSendEmail = async () => {
+    try {
+      await mainApi.get("/users/verify");
+      snackbar.success("Email verifikasi berhasil dikirim");
+    } catch (error) {
+      console.log(error);
+      snackbar.error("Email gagal dikirim");
+    }
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -40,8 +57,10 @@ const Register = () => {
       });
 
       if (data.is_success) {
-        login(email, password);
+        await login(email, password);
+        handleSendEmail();
       }
+
     } catch (err) {
       if (
         getErrorMessage(err) ===
