@@ -19,7 +19,7 @@ export default () => {
           </div>
           <div className={style["drophere-description"]}>
             <p>
-              Drophere merupakan sebuah fasilitas untuk mengunggah file yang
+              BCC Drophere merupakan sebuah fasilitas untuk mengunggah file yang
               terintegrasi dengan cloud storage Dropbox dan Google Drive
             </p>
           </div>
@@ -27,7 +27,7 @@ export default () => {
             <div className={style["bcc-wrapper"]}>
               <h6>Developed by</h6>
               <a
-                href="http://bcc.filkom.ub.ac.id/"
+                href="http://bccfilkom.net/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -56,7 +56,7 @@ export default () => {
           </div>
           <div className={style.link}>
             <Link to="/contributor">Kontributor</Link>
-            <Link to="/">Hubungi Kami</Link>
+            <a href="mailto:bcc.filkom@gmail.com">Hubungi Kami</a>
           </div>
           <div className={style.logo}>
             <a

@@ -9,16 +9,9 @@ const AccountFooter = () => {
     <div className={style.footer}>
       <div></div>
       <p>
-        Copyright &copy; 2021{" "}
-        <a
-          rel="noopener noreferrer"
-          target="_blank"
-          href="http://bcc.filkom.ub.ac.id/"
-          className="footer-link"
-        >
-          Basic Computing Community
-        </a>
-        . All rights reserved
+        Copyright &copy; 2021 
+        Basic Computing Community. 
+        All rights reserved
       </p>
       <div className={style.logo}>
         <a

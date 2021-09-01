@@ -206,238 +206,237 @@ const Profile = () => {
       <h1>Profil</h1>
       <p>Info dasar, seperti nama, email, dan foto yang Anda gunakan</p>
       {!isFetchingUserInfo ? (
-        <div className="opening-transition">
-          <div className={style["form-wrapper"]}>
-            <div
-              className={style["form-container"]}
-              style={{ borderTop: "none" }}
-            >
-              <div className={style["form-unedit"]}>
-                <div className={style.left}>
-                  <p>Foto</p>
+        <div className={style["form-wrapper"]}>
+          <div
+            className={style["form-container"]}
+            style={{ borderTop: "none" }}
+          >
+            <div className={style["form-unedit"]}>
+              <div className={style.left}>
+                <p>Foto</p>
+              </div>
+
+              <div className={style.middle}>
+                <div className={style["item-1"]}>
+                  <Avatar
+                    alt={name}
+                    className={style.avatar}
+                    src={"https://api-drophere.bccfilkom.net/" + profileImage}
+                  />
+                  {/* <img src={"http://bcc-drophere-devel.ap-southeast-1.elasticbeanstalk.com/" + profileImage} alt="photo" srcset="" /> */}
+                  <div className={style["btn-ubah"]}>
+                    <input
+                      type="file"
+                      onChange={onUpdateProfileImage}
+                      name="avatar"
+                      id="btn-avatar"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                    />
+                    <div className={style["btn-avatar-wrapper"]}>
+                      <label htmlFor="btn-avatar">
+                        <CameraAltOutlinedIcon />
+                        Ubah
+                      </label>
+                    </div>
+                    {isUpdating ? <Loading /> : ""}
+                  </div>
                 </div>
 
+                <div className={style["item-2"]}>
+                  <button
+                    type="button"
+                    onClick={onDeleteProfileImage}
+                    className={style["btn-text"]}
+                  >
+                    <Icon>delete</Icon>Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Input Nama */}
+          <div className={style["form-container"]}>
+            {openNama ? (
+              <form onSubmit={onUpdateName} className={style["form-edit"]}>
+                <div className={style["form-text"]}>
+                  <p>Nama</p>
+                </div>
+                <div className={style["input-wrapper"]}>
+                  <div className={style["input-container"]}>
+                    <Input
+                      type="text"
+                      handleChange={(e) => setName(e.target.value)}
+                      value={name}
+                      className={style["input"]}
+                      placeholder="Nama Lengkap"
+                    />
+                  </div>
+                  <div className={style["button-wrapper"]}>
+                    <Button
+                      type="secondary"
+                      onClick={cancelUpdateName}
+                      className={style["btn-batal"]}
+                    >
+                      Batalkan
+                    </Button>
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                    >
+                      Simpan
+                    </Button>
+                  </div>
+                </div>
+
+                {isUpdating ? <Loading /> : ""}
+              </form>
+            ) : (
+              <div className={style["form-unedit"]}>
+                <div className={style.left}>
+                  <p>Nama</p>
+                </div>
                 <div className={style.middle}>
                   <div className={style["item-1"]}>
-                    <Avatar
-                      alt="Travis Howard"
-                      className={style.avatar}
-                      // src={profileImage}
-                    />
-                    <div className={style["btn-ubah"]}>
-                      <input
-                        type="file"
-                        onChange={onUpdateProfileImage}
-                        name="avatar"
-                        id="btn-avatar"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                      />
-                      <div className={style["btn-avatar-wrapper"]}>
-                        <label htmlFor="btn-avatar">
-                          <CameraAltOutlinedIcon />
-                          Ubah
-                        </label>
-                      </div>
-                      {isUpdating ? <Loading /> : ""}
-                    </div>
+                    <p>{name}</p>
                   </div>
-
                   <div className={style["item-2"]}>
                     <button
                       type="button"
-                      onClick={onDeleteProfileImage}
+                      onClick={() => setOpenNama(!openNama)}
                       className={style["btn-text"]}
                     >
-                      <Icon>delete</Icon>Hapus
+                      <Icon>edit</Icon>Edit
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Input Nama */}
-            <div className={style["form-container"]}>
-              {openNama ? (
-                <form onSubmit={onUpdateName} className={style["form-edit"]}>
-                  <div className={style["form-text"]}>
-                    <p>Nama</p>
-                  </div>
-                  <div className={style["input-wrapper"]}>
-                    <div className={style["input-container"]}>
-                      <Input
-                        type="text"
-                        handleChange={(e) => setName(e.target.value)}
-                        value={name}
-                        className={style["input"]}
-                        placeholder="Nama Lengkap"
-                      />
-                    </div>
-                    <div className={style["button-wrapper"]}>
-                      <Button
-                        type="secondary"
-                        onClick={cancelUpdateName}
-                        className={style["btn-batal"]}
-                      >
-                        Batalkan
-                      </Button>
-                      <Button
-                        size="large"
-                        variant="outlined"
-                        color="primary"
-                        type="submit"
-                      >
-                        Simpan
-                      </Button>
-                    </div>
-                  </div>
+          {/* Input Email */}
+          <div className={style["form-container"]}>
+            <div className={style["form-unedit"]}>
+              <div className={style.left}>
+                <p>Email</p>
+              </div>
 
-                  {isUpdating ? <Loading /> : ""}
-                </form>
-              ) : (
-                <div className={style["form-unedit"]}>
-                  <div className={style.left}>
-                    <p>Nama</p>
-                  </div>
-                  <div className={style.middle}>
-                    <div className={style["item-1"]}>
-                      <p>{name}</p>
+              <div className={style.middle}>
+                <div className={style["item-1"]}>
+                  <p>{email}</p>
+                  {email && (
+                    <div
+                      className={style.verifikasi}
+                      style={
+                        verifikasi
+                          ? { backgroundColor: "#40C02B" }
+                          : { backgroundColor: "#F4B12F" }
+                      }
+                    >
+                      {verifikasi ? (
+                        <p style={{ color: "white" }}>Terverifikasi</p>
+                      ) : (
+                        <p>
+                          {" "}
+                          Belum terverifikasi.{" "}
+                          <span onClick={handleSendEmail}>
+                            Kirim ulang
+                          </span>
+                        </p>
+                      )}
                     </div>
-                    <div className={style["item-2"]}>
-                      <button
-                        type="button"
-                        onClick={() => setOpenNama(!openNama)}
-                        className={style["btn-text"]}
-                      >
-                        <Icon>edit</Icon>Edit
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Input Email */}
-            <div className={style["form-container"]}>
-              <div className={style["form-unedit"]}>
-                <div className={style.left}>
-                  <p>Email</p>
-                </div>
-
-                <div className={style.middle}>
-                  <div className={style["item-1"]}>
-                    <p>{email}</p>
-                    {email && (
-                      <div
-                        className={style.verifikasi}
-                        style={
-                          verifikasi
-                            ? { backgroundColor: "#40C02B" }
-                            : { backgroundColor: "#F4B12F" }
-                        }
-                      >
-                        {verifikasi ? (
-                          <p style={{ color: "white" }}>Terverifikasi</p>
-                        ) : (
-                          <p>
-                            {" "}
-                            Belum terverifikasi.{" "}
-                            <span onClick={handleSendEmail}>
-                              Kirim ulang
-                            </span>
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Input Password */}
-            <div className={style["form-container"]}>
-              {openPassword ? (
-                <form
-                  onSubmit={onUpdatePassword}
-                  className={style["form-edit"]}
-                >
-                  <div className={style["form-text"]}>
-                    <p>Password</p>
-                  </div>
-                  <div className={style["input-wrapper"]}>
-                    <div className={style["input-container"]}>
-                      <Password
-                        type="password"
-                        placeholder="Password lama"
-                        name="current_password"
-                        value={currentPassword}
-                        handleChange={(e) => setCurrentPassword(e.target.value)}
-                        visibilityEye={isShowCurrent}
-                        handleShow={() => setIsShowCurrent(!isShowCurrent)}
-                      />
+          {/* Input Password */}
+          <div className={style["form-container"]}>
+            {openPassword ? (
+              <form
+                onSubmit={onUpdatePassword}
+                className={style["form-edit"]}
+              >
+                <div className={style["form-text"]}>
+                  <p>Password</p>
+                </div>
+                <div className={style["input-wrapper"]}>
+                  <div className={style["input-container"]}>
+                    <Password
+                      type="password"
+                      placeholder="Password lama"
+                      name="current_password"
+                      value={currentPassword}
+                      handleChange={(e) => setCurrentPassword(e.target.value)}
+                      visibilityEye={isShowCurrent}
+                      handleShow={() => setIsShowCurrent(!isShowCurrent)}
+                    />
 
-                      <Password
-                        type="password"
-                        placeholder="Password Baru"
-                        name="new_password"
-                        value={newPassword}
-                        handleChange={(e) => setNewPassword(e.target.value)}
-                        visibilityEye={isShowNew}
-                        handleShow={() => setIsShowNew(!isShowNew)}
-                      />
+                    <Password
+                      type="password"
+                      placeholder="Password Baru"
+                      name="new_password"
+                      value={newPassword}
+                      handleChange={(e) => setNewPassword(e.target.value)}
+                      visibilityEye={isShowNew}
+                      handleShow={() => setIsShowNew(!isShowNew)}
+                    />
 
-                      <Password
-                        type="password"
-                        placeholder="Ulangi Password"
-                        name="retype_password"
-                        value={retypePassword}
-                        handleChange={(e) => setRetypePassword(e.target.value)}
-                        visibilityEye={isShowRetype}
-                        handleShow={() => setIsShowRetype(!isShowRetype)}
-                      />
-                    </div>
-
-                    <div className={style["button-wrapper"]}>
-                      <Button
-                        type="secondary"
-                        onClick={cancelUpdatePassword}
-                        className={style["btn-batal"]}
-                      >
-                        Batalkan
-                      </Button>
-                      <Button
-                        size="large"
-                        variant="outlined"
-                        color="primary"
-                        type="submit"
-                      >
-                        Simpan
-                      </Button>
-                    </div>
+                    <Password
+                      type="password"
+                      placeholder="Ulangi Password"
+                      name="retype_password"
+                      value={retypePassword}
+                      handleChange={(e) => setRetypePassword(e.target.value)}
+                      visibilityEye={isShowRetype}
+                      handleShow={() => setIsShowRetype(!isShowRetype)}
+                    />
                   </div>
 
-                  {isUpdating ? <Loading /> : ""}
-                </form>
-              ) : (
-                <div className={style["form-unedit"]}>
-                  <div className={style.left}>
-                    <p>Password</p>
-                  </div>
-
-                  <div className={style.middle}>
-                    <div className={style["btn-ubah"]}>
-                      <Button
-                        condensed
-                        icon={EditIcon}
-                        onClick={() => setOpenPassword(!openPassword)}
-                      >
-                        Ubah Password
-                      </Button>
-                    </div>
+                  <div className={style["button-wrapper"]}>
+                    <Button
+                      type="secondary"
+                      onClick={cancelUpdatePassword}
+                      className={style["btn-batal"]}
+                    >
+                      Batalkan
+                    </Button>
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                    >
+                      Simpan
+                    </Button>
                   </div>
                 </div>
-              )}
-            </div>
+
+                {isUpdating ? <Loading /> : ""}
+              </form>
+            ) : (
+              <div className={style["form-unedit"]}>
+                <div className={style.left}>
+                  <p>Password</p>
+                </div>
+
+                <div className={style.middle}>
+                  <div className={style["btn-ubah"]}>
+                    <Button
+                      condensed
+                      icon={EditIcon}
+                      onClick={() => setOpenPassword(!openPassword)}
+                    >
+                      Ubah Password
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
