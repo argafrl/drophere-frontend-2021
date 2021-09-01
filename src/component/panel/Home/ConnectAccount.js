@@ -1,10 +1,8 @@
 import { Button, Dialog } from "@bccfilkom/designsystem/build";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
-import mainApi from "../../../api/mainApi";
 import { StorageContext } from "../../../contexts/StorageContext";
 import { UserContext } from "../../../contexts/UserContext";
-import { SnackbarContext } from "../../../contexts/SnackbarContext";
 import style from "../../../css/account-connect.module.scss";
 import { Portal } from "react-portal";
 
@@ -21,11 +19,9 @@ const ConnectAccount = () => {
   } = useContext(StorageContext);
   const { fetchUserInfo, userInfo, isFetchingUserInfo } =
     useContext(UserContext);
-  const snackbar = useContext(SnackbarContext);
 
   const [useDrive, setUseDrive] = useState(false);
   const [confirmModalShown, showConfirmModal] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const { search } = useLocation();
   const history = useHistory();
@@ -56,7 +52,6 @@ const ConnectAccount = () => {
 
   const handleNextPage = () => {
     if (useDrive) {
-      handleSendEmail();
       history.replace("/account");
     } else {
       showConfirmModal(true);
@@ -68,19 +63,6 @@ const ConnectAccount = () => {
       setUseDrive(false);
     } else {
       getOAuthUrl();
-    }
-  };
-
-  const handleSendEmail = async () => {
-    try {
-      setIsUpdating(true);
-      await mainApi.get("/users/verify");
-      snackbar.success("Email verifikasi berhasil dikirim");
-    } catch (error) {
-      console.log(error);
-      snackbar.error("Email gagal dikirim");
-    } finally {
-      setIsUpdating(false);
     }
   };
 
@@ -104,13 +86,12 @@ const ConnectAccount = () => {
             <Button
               className={useDrive ? style["button-cancel"] : ""}
               onClick={handleConnectDrive}
-              skeleton={isFetchingUserInfo || isConnectingGoogleDrive || isUpdating}
+              skeleton={isFetchingUserInfo || isConnectingGoogleDrive}
               disabled={
                 useDrive ||
                 isFetchingUserInfo ||
                 isConnectingGoogleDrive ||
-                isFetchingOAuthUrl ||
-                isUpdating
+                isFetchingOAuthUrl
               }
             >
               {useDrive ? "Batalkan" : "Tautkan"}
@@ -133,7 +114,7 @@ const ConnectAccount = () => {
       <div className={style["button-container"]}>
         <Button
           type="secondary"
-          disabled={isFetchingUserInfo || isConnectingGoogleDrive || isUpdating}
+          disabled={isFetchingUserInfo || isConnectingGoogleDrive}
           onClick={handleNextPage}
         >
           Lanjutkan
@@ -146,9 +127,7 @@ const ConnectAccount = () => {
             onCancel={() => showConfirmModal(false)}
             primaryButton={{
               text: "Lanjutkan",
-              onClick: () => {
-                handleSendEmail();
-                history.replace("/account")},
+              onClick: () => history.replace("/account"),
             }}
             secondaryButton={{
               text: "Kembali",
