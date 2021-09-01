@@ -51,7 +51,7 @@ const Contributor = () => {
     {
       nama: "Alfonsus Avianto Chandrawan",
       role: "Front End Developer",
-      linkedin: "alfonsus-avianto-chandrawan-680a271a6",
+      linkedin: "alfonsusavianto",
       foto: "contributor-fe-alfonsus.jpeg"
     },
     {
