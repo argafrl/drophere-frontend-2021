@@ -1,7 +1,7 @@
 import React from "react";
 import ReactGA from "react-ga";
 
-ReactGA.initialize("UA-205565258-1");
+ReactGA.initialize("UA-206525142-1");
 
 const withPageView = (WrappedComponent, options = {}) => {
   const trackPageView = (page) => {
