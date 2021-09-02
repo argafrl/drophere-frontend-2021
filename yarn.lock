@@ -1132,10 +1132,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bccfilkom/designsystem@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@bccfilkom/designsystem/-/designsystem-1.0.4.tgz#6dc756e5023ed4654a3f9cd7860eef04fd702198"
-  integrity sha512-m9q1yHWuBhDn89CGPCk/X6L0+FDZtYGIq4/KpQ+CS3XabSy5H1Lo+AmoG/SHPaw6aNzrCL8MIXfCZZUwivPEzw==
+"@bccfilkom/designsystem@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@bccfilkom/designsystem/-/designsystem-1.0.6.tgz#1dd2fc8bd6f55d02da8706e90db877dee8a054b2"
+  integrity sha512-K4hwwGhbx1Pif+Uxb9PdgfFtRr7Hjijo4XVtoIlg2RuUx2EHjkvKEsZFz10Hg7l3Ijn3SYWylbkC5QL3xqIf9g==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"

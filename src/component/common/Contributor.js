@@ -72,6 +72,24 @@ const Contributor = () => {
       linkedin: "izfaruqi",
       foto: "contributor-be-ibrahim.png"
     },
+    {
+      nama: "Shafa Al Afghany AR",
+      role: "Back End Developer",
+      linkedin: "shafaalafghany",
+      foto: "contributor-be-shafa.jpg"
+    },
+    {
+      nama: "Muhammad Fachry Noorchoolish Arif",
+      role: "Back End Developer",
+      linkedin: "MuhammadFachry",
+      foto: "contributor-be-fachry.png"
+    },
+    {
+      nama: "Aziz Fikri Mahmudi",
+      role: "DevOps",
+      linkedin: "afikrim",
+      foto: "contributor-devops-aziz.png"
+    },
   ]
 
   return (
