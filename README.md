@@ -1,6 +1,6 @@
 # BCC Drophere Front End Repository
 
-Drophere is a web-based application which is mainly used for file submission. Built with React JS and styled with SASS. The components is provided by [BCC Design System](https://github.com/bccfilkom/designsystem). 
+Drophere is a web-based application which is mainly used for file submission. Built with React JS and styled with SASS. The components are provided by [BCC Design System](https://github.com/bccfilkom/designsystem). 
 
 ## Project Structure
 - ``src/components/common`` contains all general components
